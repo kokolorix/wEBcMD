@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace wEBcMD
 {
@@ -26,6 +27,12 @@ namespace wEBcMD
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+			
+			 services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "wEBcMD", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,7 +41,9 @@ namespace wEBcMD
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "wEBcMD v1"));
+           }
             else
             {
                 app.UseExceptionHandler("/Error");
