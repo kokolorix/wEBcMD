@@ -13,17 +13,30 @@
 	</xs:element>
 	<xs:simpleType name="ValT">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Void"/>
+			<!-- <xs:pattern value=".+(\[\])?"/> -->
+			<xs:pattern value="UuId(\[\])?"/>
+			<xs:pattern value="String(\[\])?"/>
+			<xs:pattern value="PropertyDTO(\[\])?"/>
+			<xs:pattern value="PropertyTypeDTO(\[\])?"/>
+<!--			<xs:enumeration value="Void"/>
 			<xs:enumeration value="Boolean"/>
+			<xs:enumeration value="Boolean[]"/>
 			<xs:enumeration value="Int32"/>
 			<xs:enumeration value="UInt32"/>
+			<xs:enumeration value="UInt32[]"/>
 			<xs:enumeration value="Int64"/>
+			<xs:enumeration value="Int64[]"/>
 			<xs:enumeration value="UInt64"/>
+			<xs:enumeration value="UInt64[]"/>
 			<xs:enumeration value="Double"/>
+			<xs:enumeration value="Double[]"/>
 			<xs:enumeration value="String"/>
+			<xs:enumeration value="String[]"/>
 			<xs:enumeration value="UuId"/>
+			<xs:enumeration value="UuId[]"/>
 			<xs:enumeration value="PropertyDTO"/>
-		</xs:restriction>
+			<xs:enumeration value="PropertyTypeDTO"/>
+-->		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="UseT">
 		<xs:restriction base="xs:string">
@@ -56,7 +69,6 @@
 	<xs:complexType name="PropT">
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="type" type="ValT" use="required"/>
-		<xs:attribute name="default" type="xs:string" use="optional"/>
 		<xs:attribute name="use" type="UseT" use="optional"/>
 	</xs:complexType>
 </xs:schema>

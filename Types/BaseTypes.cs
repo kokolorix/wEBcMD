@@ -6,7 +6,6 @@ namespace wEBcMD
 	public class PropertyDTO
 	{
 		public String Name { get; set; }
-		public String Type { get; set; }
 		public String Value { get; set; }
 	};
 
@@ -21,10 +20,18 @@ namespace wEBcMD
 	{
 	};
 
-	public class TextDTO : TypeDTO
+	public class PropertyTypeDTO : TypeDTO
 	{
-		public String Encoding { get; set; }
-		public UInt64 MaxLength { get; set; }
+		public String Name { get; set; }
+		public String DataType { get; set; }
+		public String Default { get; set; }
+	};
+
+	public class ObjectTypeDTO : TypeDTO
+	{
+		public String Category { get; set; }
+		public String Name { get; set; }
+		public List<PropertyTypeDTO> PropertyTypes { get; set; }
 	};
 
 }
