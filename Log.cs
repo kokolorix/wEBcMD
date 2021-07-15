@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,9 @@ namespace wEBcMD
 {
 	public class Log
 	{
-		public static void Trace(ILogger logger, string message,
-		[System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+		public static void Trace(ILogger logger, string message = null,
+		[System.Runtime.CompilerServices.CallerMemberName] string memberName = null,
+		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = null,
 		[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
 			string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";
@@ -19,8 +19,8 @@ namespace wEBcMD
 			Console.WriteLine(msg);
 		}
 		public static void Info(ILogger logger, string message,
-		[System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+		[System.Runtime.CompilerServices.CallerMemberName] string memberName = null,
+		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = null,
 		[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
 			string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";
@@ -28,9 +28,9 @@ namespace wEBcMD
 			logger.Log(LogLevel.Information, msg);
 			Console.WriteLine(msg);
 		}
-		public static void Warn(ILogger logger, string message,
-		[System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+		public static void Warn(ILogger logger, string message = null,
+		[System.Runtime.CompilerServices.CallerMemberName] string memberName = null,
+		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = null,
 		[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
 			string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";
@@ -39,8 +39,8 @@ namespace wEBcMD
 			Console.WriteLine(msg);
 		}
 		public static void Error(ILogger logger, string message,
-		[System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+		[System.Runtime.CompilerServices.CallerMemberName] string memberName = null,
+		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = null,
 		[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
 		{
 			string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,36 +8,49 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class ObjectTypeController : ControllerBase
-	{
-		private void Trace(string message,
-		[System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
-		[System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
-		[System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
-		{
-			string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";
-			System.Diagnostics.Trace.WriteLine(msg);
-			_logger.Log(LogLevel.Trace, msg);
-			Console.WriteLine(msg);
-		}
-		private readonly ILogger<ObjectTypeController> _logger;
-		public ObjectTypeController(ILogger<ObjectTypeController> logger)
-		{
-			_logger = logger;
-		}
+   [ApiController]
+   [Route("[controller]")]
+   public class ObjectTypeController : ControllerBase
+   {
+      private readonly ILogger<ObjectTypeController> _logger;
+      public ObjectTypeController(ILogger<ObjectTypeController> logger)
+      {
+         _logger = logger;
+      }
 
-		[HttpGet]
-		public IEnumerable<ObjectTypeDTO> GetObjectTypes(
-			[System.Runtime.CompilerServices.CallerMemberName] string callerName = ""
-		)
-		{
-			ObjectTypeDTO[] types = 
-			{
+      /// <summary>
+      /// Get one concrete type
+      /// </summary>
+      /// <param name="Id"></param>
+      /// <returns>The type requested, or null if not exist</returns>
+      [HttpGet]
+      [Route("{Id:Guid}")]
+      public ObjectTypeDTO GetObjectType(Guid Id)
+      {
+         Log.Trace(_logger);
+         ObjectTypeDTO type = new()
+         {
+            Id = Id,
+            Type = Guid.Parse("38b38794-0a2e-466c-b198-c831708298f6"),
+         };
+         return type;
+      }
 
-			};
-			return types;
-		}
-	}
+      /// <summary>
+      ///  Get all object types
+      /// </summary>
+      /// <returns></returns>
+      [HttpGet]
+      public IEnumerable<ObjectTypeDTO> GetObjectTypes()
+      {
+         Log.Trace(_logger);
+         ObjectTypeDTO[] types =
+         {
+                new ObjectTypeDTO {
+                    Id=Guid.NewGuid(), Type=Guid.Parse("38b38794-0a2e-466c-b198-c831708298f6"),
+                    Category="", Name=""}
+            };
+         return types;
+      }
+   }
 }

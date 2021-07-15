@@ -3,16 +3,20 @@ using System.Collections.Generic;
 
 namespace wEBcMD
 {
+	public class BaseDTO
+	{
+		public  Guid Id { get; set; }
+		public  Guid Type { get; set; }
+	};
+
 	public class PropertyDTO
 	{
 		public String Name { get; set; }
 		public String Value { get; set; }
 	};
 
-	public class BaseDTO
+	public class ObjectDTO : BaseDTO
 	{
-		public  Guid Id { get; set; }
-		public  Guid Type { get; set; }
 		public List<PropertyDTO> Properties { get; set; }
 	};
 
