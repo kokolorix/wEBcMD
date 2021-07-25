@@ -37,6 +37,12 @@
             "/consoleloggerparameters:NoSummary"
          ],
          "problemMatcher": "$msCompile"
-      }
+      },
+      {
+         "label": "types",
+         "command": "wEBcMD-Types.cmd",
+         "type": "process",
+         "args": [ ],
+      },
    ]
 }
