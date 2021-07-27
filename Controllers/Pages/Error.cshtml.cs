@@ -9,23 +9,37 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Pages
 {
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class ErrorModel : PageModel
-    {
-        private readonly ILogger<ErrorModel> _logger;
+   /// <summary>
+   ///
+   /// </summary>
+   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+   public class ErrorModel : PageModel
+   {
+      private readonly ILogger<ErrorModel> _logger;
+      /// <summary>
+      /// Initialize the logger
+      /// </summary>
+      /// <param name="logger"></param>
+      public ErrorModel(ILogger<ErrorModel> logger) => _logger = logger;
 
-        public ErrorModel(ILogger<ErrorModel> logger)
-        {
-            _logger = logger;
-        }
+      /// <summary>
+      ///
+      /// </summary>
+      /// <value></value>
+      public string RequestId { get; set; }
 
-        public string RequestId { get; set; }
+      /// <summary>
+      ///
+      /// </summary>
+      /// <returns></returns>
+      public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
-        public void OnGet()
-        {
-            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-        }
-    }
+      /// <summary>
+      ///
+      /// </summary>
+      public void OnGet()
+      {
+         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+      }
+   }
 }

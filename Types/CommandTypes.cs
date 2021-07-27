@@ -19,10 +19,9 @@ namespace wEBcMD
 	{
 		/// <summary>FirstOne</summary>
 		public virtual String FirstOne {
-				get => this.Arguments.Find(a => a.Name=="FirstOne")?.Value;
-				set {
-				}
-			}
+			get { return StringFromPropertyList( this.Arguments, "FirstOne" ); }
+			set { StringToPropertyList( this.Arguments, "FirstOne", value ); }
+		}
 		/// <summary>SecondOne</summary>
 		public virtual Boolean SecondOne { get; set; }
 	};

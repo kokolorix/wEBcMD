@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
+   /// <summary>
+   /// Controller for Objects
+   /// </summary>
    [ApiController]
    [Route("[controller]")]
    public class ObjectController : ControllerBase
@@ -18,11 +21,17 @@ namespace wEBcMD.Controllers
         };
 
       private readonly ILogger<ObjectController> _logger;
-      public ObjectController(ILogger<ObjectController> logger)
-      {
-         _logger = logger;
-      }
+      /// <summary>
+      /// Initialize the logger
+      /// </summary>
+      /// <param name="logger"></param>
+      public ObjectController(ILogger<ObjectController> logger) => _logger = logger;
 
+      /// <summary>
+      /// Get the one object with the given id
+      /// </summary>
+      /// <param name="Id"></param>
+      /// <returns></returns>
       [HttpGet]
       [Route("{Id:Guid}")]
       public ObjectDTO GetObject(Guid Id)
@@ -31,14 +40,22 @@ namespace wEBcMD.Controllers
          throw new NotImplementedException();
       }
 
+      /// <summary>
+      /// Write the given object to storage
+      /// </summary>
+      /// <param name="obj"></param>
+      /// <returns></returns>
       [HttpPost]
-      //[Route("")]
-      public ObjectDTO GetObject(ObjectDTO obj)
+      public ObjectDTO WriteObject(ObjectDTO obj)
       {
          Log.Trace(_logger);
          throw new NotImplementedException();
       }
 
+      /// <summary>
+      /// Get some random objects
+      /// </summary>
+      /// <returns></returns>
       [HttpGet]
       public IEnumerable<ObjectDTO> GetObjectsRandom(
       )

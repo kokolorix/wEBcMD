@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
+   /// <summary>
+   /// Controller around the commands
+   /// </summary>
    [ApiController]
    [Route("[controller]")]
    public class CommandController : ControllerBase
    {
       private readonly ILogger<CommandController> _logger;
-      public CommandController(ILogger<CommandController> logger)
-      {
-         _logger = logger;
-      }
+      /// <summary>
+      /// Initialize the logger
+      /// </summary>
+      /// <param name="logger"></param>
+      public CommandController(ILogger<CommandController> logger) => _logger = logger;
 
       /// <summary>
       /// Resolve and execute the given command

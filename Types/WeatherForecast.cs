@@ -2,14 +2,33 @@ using System;
 
 namespace wEBcMD
 {
-    public class WeatherForecast
-    {
-        public DateTime Date { get; set; }
+   /// <summary>
+   /// Sample data transfer object
+   /// </summary>
+   public class WeatherForecast
+   {
+      /// <summary>
+      ///
+      /// </summary>
+      /// <value></value>
+      public DateTime Date { get; set; }
 
-        public int TemperatureC { get; set; }
+      /// <summary>
+      ///
+      /// </summary>
+      /// <value></value>
+      public int TemperatureC { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+      /// <summary>
+      ///
+      /// </summary>
+      /// <returns></returns>
+      public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
-        public string Summary { get; set; }
-    }
+      /// <summary>
+      ///
+      /// </summary>
+      /// <value></value>
+      public string Summary { get; set; }
+   }
 }

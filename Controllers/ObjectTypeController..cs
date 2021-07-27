@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
+   /// <summary>
+   /// Controller for Object-Types
+   /// </summary>
    [ApiController]
    [Route("[controller]")]
    public class ObjectTypeController : ControllerBase
    {
       private readonly ILogger<ObjectTypeController> _logger;
-      public ObjectTypeController(ILogger<ObjectTypeController> logger)
-      {
-         _logger = logger;
-      }
+      /// <summary>
+      /// Initialize the logger
+      /// </summary>
+      /// <param name="logger"></param>
+      public ObjectTypeController(ILogger<ObjectTypeController> logger) => _logger = logger;
 
       /// <summary>
       /// Get one concrete type

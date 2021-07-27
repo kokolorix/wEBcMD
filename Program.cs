@@ -9,18 +9,30 @@ using System.Threading.Tasks;
 
 namespace wEBcMD
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+   /// <summary>
+   /// The beginning of all
+   /// </summary>
+   public class Program
+   {
+      /// <summary>
+      /// Main Method
+      /// </summary>
+      /// <param name="args"></param>
+      public static void Main(string[] args)
+      {
+         CreateHostBuilder(args).Build().Run();
+      }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+      /// <summary>
+      ///
+      /// </summary>
+      /// <param name="args"></param>
+      /// <returns></returns>
+      public static IHostBuilder CreateHostBuilder(string[] args) =>
+          Host.CreateDefaultBuilder(args)
+              .ConfigureWebHostDefaults(webBuilder =>
+              {
+                 webBuilder.UseStartup<Startup>();
+              });
+   }
 }

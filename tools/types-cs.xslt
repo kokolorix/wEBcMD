@@ -93,10 +93,12 @@
 
          <xsl:when test="@fromList">
             <xsl:value-of select="concat(' {', $nl1)" />
-            <xsl:value-of select="concat($t4, 'get =&gt; this.', @fromList, '.Find(a =&gt; a.Name==&quot;', @name, '&quot;)?.Value;', $nl1)" />
+            <xsl:value-of select="concat($t3, 'get { return ', @type, 'FromPropertyList( this.', @fromList, ', &quot;', @name, '&quot; ); }', $nl1)" />
+            <xsl:value-of select="concat($t3, 'set { ', @type, 'ToPropertyList( this.', @fromList, ', &quot;', @name, '&quot;, value ); }', $nl1)" />
+            <!-- <xsl:value-of select="concat($t4, 'get =&gt; this.', @fromList, '.Find(a =&gt; a.Name==&quot;', @name, '&quot;)?.Value;', $nl1)" />
             <xsl:value-of select="concat($t4, 'set {', $nl1)" />
-            <xsl:value-of select="concat($t4, '}', $nl1)" />
-            <xsl:value-of select="concat($t3, '}')" />
+            <xsl:value-of select="concat($t4, '}', $nl1)" /> -->
+            <xsl:value-of select="concat($t2, '}')" />
          </xsl:when>
          <xsl:otherwise>
             <xsl:value-of select="concat(' { get; set; }', '')" />
