@@ -5,6 +5,20 @@
    "version": "0.2.0",
    "configurations": [
    {
+      "name": "Launch Edge",
+      "request": "launch",
+      "type": "pwa-msedge",
+      "url": "https://localhost:5001/swagger",
+      "webRoot": "${workspaceFolder}"
+   },
+      {
+         "type": "browser-preview",
+         "request": "attach",
+         "name": "Browser Preview: Attach"
+      },
+
+
+   {
       "type": "browser-preview",
       "request": "launch",
       "name": "Browser Preview: Swagger",

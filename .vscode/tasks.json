@@ -42,7 +42,8 @@
          "label": "types",
          "command": "wEBcMD-Types.cmd",
          "type": "process",
-         "args": [ ],
-      },
+         "args": [],
+         "problemMatcher": []
+      }
    ]
 }

@@ -2,6 +2,7 @@
 <Project>
 	<Folder FolderName="XML Files" ExtStr="xml;cml;math;rdf;smil;svg;wml">
 		<File FilePath="Types\BaseTypes.xml" HomeFolder="Yes"/>
+		<File FilePath="Types\CommandTypes.xml" HomeFolder="Yes"/>
 	</Folder>
 	<Folder FolderName="XSL Files" ExtStr="xsl;xslt">
 		<File FilePath="tools\types-cs.xslt" HomeFolder="Yes"/>

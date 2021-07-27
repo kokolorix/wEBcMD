@@ -13,30 +13,19 @@
 	</xs:element>
 	<xs:simpleType name="ValT">
 		<xs:restriction base="xs:string">
-			<!-- <xs:pattern value=".+(\[\])?"/> -->
-			<xs:pattern value="UuId(\[\])?"/>
-			<xs:pattern value="String(\[\])?"/>
-			<xs:pattern value="PropertyDTO(\[\])?"/>
-			<xs:pattern value="PropertyTypeDTO(\[\])?"/>
-<!--			<xs:enumeration value="Void"/>
-			<xs:enumeration value="Boolean"/>
-			<xs:enumeration value="Boolean[]"/>
-			<xs:enumeration value="Int32"/>
-			<xs:enumeration value="UInt32"/>
-			<xs:enumeration value="UInt32[]"/>
-			<xs:enumeration value="Int64"/>
-			<xs:enumeration value="Int64[]"/>
-			<xs:enumeration value="UInt64"/>
-			<xs:enumeration value="UInt64[]"/>
-			<xs:enumeration value="Double"/>
-			<xs:enumeration value="Double[]"/>
-			<xs:enumeration value="String"/>
-			<xs:enumeration value="String[]"/>
-			<xs:enumeration value="UuId"/>
-			<xs:enumeration value="UuId[]"/>
-			<xs:enumeration value="PropertyDTO"/>
-			<xs:enumeration value="PropertyTypeDTO"/>
--->		</xs:restriction>
+			<xs:pattern value="Void"/>
+			<xs:pattern value="Boolean(\s*\[\s*\])?"/>
+			<xs:pattern value="Int32(\s*\[\s*\])?"/>
+			<xs:pattern value="UInt32(\s*\[\s*\])?"/>
+			<xs:pattern value="Int64(\s*\[\s*\])?"/>
+			<xs:pattern value="UInt64(\s*\[\s*\])?"/>
+			<xs:pattern value="Double(\s*\[\s*\])?"/>
+			<xs:pattern value="String(\s*\[\s*\])?"/>
+			<xs:pattern value="UuId(\s*\[\s*\])?"/>
+			<xs:pattern value="PropertyDTO(\s*\[\s*\])?"/>
+			<xs:pattern value="PropertyTypeDTO(\s*\[\s*\])?"/>
+			<xs:pattern value=""/>
+		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="UseT">
 		<xs:restriction base="xs:string">
@@ -57,6 +46,9 @@
 		<xs:complexContent>
 			<xs:extension base="BaseT">
 				<xs:sequence>
+					<xs:sequence minOccurs="0" maxOccurs="1">
+						<xs:element name="Summary"/>
+					</xs:sequence>
 					<xs:element name="Base" type="BaseT"/>
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
 						<xs:element name="PropertyType" type="PropT"/>
@@ -67,8 +59,14 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="PropT">
+      <xs:sequence minOccurs="0" maxOccurs="1">
+         <xs:element name="Summary"/>
+      </xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="type" type="ValT" use="required"/>
 		<xs:attribute name="use" type="UseT" use="optional"/>
+		<xs:attribute name="default" type="xs:string" use="optional"/>
+		<xs:attribute name="summary" type="xs:string" use="optional"/>
+		<xs:attribute name="fromList" type="xs:string" use="optional"/>
 	</xs:complexType>
 </xs:schema>
