@@ -11,6 +11,6 @@
 	<ObjectType name="SampleCommandDTO" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
 		<Base name="CommandDTO" category="Types" />
 		<PropertyType name="FirstOne" type="String" fromList="Arguments"></PropertyType>
-		<PropertyType name="SecondOne" type="Boolean"></PropertyType>
+		<PropertyType name="SecondOne" type="Boolean" fromList="Arguments"></PropertyType>
 	</ObjectType>
 </Types>

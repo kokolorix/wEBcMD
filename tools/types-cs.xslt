@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes">
+<xsl:stylesheet version="2.0"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+   xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes">
    <xsl:output method="text" />
    <xsl:output name="text-def" method="text" />
    <xsl:output name="xml-def" method="xml" indent="yes" />
@@ -45,6 +49,23 @@
       </xsl:choose>
       <xsl:apply-templates select="Base" mode="types" />
       <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
+      <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', $id, ' is the Id of ', $name,' type.&lt;/summary&gt;', $nl1)" />
+
+      <xsl:choose>
+         <xsl:when test="./Base/@name=''">
+            <xsl:value-of select="concat($t2, 'public static ')" />
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="concat($t2, 'new public static ')" />
+         </xsl:otherwise>
+      </xsl:choose>
+
+      <xsl:value-of select="concat('Guid TypeId { get =&gt; Guid.Parse(&quot;', $id, '&quot;); }', $nl1)" />
+
+      <xsl:if test="$name!='BaseDTO' and $name!='PropertyDTO'">
+         <xsl:value-of select="concat($t2, '/// &lt;summary&gt;Id of ', $name,' type.&lt;/summary&gt;', $nl1)" />
+         <xsl:value-of select="concat($t2, 'public override Guid Type { get =&gt; ', $name, '.TypeId; }', $nl1)" />
+      </xsl:if>
       <xsl:apply-templates select="PropertyType" mode="types" />
       <xsl:value-of select="concat($t1, '};', $nl2)" />
    </xsl:template>
@@ -69,28 +90,11 @@
       </xsl:call-template>
       <xsl:value-of select="concat($t2, 'public')" />
       <!-- <xsl:if test="not(../Base/@Name)"> -->
-         <xsl:value-of select="concat(' ', 'virtual', ' ')" />
+      <xsl:value-of select="concat(' ', 'virtual', ' ')" />
       <!-- </xsl:if> -->
       <xsl:call-template name="DataType" />
       <xsl:value-of select="concat(' ', $name)" />
       <xsl:choose>
-
-         <!-- public virtual String FirstOne {
-            get => Arguments.Find(a => a.Name=="FirstOne")?.Value;
-            set {
-               var p = Arguments.Find(a => a.Name=="FirstOne");
-               if(p == null){
-                  p = new PropertyDTO(){Name = "FirstOne", Value = value};
-                  Arguments.Add(p);
-               }
-               else
-                  p.Value = value;
-            }
-         } -->
-
-
-
-
          <xsl:when test="@fromList">
             <xsl:value-of select="concat(' {', $nl1)" />
             <xsl:value-of select="concat($t3, 'get { return ', @type, 'FromPropertyList( this.', @fromList, ', &quot;', @name, '&quot; ); }', $nl1)" />
