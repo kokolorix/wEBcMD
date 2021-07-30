@@ -30,8 +30,6 @@ namespace wEBcMD
 	{
 		/// <summary>1a81bc99-28c2-4c03-ac5c-a1de4967cc36 is the Id of ObjectDTO type.</summary>
 		new public static Guid TypeId { get => Guid.Parse("1a81bc99-28c2-4c03-ac5c-a1de4967cc36"); }
-		/// <summary>Id of ObjectDTO type.</summary>
-		public override Guid Type { get => ObjectDTO.TypeId; }
 		/// <summary>Properties</summary>
 		public virtual List<PropertyDTO> Properties { get; set; }
 	};
@@ -41,8 +39,6 @@ namespace wEBcMD
 	{
 		/// <summary>2c8c1feb-0d04-45d2-bbe7-fe137450412e is the Id of TypeDTO type.</summary>
 		new public static Guid TypeId { get => Guid.Parse("2c8c1feb-0d04-45d2-bbe7-fe137450412e"); }
-		/// <summary>Id of TypeDTO type.</summary>
-		public override Guid Type { get => TypeDTO.TypeId; }
 	};
 
 	/// <summary>PropertyTypeDTO</summary>
@@ -50,8 +46,6 @@ namespace wEBcMD
 	{
 		/// <summary>b070edd3-f270-4093-a500-94047d18c7f9 is the Id of PropertyTypeDTO type.</summary>
 		new public static Guid TypeId { get => Guid.Parse("b070edd3-f270-4093-a500-94047d18c7f9"); }
-		/// <summary>Id of PropertyTypeDTO type.</summary>
-		public override Guid Type { get => PropertyTypeDTO.TypeId; }
 		/// <summary>Name</summary>
 		public virtual String Name { get; set; }
 		/// <summary>DataType</summary>
@@ -65,8 +59,6 @@ namespace wEBcMD
 	{
 		/// <summary>38b38794-0a2e-466c-b198-c831708298f6 is the Id of ObjectTypeDTO type.</summary>
 		new public static Guid TypeId { get => Guid.Parse("38b38794-0a2e-466c-b198-c831708298f6"); }
-		/// <summary>Id of ObjectTypeDTO type.</summary>
-		public override Guid Type { get => ObjectTypeDTO.TypeId; }
 		/// <summary>Category</summary>
 		public virtual String Category { get; set; }
 		/// <summary>Name</summary>

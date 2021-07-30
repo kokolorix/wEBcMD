@@ -14,6 +14,22 @@ namespace wEBcMD
       /// <summary>
       /// Log Traces
       /// </summary>
+      /// <param name="message"></param>
+      /// <param name="memberName"></param>
+      /// <param name="sourceFilePath"></param>
+      /// <param name="sourceLineNumber"></param>
+		public static void Trace(string message = null,
+      [System.Runtime.CompilerServices.CallerMemberName] string memberName = null,
+      [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = null,
+      [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
+      {
+         string msg = $"{sourceFilePath}({sourceLineNumber})	{message}	{memberName}";
+         System.Diagnostics.Trace.WriteLine(msg);
+         Console.WriteLine(msg);
+      }
+      /// <summary>
+      /// Log Traces
+      /// </summary>
       /// <param name="logger"></param>
       /// <param name="message"></param>
       /// <param name="memberName"></param>

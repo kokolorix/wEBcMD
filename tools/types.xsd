@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by devil (hellsoft) -->
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by devil (hell-soft) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
 	<xs:element name="Types">
 		<xs:annotation>
 			<xs:documentation>Comment describing your root element</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence maxOccurs="unbounded">
+			<xs:choice maxOccurs="unbounded">
 				<xs:element name="ObjectType" type="ObjT"/>
-			</xs:sequence>
+				<xs:element name="ObjectWrapper" type="WrapT"/>
+			</xs:choice>
+			<!-- <xs:sequence maxOccurs="unbounded"> -->
+			<!-- </xs:sequence> -->
 		</xs:complexType>
 	</xs:element>
 	<xs:simpleType name="ValT">
@@ -40,7 +43,7 @@
 	</xs:simpleType>
 	<xs:complexType name="BaseT">
 		<xs:attribute name="name" type="xs:string" use="required"/>
-		<xs:attribute name="category" type="xs:string" use="required"/>
+		<xs:attribute name="category" type="xs:string" use="optional"/>
 	</xs:complexType>
 	<xs:complexType name="ObjT">
 		<xs:complexContent>
@@ -58,10 +61,19 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="WrapT">
+		<xs:complexContent>
+			<xs:extension base="ObjT">
+				<xs:sequence>
+					<xs:element name="DTO" type="BaseT"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="PropT">
-      <xs:sequence minOccurs="0" maxOccurs="1">
-         <xs:element name="Summary"/>
-      </xs:sequence>
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="Summary"/>
+		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="type" type="ValT" use="required"/>
 		<xs:attribute name="use" type="UseT" use="optional"/>
