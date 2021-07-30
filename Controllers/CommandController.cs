@@ -48,11 +48,11 @@ namespace wEBcMD.Controllers
       ///        "arguments": [
       ///          {
       ///            "name": "FirstOne",
-      ///            "value": "The first argument",
+      ///            "value": "The first argument"
       ///          },
       ///          {
       ///            "name": "SecondOne",
-      ///            "value": "true",
+      ///            "value": "true"
       ///          }
       ///        ]
       ///      }
@@ -66,11 +66,11 @@ namespace wEBcMD.Controllers
       ///        "arguments": [
       ///          {
       ///            "name": "FirstOne",
-      ///            "value": "The first argument",
+      ///            "value": "The first argument"
       ///          },
       ///          {
       ///            "name": "SecondOne",
-      ///            "value": "true",
+      ///            "value": "true"
       ///          }
       ///        ]
       ///      }
