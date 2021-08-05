@@ -8,10 +8,7 @@ namespace wEBcMD
 		/// <summary>Execute the command</summary>
 		public partial CommandDTO ExecuteCommand()
 		{
-			Log.Trace($"Implementation in {MethodBase.GetCurrentMethod().DeclaringType.Name}");
-         FirstOne = $"I was here: {MethodBase.GetCurrentMethod().DeclaringType.Name}.{MethodBase.GetCurrentMethod()}";
-         SecondOne = false;
-         Cmd.Response = true;
+			Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
 			return Cmd;
 		}
 	};

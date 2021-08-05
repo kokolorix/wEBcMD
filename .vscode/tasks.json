@@ -44,6 +44,21 @@
          "type": "process",
          "args": [],
          "problemMatcher": []
+      },
+      {
+         "type": "xslt",
+         "label": "xslt: Saxon Transform (New)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${file}",
+         "xmlSource": "${workspaceFolder}/Types/CommandTypes.xml",
+         "resultPath": "${workspaceFolder}/result1.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": true
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
       }
    ]
 }
