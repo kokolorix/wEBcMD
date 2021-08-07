@@ -5,6 +5,7 @@
 		<Base name="BaseDTO" category="Base"/>
 		<PropertyType name="Response" type="Boolean" default="false" summary="Indicates if this is the answer"/>
 		<PropertyType name="Arguments" type="PropertyDTO[]" summary="Arguments of the command"/>
+		<!-- <PropertyType name="Default" type="PropertyDTO" summary="Default Argument of the command"/> -->
 	</ObjectType>
 	<ObjectWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
 		<Base name="CommandWrapper"/>

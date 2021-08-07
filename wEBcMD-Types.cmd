@@ -29,7 +29,7 @@ goto:eof
 
 :doIt
 set path=tools;%path%
-set xslt-cs=%cd%\tools\types-cs.xslt
+set xslt-cs=%cd%\tools\types.xslt
 
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%"
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1"
