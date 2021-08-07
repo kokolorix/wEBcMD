@@ -31,8 +31,8 @@ goto:eof
 set path=tools;%path%
 set xslt-cs=%cd%\tools\types-cs.xslt
 
-@REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%" 
-if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1"
-@REM echo Gespeichert in: %~dpn1.cs 
+@REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%"
+@REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1"
+if exist "%~1" Transform.exe  -xsl:"%xslt-cs%" -s:"%~1"
 goto:eof
 
