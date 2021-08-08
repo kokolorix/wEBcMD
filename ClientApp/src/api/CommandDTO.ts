@@ -1,6 +1,7 @@
 import { PropertyDTO } from "./PropertyDTO";
+import { BaseDTO } from "./BaseDTO";
 
-export interface CommandDTO {
+export class CommandDTO extends BaseDTO {
 	Response?: boolean;
 	Arguments?: PropertyDTO[];
 };

@@ -1,5 +1,6 @@
 import { PropertyDTO } from "./PropertyDTO";
+import { BaseDTO } from "./BaseDTO";
 
-export interface ObjectDTO {
+export class ObjectDTO extends BaseDTO {
 	Properties?: PropertyDTO[];
 };

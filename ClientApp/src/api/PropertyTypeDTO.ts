@@ -1,5 +1,6 @@
+import { TypeDTO } from "./TypeDTO";
 
-export interface PropertyTypeDTO {
+export class PropertyTypeDTO extends TypeDTO {
 	Name?: string;
 	DataType?: string;
 	Default?: string;

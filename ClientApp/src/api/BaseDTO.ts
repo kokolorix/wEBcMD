@@ -1,5 +1,5 @@
 
-export interface BaseDTO {
+export class BaseDTO {
 	Id?: string;
 	Type?: string;
 };

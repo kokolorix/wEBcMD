@@ -9,6 +9,7 @@ namespace wEBcMD
 		public partial CommandDTO ExecuteCommand()
 		{
 			Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
+         // I do something important here
 			return Cmd;
 		}
 	};

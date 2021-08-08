@@ -27,16 +27,56 @@
       <xsl:variable name="filePath" select="replace(base-uri(.),'.xml' ,'.cs')" />
       <xsl:message select="$filePath" />
       <xsl:result-document href="{$filePath}" format="text-def">
-           <xsl:value-of select="concat('using System;', $nl1)" />
-           <xsl:value-of select="concat('using System.Collections.Generic;', $nl2)" />
-           <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
-           <xsl:value-of select="concat('{', $nl1)" />
-           <xsl:apply-templates select="Types/ObjectType" mode="dto.cs" />
-           <xsl:apply-templates select="Types/ObjectWrapper" mode="dto.cs" />
-           <xsl:value-of select="concat('}', $nl1)" />
-           </xsl:result-document>
-           <xsl:apply-templates select="Types/ObjectWrapper" mode="wrapper.cs" />
+         <xsl:value-of select="concat('using System;', $nl1)" />
+         <xsl:value-of select="concat('using System.Collections.Generic;', $nl2)" />
+         <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
+         <xsl:value-of select="concat('{', $nl1)" />
+         <xsl:apply-templates select="Types/ObjectType" mode="dto.cs" />
+         <xsl:apply-templates select="Types/ObjectWrapper" mode="wrapper.cs" />
+         <xsl:value-of select="concat('}', $nl1)" />
+      </xsl:result-document>
+      <xsl:apply-templates select="Types/ObjectType" mode="controller.cs"/>
+      <xsl:apply-templates select="Types/ObjectWrapper" mode="impl.wrapper.cs" />
+      <xsl:apply-templates select="Types/ObjectType" mode="service.ts"/>
       <xsl:apply-templates select="Types/ObjectType" mode="dto.ts"/>
+      <xsl:apply-templates select="Types/ObjectWrapper" mode="wrapper.ts" />
+      <xsl:apply-templates select="Types/ObjectWrapper" mode="impl.wrapper.ts" />
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- The controller, if it not exist -->
+   <!--=======================================================================-->
+   <xsl:template match="ObjectType" mode="controller.cs">
+      <xsl:variable name="name" select="replace(@name, 'DTO', '')" />
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat($name, 'Controller.cs')" />
+      <!-- <xsl:message select="$fn" /> -->
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
+      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
+         <xsl:message select="concat( 'TODO: ', $filePath, ' create')" />
+      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Client-side service, if not exist -->
+   <!--=======================================================================-->
+   <xsl:template match="ObjectType" mode="service.ts">
+      <xsl:variable name="name" select="lower-case(replace(@name, 'DTO', ''))" />
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat($name, '.service.ts')" />
+      <!-- <xsl:message select="$fn" /> -->
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'api', $fn), $d)"/>
+      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
+         <xsl:message select="concat( 'TODO: ', $filePath, ' create')" />
+      </xsl:if>
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript DTOs -->
@@ -74,11 +114,95 @@
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
+   <!-- TypeScript wrappers -->
+   <!--=======================================================================-->
+   <xsl:template match="ObjectWrapper" mode="wrapper.ts">
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat(@name, 'Wrapper.ts')" />
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'api', $fn), $d)"/>
+      <xsl:message select="concat($filePath, ' generated')" />
+      <xsl:result-document href="{$filePath}" format="text-def">
+         <!-- Collect all DTO types without [] -->
+         <xsl:variable name="property-types" as="xs:string *">
+            <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
+               <xsl:sequence select="replace(@type, '\[\]', '')"/>
+            </xsl:for-each>
+         </xsl:variable>
+         <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
+         <!-- All necessary imports, each only once -->
+         <xsl:for-each select="distinct-values(($property-types, $base-type))" >
+            <!-- <xsl:message select="."/> -->
+            <xsl:variable name="type" as="xs:string" select="."/>
+            <xsl:if test="$type">
+               <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
+            </xsl:if>
+         </xsl:for-each>
+         <xsl:value-of select="concat('import { ', @name, 'WrapperImpl } from &quot;../impl/', @name, 'WrapperImpl&quot;;', $nl1)"/>
+         <!--  -->
+         <xsl:value-of select="$nl1"/>
+         <xsl:value-of select="concat('export class ', @name, 'Wrapper extends ', @name, 'WrapperImpl {', $nl1)"/>
+         <xsl:apply-templates select="PropertyType" mode="wrapper.ts"/>
+         <xsl:value-of select="concat('', '};')"/>
+      </xsl:result-document>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript wrappers -->
+   <!--=======================================================================-->
+   <xsl:template match="ObjectWrapper" mode="impl.wrapper.ts">
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat(@name, 'WrapperImpl.ts')" />
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'impl', $fn), $d)"/>
+      <xsl:if test="not(unparsed-text-available($filePath))">
+         <xsl:message select="concat($filePath, ' generated')" />
+         <xsl:result-document href="{$filePath}" format="text-def">
+            <!-- Collect all DTO types without [] -->
+            <xsl:variable name="property-types" as="xs:string *">
+               <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
+                  <xsl:sequence select="replace(@type, '\[\]', '')"/>
+               </xsl:for-each>
+            </xsl:variable>
+            <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
+            <!-- All necessary imports, each only once -->
+            <xsl:for-each select="distinct-values(($property-types))" >
+               <!-- <xsl:message select="."/> -->
+               <xsl:variable name="type" as="xs:string" select="."/>
+               <xsl:if test="$type">
+                  <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
+               </xsl:if>
+            </xsl:for-each>
+            <xsl:value-of select="concat('import { ', @name, 'Wrapper } from &quot;../api/', @name, 'Wrapper&quot;;', $nl1)"/>
+            <!--  -->
+            <xsl:value-of select="$nl1"/>
+            <xsl:value-of select="concat('export class ', @name, 'WrapperImpl', ts:extends(.), ' {', $nl1)"/>
+            <xsl:value-of select="concat('', '};')"/>
+         </xsl:result-document>
+      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
    <!-- TypeScript Properties -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="dto.ts">
       <xsl:value-of select="concat($t1, @name, '?: ', ts:data-type(.))"/>
       <xsl:value-of select="concat(';', $nl1)"/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript Properties -->
+   <!--=======================================================================-->
+   <xsl:template match="PropertyType" mode="wrapper.ts">
+      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', ts:data-type(.), '{', $nl1)"/>
+      <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/>
+      <xsl:value-of select="concat($t1, '}', $nl1)"/>
+      <xsl:value-of select="concat($t1, 'set ', @name, '( ', wc:camelCaseWord(@name), ' : ', ts:data-type(.), ') {', $nl1)"/>
+      <xsl:value-of select="concat($t2, ';', $nl1)"/>
+      <xsl:value-of select="concat($t1, '}', $nl1)"/>
    </xsl:template>
    <!--=======================================================================-->
    <!--process an ObjectType node -->
@@ -87,7 +211,7 @@
       <xsl:variable name="category" select="@category" />
       <xsl:variable name="name" select="@name" />
       <xsl:variable name="id" select="@id" />
-      <xsl:call-template name="Summary">
+      <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
       <xsl:choose>
@@ -120,7 +244,7 @@
    <!--=======================================================================-->
    <!--process an ObjectWrapper node -->
    <!--=======================================================================-->
-   <xsl:template match="ObjectWrapper" mode="dto.cs">
+   <xsl:template match="ObjectWrapper" mode="wrapper.cs">
       <xsl:variable name="category" select="@category" />
       <xsl:variable name="name" select="@name" />
       <xsl:variable name="id" select="@id" />
@@ -136,7 +260,7 @@
               </xsl:choose> -->
         </xsl:variable>
       <!--  -->
-      <xsl:call-template name="Summary">
+      <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
       <xsl:value-of select="concat($t1, 'public partial class ', $name, ' : ', $base)" />
@@ -162,30 +286,19 @@
    <!--=======================================================================-->
    <!--create the Impl, if not exists -->
    <!--=======================================================================-->
-   <xsl:template match="ObjectWrapper" mode="wrapper.cs">
+   <xsl:template match="ObjectWrapper" mode="impl.wrapper.cs">
       <xsl:variable name="name" select="@name" />
       <!-- file name -->
       <xsl:variable name="fn" select="concat($name, '.cs')" />
-      <xsl:message select="$fn" />
-      <!-- file name pattern -->
-      <xsl:variable name="fnp" select="tokenize(base-uri(.),'/')[last()]"/>
-      <xsl:message select="$fnp" />
-      <!-- directory name -->
-      <xsl:variable name="dn" select="'/Impl/'" />
-      <!-- directory name pattern -->
-      <xsl:message select="$dn" />
-      <xsl:variable name="dnp" select="concat('/',tokenize(base-uri(.),'/')[last() - 1], '/')"/>
-      <!-- path to impl file -->
-      <xsl:message select="$dnp" />
-      <xsl:variable name="uri" select="base-uri(.)" />
+      <!-- <xsl:message select="$fn" /> -->
       <!-- delimiter -->
       <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <!-- path tokens -->
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
       <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Impl', $fn), $d)"/>
-      <xsl:if test="not(doc-available($filePath))">
-         <xsl:message select="$filePath" />
+      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
+         <xsl:message select="concat( $filePath, ' created')" />
          <xsl:result-document href="{$filePath}" format="text-def">
             <xsl:variable name="base" select="./Base/@name" />
             <xsl:variable name="dto" select="./DTO/@name"/>
@@ -226,7 +339,7 @@
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="dto.cs">
       <xsl:variable name="name" select="@name" />
-      <xsl:call-template name="Summary">
+      <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
       <xsl:value-of select="concat($t2, 'public virtual ', cs:data-type(.), ' ', $name)" />
@@ -254,7 +367,7 @@
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="wrapper.cs">
       <xsl:variable name="name" select="@name" />
-      <xsl:call-template name="Summary">
+      <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
       <xsl:value-of select="concat($t2, 'public ', cs:data-type(.), ' ', $name, ' {', $nl1)" />
@@ -265,7 +378,7 @@
    <!--=======================================================================-->
    <!--process the Summary node or Attribute -->
    <!--=======================================================================-->
-   <xsl:template name="Summary">
+   <xsl:template name="Summary.cs">
       <xsl:param name="indent" />
       <xsl:choose>
          <xsl:when test="./Summary">
@@ -319,8 +432,8 @@
       <xsl:variable name="isList" as="xs:boolean" select="ends-with($pt/@type, '[]')"/>
       <xsl:variable name="type" select="replace($pt/@type, '\[\]', '')" />
       <!-- <xsl:if test="ends-with($pt/@type, '[]')">
-         <xsl:text></xsl:text>
-      </xsl:if> -->
+           <xsl:text></xsl:text>
+           </xsl:if> -->
       <xsl:variable name="cs-type" as="xs:string">
          <xsl:choose>
             <xsl:when test="$type='UuId'">
@@ -353,7 +466,7 @@
    <!-- determines the correct delimiter for the expanded path -->
    <!--=======================================================================-->
    <xsl:function name="wc:path-delimiter" as="xs:string">
-   <xsl:param name="node" as="node()"/>
+      <xsl:param name="node" as="node()"/>
       <xsl:choose>
          <xsl:when test="contains(base-uri($node), ':/')">/</xsl:when>
          <xsl:otherwise>\\</xsl:otherwise>

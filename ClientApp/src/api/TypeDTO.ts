@@ -1,3 +1,4 @@
+import { BaseDTO } from "./BaseDTO";
 
-export interface TypeDTO {
+export class TypeDTO extends BaseDTO {
 };

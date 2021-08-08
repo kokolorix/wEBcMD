@@ -50,8 +50,8 @@
          "label": "xslt: Saxon Transform (New)",
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${file}",
-         // "xmlSource": "${workspaceFolder}/Types/CommandTypes.xml",
-         "xmlSource": "${workspaceFolder}/Types/BaseTypes.xml",
+         "xmlSource": "${workspaceFolder}/Types/CommandTypes.xml",
+         // "xmlSource": "${workspaceFolder}/Types/BaseTypes.xml",
          "resultPath": "${workspaceFolder}/result1.xml",
          "group": {
             "kind": "build",

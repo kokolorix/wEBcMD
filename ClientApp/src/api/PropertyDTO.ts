@@ -1,5 +1,5 @@
 
-export interface PropertyDTO {
+export class PropertyDTO {
 	Name?: string;
 	Value?: string;
 };
