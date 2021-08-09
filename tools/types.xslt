@@ -40,7 +40,7 @@
       <xsl:apply-templates select="Types/ObjectType" mode="service.ts"/>
       <xsl:apply-templates select="Types/ObjectType" mode="dto.ts"/>
       <xsl:apply-templates select="Types/ObjectWrapper" mode="wrapper.ts" />
-      <xsl:apply-templates select="Types/ObjectWrapper" mode="impl.wrapper.ts" />
+      <xsl:apply-templates select="Types/ObjectWrapper" mode="access.ts" />
    </xsl:template>
    <!--=======================================================================-->
    <!-- The controller, if it not exist -->
@@ -115,46 +115,11 @@
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript wrappers -->
+
    <!--=======================================================================-->
    <xsl:template match="ObjectWrapper" mode="wrapper.ts">
       <!-- file name -->
       <xsl:variable name="fn" select="concat(@name, 'Wrapper.ts')" />
-      <!-- delimiter -->
-      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
-      <!-- path tokens -->
-      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'api', $fn), $d)"/>
-      <xsl:message select="concat($filePath, ' generated')" />
-      <xsl:result-document href="{$filePath}" format="text-def">
-         <!-- Collect all DTO types without [] -->
-         <xsl:variable name="property-types" as="xs:string *">
-            <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
-               <xsl:sequence select="replace(@type, '\[\]', '')"/>
-            </xsl:for-each>
-         </xsl:variable>
-         <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
-         <!-- All necessary imports, each only once -->
-         <xsl:for-each select="distinct-values(($property-types, $base-type))" >
-            <!-- <xsl:message select="."/> -->
-            <xsl:variable name="type" as="xs:string" select="."/>
-            <xsl:if test="$type">
-               <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
-            </xsl:if>
-         </xsl:for-each>
-         <xsl:value-of select="concat('import { ', @name, 'WrapperImpl } from &quot;../impl/', @name, 'WrapperImpl&quot;;', $nl1)"/>
-         <!--  -->
-         <xsl:value-of select="$nl1"/>
-         <xsl:value-of select="concat('export class ', @name, 'Wrapper extends ', @name, 'WrapperImpl {', $nl1)"/>
-         <xsl:apply-templates select="PropertyType" mode="wrapper.ts"/>
-         <xsl:value-of select="concat('', '};')"/>
-      </xsl:result-document>
-   </xsl:template>
-   <!--=======================================================================-->
-   <!-- TypeScript wrappers -->
-   <!--=======================================================================-->
-   <xsl:template match="ObjectWrapper" mode="impl.wrapper.ts">
-      <!-- file name -->
-      <xsl:variable name="fn" select="concat(@name, 'WrapperImpl.ts')" />
       <!-- delimiter -->
       <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <!-- path tokens -->
@@ -178,13 +143,49 @@
                   <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
                </xsl:if>
             </xsl:for-each>
-            <xsl:value-of select="concat('import { ', @name, 'Wrapper } from &quot;../api/', @name, 'Wrapper&quot;;', $nl1)"/>
+            <xsl:value-of select="concat('import { ', @name, 'Access } from &quot;../api/', @name, 'Access&quot;;', $nl1)"/>
             <!--  -->
             <xsl:value-of select="$nl1"/>
-            <xsl:value-of select="concat('export class ', @name, 'WrapperImpl', ts:extends(.), ' {', $nl1)"/>
+            <xsl:value-of select="concat('export class ', @name, 'Wrapper extends ', @name, 'Access {', $nl1)"/>
             <xsl:value-of select="concat('', '};')"/>
          </xsl:result-document>
       </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript wrappers -->
+   <!--=======================================================================-->
+   <xsl:template match="ObjectWrapper" mode="access.ts">
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat(@name, 'Access.ts')" />
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'api', $fn), $d)"/>
+      <xsl:message select="concat($filePath, ' generated')" />
+      <xsl:result-document href="{$filePath}" format="text-def">
+         <!-- Collect all DTO types without [] -->
+         <xsl:variable name="property-types" as="xs:string *">
+            <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
+               <xsl:sequence select="replace(@type, '\[\]', '')"/>
+            </xsl:for-each>
+         </xsl:variable>
+         <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
+         <!-- All necessary imports, each only once -->
+         <xsl:for-each select="distinct-values($property-types)" >
+            <!-- <xsl:message select="."/> -->
+            <xsl:variable name="type" as="xs:string" select="."/>
+            <xsl:if test="$type">
+               <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
+            </xsl:if>
+         </xsl:for-each>
+         <xsl:value-of select="concat('import { ', $base-type, ' } from &quot;../impl/', $base-type, '&quot;;', $nl1)"/>
+         <!--  -->
+         <xsl:value-of select="$nl1"/>
+         <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl1)"/>
+         <xsl:apply-templates select="PropertyType" mode="access.ts"/>
+         <xsl:value-of select="concat('', '};')"/>
+      </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript Properties -->
@@ -196,7 +197,7 @@
    <!--=======================================================================-->
    <!-- TypeScript Properties -->
    <!--=======================================================================-->
-   <xsl:template match="PropertyType" mode="wrapper.ts">
+   <xsl:template match="PropertyType" mode="access.ts">
       <xsl:value-of select="concat($t1, 'get ', @name, '() : ', ts:data-type(.), '{', $nl1)"/>
       <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/>
       <xsl:value-of select="concat($t1, '}', $nl1)"/>
