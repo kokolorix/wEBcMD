@@ -115,7 +115,6 @@
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript wrappers -->
-
    <!--=======================================================================-->
    <xsl:template match="ObjectWrapper" mode="wrapper.ts">
       <!-- file name -->
@@ -144,9 +143,11 @@
                </xsl:if>
             </xsl:for-each>
             <xsl:value-of select="concat('import { ', @name, 'Access } from &quot;../api/', @name, 'Access&quot;;', $nl1)"/>
+            <xsl:value-of select="concat('import { CommandDTO } from &quot;../api/CommandDTO&quot;;', $nl1)"/>
             <!--  -->
             <xsl:value-of select="$nl1"/>
             <xsl:value-of select="concat('export class ', @name, 'Wrapper extends ', @name, 'Access {', $nl1)"/>
+            <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO){super(dto)}}')"/>
             <xsl:value-of select="concat('', '};')"/>
          </xsl:result-document>
       </xsl:if>
@@ -180,10 +181,12 @@
             </xsl:if>
          </xsl:for-each>
          <xsl:value-of select="concat('import { ', $base-type, ' } from &quot;../impl/', $base-type, '&quot;;', $nl1)"/>
+         <xsl:value-of select="concat('import { CommandDTO } from &quot;./CommandDTO&quot;;', $nl1)"/>
          <!--  -->
          <xsl:value-of select="$nl1"/>
          <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl1)"/>
          <xsl:apply-templates select="PropertyType" mode="access.ts"/>
+         <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO){super(dto)}}')"/>
          <xsl:value-of select="concat('', '};')"/>
       </xsl:result-document>
    </xsl:template>
@@ -198,11 +201,29 @@
    <!-- TypeScript Properties -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="access.ts">
-      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', ts:data-type(.), '{', $nl1)"/>
-      <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/>
+      <xsl:variable name="dt" as="xs:string" select="ts:data-type(.)"/>
+      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $dt, '{', $nl1)"/>
+      <xsl:choose>
+         <xsl:when test="$dt='boolean'">
+            <xsl:value-of select="concat($t2, 'return Boolean(JSON.parse(this.getArgument($quot;', @name, '£quot;)));', $nl1)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="concat($t2, 'return this.getArgument($quot;', @name, '£quot;);', $nl1)"/>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!-- <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/> -->
       <xsl:value-of select="concat($t1, '}', $nl1)"/>
-      <xsl:value-of select="concat($t1, 'set ', @name, '( ', wc:camelCaseWord(@name), ' : ', ts:data-type(.), ') {', $nl1)"/>
+      <xsl:value-of select="concat($t1, 'set ', @name, '( val : ', $dt, ') {', $nl1)"/>
       <xsl:value-of select="concat($t2, ';', $nl1)"/>
+      <xsl:choose>
+         <xsl:when test="$dt='boolean'">
+            <xsl:value-of select="concat($t2, 'return Boolean(JSON.parse(this.getArgument($quot;', @name, '£quot;, $val.toString())));', $nl1)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="concat($t2, 'return this.setArgument($quot;', @name, '£quot;, val);', $nl1)"/>
+         </xsl:otherwise>
+      </xsl:choose>
+
       <xsl:value-of select="concat($t1, '}', $nl1)"/>
    </xsl:template>
    <!--=======================================================================-->

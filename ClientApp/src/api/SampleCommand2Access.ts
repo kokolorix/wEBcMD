@@ -1,16 +1,19 @@
 import { CommandWrapper } from "../impl/CommandWrapper";
+import { CommandDTO } from "./CommandDTO";
 
 export class SampleCommand2Access  extends CommandWrapper {
 	get FirstOne() : string{
-		return undefined;
+		return this.getArgument($quot;FirstOne£quot;);
 	}
-	set FirstOne( firstOne : string) {
+	set FirstOne( val : string) {
 		;
+		return this.setArgument($quot;FirstOne£quot;, val);
 	}
 	get SecondOne() : boolean{
-		return undefined;
+		return Boolean(JSON.parse(this.getArgument($quot;SecondOne£quot;)));
 	}
-	set SecondOne( secondOne : boolean) {
+	set SecondOne( val : boolean) {
 		;
+		return Boolean(JSON.parse(this.getArgument($quot;SecondOne£quot;, $val.toString())));
 	}
-};
+	constructor(dto: CommandDTO){super(dto)}}};
