@@ -1,19 +1,38 @@
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
+/**
+ * This is the sample caommand. He has two Parameters
+ * and a multiline summary.
+ * ``` typescript
+ * CommandDTO cmd;
+ * if(SampleCommand.IsForMe(dto)){
+ *    let sample = new SampleCommand(cmd);
+ *    console.log(sample.FirstOne);
+ * }
+ * ```
+ */
 export class SampleCommandAccess  extends CommandWrapper {
+
+	constructor(dto: CommandDTO){super(dto)}
+
+	/**
+	 * The FirstOne is a string parameter
+	 * and has a multiline comment
+	 */
 	get FirstOne() : string{
-		return this.getArgument($quot;FirstOne£quot;);
+		return this.getArgument("FirstOne");
 	}
 	set FirstOne( val : string) {
-		;
-		return this.setArgument($quot;FirstOne£quot;, val);
+		this.setArgument("FirstOne", val);
 	}
+
+	/** The SecondOne is a boolean parameter */
 	get SecondOne() : boolean{
-		return Boolean(JSON.parse(this.getArgument($quot;SecondOne£quot;)));
+		return Boolean(JSON.parse(this.getArgument("SecondOne")));
 	}
 	set SecondOne( val : boolean) {
-		;
-		return Boolean(JSON.parse(this.getArgument($quot;SecondOne£quot;, $val.toString())));
+		this.setArgument("SecondOne", val.toString());
 	}
-	constructor(dto: CommandDTO){super(dto)}}};
+
+};

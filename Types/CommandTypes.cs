@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace wEBcMD
 {
 	/// <summary>
-	/// Base command object. Has all arguments in generig list, can be derived by concrete command types
+	/// Base command object. Has all arguments in generig list, can be wrapped by concrete command wrappers
 	/// </summary>
 	public class CommandDTO : BaseDTO
 	{
@@ -16,7 +16,19 @@ namespace wEBcMD
 		public virtual List<PropertyDTO> Arguments { get; set; }
 	};
 
-	/// <summary>SampleCommand</summary>
+	/// <summary>
+	/// 
+	/// This is the sample caommand. He has two Parameters
+	/// and a multiline summary.
+	/// ``` typescript
+	/// CommandDTO cmd;
+	/// if(SampleCommand.IsForMe(dto)){
+	/// let sample = new SampleCommand(cmd);
+	/// console.log(sample.FirstOne);
+	/// }
+	/// ```
+	/// 
+	/// </summary>
 	public partial class SampleCommand : CommandWrapper
 	{
 		/// <summary>Constructor of SampleCommand</summary>
@@ -29,12 +41,17 @@ namespace wEBcMD
 		public static CommandDTO ExecuteCommand(CommandDTO dto) => new SampleCommand(dto).ExecuteCommand();
 		/// <summary>Execute the command</summary>
 		public partial CommandDTO ExecuteCommand();
-		/// <summary>FirstOne</summary>
+		/// <summary>
+		/// 
+		/// The FirstOne is a string parameter
+		/// and has a multiline comment
+		/// 
+		/// </summary>
 		public String FirstOne {
 			get => this.String["FirstOne"];
 			set => this.String["FirstOne"] = value;
 		}
-		/// <summary>SecondOne</summary>
+		/// <summary>The SecondOne is a boolean parameter</summary>
 		public Boolean SecondOne {
 			get => this.Boolean["SecondOne"];
 			set => this.Boolean["SecondOne"] = value;
