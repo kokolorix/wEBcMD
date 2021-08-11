@@ -189,6 +189,13 @@
          <xsl:call-template name="Summary.ts"/>
          <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl2)"/>
          <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO){super(dto)}', $nl2)"/>
+         <!--  -->
+         <xsl:value-of select="concat($t2, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
+         <xsl:value-of select="concat($t2, 'static get TypeId() :string { return &quot;', @id, '&quot;; }', $nl2)" />
+         <!--  -->
+         <xsl:value-of select="concat($t2, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
+         <xsl:value-of select="concat($t2, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Access.TypeId; }', $nl2)" />
+         <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
          <xsl:apply-templates select="PropertyType" mode="access.ts"/>
          <xsl:value-of select="concat('', '};')"/>
       </xsl:result-document>
