@@ -1,3 +1,4 @@
+import { Guid} from "guid-typescript";
 import { SampleCommand2Access } from "../api/SampleCommand2Access";
 import { CommandDTO } from "../api/CommandDTO";
 

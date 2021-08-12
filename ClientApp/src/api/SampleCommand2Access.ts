@@ -1,3 +1,4 @@
+import { Guid} from "guid-typescript";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -6,11 +7,11 @@ export class SampleCommand2Access  extends CommandWrapper {
 
 	constructor(dto: CommandDTO){super(dto)}
 
-		/** cb0ab4ab-9aeb-4b42-ac2d-152a4555370a is the Id of SampleCommand2 type. */
-		static get TypeId() :string { return "cb0ab4ab-9aeb-4b42-ac2d-152a4555370a"; }
+	/** cb0ab4ab-9aeb-4b42-ac2d-152a4555370a is the Id of SampleCommand2 type. */
+	static get TypeId(): Guid { return Guid.parse("cb0ab4ab-9aeb-4b42-ac2d-152a4555370a"); }
 
-		/** Checks if the type of the DTO fits */
-		static IsForMe(dto: CommandDTO) { return dto.Type === SampleCommand2Access.TypeId; }
+	/** Checks if the type of the DTO fits */
+	static IsForMe(dto: CommandDTO) { return dto.Type === SampleCommand2Access.TypeId; }
 
 	/** FirstOne */
 	get FirstOne() : string{

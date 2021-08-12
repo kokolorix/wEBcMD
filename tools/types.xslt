@@ -90,29 +90,36 @@
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'ClientApp', 'src', 'api', $fn), $d)"/>
       <xsl:message select="$filePath" />
-      <xsl:result-document href="{$filePath}" format="text-def">
-         <!-- Collect all DTO types without [] -->
-         <xsl:variable name="property-types" as="xs:string *">
-            <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
-               <xsl:sequence select="replace(@type, '\[\]', '')"/>
+      <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
+      <!-- <xsl:if test="not(unparsed-text-available($filePath)) or $base-type"> -->
+         <xsl:result-document href="{$filePath}" format="text-def">
+            <!-- Collect all DTO types without [] -->
+            <xsl:variable name="property-types" as="xs:string *">
+               <xsl:for-each select="PropertyType[matches(@type, '.+DTO(\[\])?')]">
+                  <xsl:sequence select="replace(@type, '\[\]', '')"/>
+               </xsl:for-each>
+            </xsl:variable>
+            <!-- All necessary imports, each only once -->
+            <xsl:value-of select="concat('import { Guid} from &quot;guid-typescript&quot;;', $nl1)"/>
+            <xsl:for-each select="distinct-values(($property-types, $base-type))" >
+               <!-- <xsl:message select="."/> -->
+               <xsl:variable name="type" as="xs:string" select="."/>
+               <xsl:if test="$type">
+                  <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
+               </xsl:if>
             </xsl:for-each>
-         </xsl:variable>
-         <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
-         <!-- All necessary imports, each only once -->
-         <xsl:for-each select="distinct-values(($property-types, $base-type))" >
-            <!-- <xsl:message select="."/> -->
-            <xsl:variable name="type" as="xs:string" select="."/>
-            <xsl:if test="$type">
-               <xsl:value-of select="concat('import { ', $type, ' } from &quot;./', $type, '&quot;;', $nl1)"/>
-            </xsl:if>
-         </xsl:for-each>
-         <!--  -->
-         <xsl:value-of select="$nl1"/>
-         <xsl:call-template name="Summary.ts"/>
-         <xsl:value-of select="concat('export class ', @name, ts:extends(.), ' {', $nl1)"/>
-         <xsl:apply-templates select="PropertyType" mode="dto.ts"/>
-         <xsl:value-of select="concat('', '};')"/>
-      </xsl:result-document>
+            <!--  -->
+            <xsl:value-of select="$nl1"/>
+            <xsl:call-template name="Summary.ts"/>
+            <xsl:value-of select="concat('export class ', @name, ts:extends(.), ' {', $nl2)"/>
+            <!--  -->
+            <xsl:value-of select="concat($t1, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
+            <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
+            <!--  -->
+            <xsl:apply-templates select="PropertyType" mode="dto.ts"/>
+            <xsl:value-of select="concat('', '};')"/>
+         </xsl:result-document>
+      <!-- </xsl:if> -->
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript wrappers -->
@@ -136,6 +143,7 @@
             </xsl:variable>
             <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
             <!-- All necessary imports, each only once -->
+            <xsl:value-of select="concat('import { Guid} from &quot;guid-typescript&quot;;', $nl1)"/>
             <xsl:for-each select="distinct-values(($property-types))" >
                <!-- <xsl:message select="."/> -->
                <xsl:variable name="type" as="xs:string" select="."/>
@@ -175,6 +183,7 @@
          </xsl:variable>
          <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
          <!-- All necessary imports, each only once -->
+         <xsl:value-of select="concat('import { Guid} from &quot;guid-typescript&quot;;', $nl1)"/>
          <xsl:for-each select="distinct-values($property-types)" >
             <!-- <xsl:message select="."/> -->
             <xsl:variable name="type" as="xs:string" select="."/>
@@ -190,11 +199,11 @@
          <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl2)"/>
          <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO){super(dto)}', $nl2)"/>
          <!--  -->
-         <xsl:value-of select="concat($t2, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
-         <xsl:value-of select="concat($t2, 'static get TypeId() :string { return &quot;', @id, '&quot;; }', $nl2)" />
+         <xsl:value-of select="concat($t1, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
+         <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
          <!--  -->
-         <xsl:value-of select="concat($t2, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
-         <xsl:value-of select="concat($t2, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Access.TypeId; }', $nl2)" />
+         <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
+         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Access.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
          <xsl:apply-templates select="PropertyType" mode="access.ts"/>
          <xsl:value-of select="concat('', '};')"/>
@@ -480,6 +489,7 @@
       <xsl:choose>
          <xsl:when test="$pt/@type='Boolean'">boolean</xsl:when>
          <xsl:when test="$pt/@type='Int32'">number</xsl:when>
+         <xsl:when test="$pt/@type='UuId'">Guid</xsl:when>
          <xsl:when test="matches($pt/@type, 'DTO(\[\])?$')"><xsl:value-of select="$pt/@type"/></xsl:when>
          <xsl:otherwise>string</xsl:otherwise>
       </xsl:choose>

@@ -1,5 +1,13 @@
+import { Guid} from "guid-typescript";
 
+/** BaseDTO */
 export class BaseDTO {
-	Id?: string;
-	Type?: string;
+
+	/** 1a81bc99-28c2-4c03-ac5c-a1de4967cc36 is the Id of BaseDTO type. */
+	static get TypeId(): Guid { return Guid.parse("1a81bc99-28c2-4c03-ac5c-a1de4967cc36"); }
+
+	/** Id */
+	Id?: Guid;
+	/** Type */
+	Type?: Guid;
 };

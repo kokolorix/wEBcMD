@@ -4,26 +4,24 @@
    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
    "version": "0.2.0",
    "configurations": [
-   {
-      "name": "Launch Edge",
-      "request": "launch",
-      "type": "pwa-msedge",
-      "url": "https://localhost:5001/swagger",
-      "webRoot": "${workspaceFolder}"
-   },
+      {
+         "name": "Launch Edge",
+         "request": "launch",
+         "type": "pwa-msedge",
+         "url": "https://localhost:5001",
+         "webRoot": "${workspaceFolder}/ClientApp"
+      },
       {
          "type": "browser-preview",
          "request": "attach",
          "name": "Browser Preview: Attach"
       },
-
-
-   {
-      "type": "browser-preview",
-      "request": "launch",
-      "name": "Browser Preview: Swagger",
-      "url": "https://localhost:5001/swagger"
-   },
+      {
+         "type": "browser-preview",
+         "request": "launch",
+         "name": "Browser Preview: Swagger",
+         "url": "https://localhost:5001/swagger"
+      },
       {
          "name": ".NET Core Launch (web)",
          "type": "coreclr",
