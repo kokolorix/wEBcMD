@@ -36,7 +36,7 @@ namespace wEBcMD.Controllers
       [Route("{Id:Guid}")]
       public ObjectDTO GetObject(Guid Id)
       {
-         Log.Trace(_logger);
+         Log.Trace(_logger, Id.ToString());
          throw new NotImplementedException();
       }
 
@@ -48,7 +48,7 @@ namespace wEBcMD.Controllers
       [HttpPost]
       public ObjectDTO WriteObject(ObjectDTO obj)
       {
-         Log.Trace(_logger);
+         Log.Trace(_logger, obj.ToString());
          throw new NotImplementedException();
       }
 
