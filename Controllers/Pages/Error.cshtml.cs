@@ -15,13 +15,14 @@ namespace wEBcMD.Pages
    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
    public class ErrorModel : PageModel
    {
+      /*
       private readonly ILogger<ErrorModel> _logger;
       /// <summary>
       /// Initialize the logger
       /// </summary>
       /// <param name="logger"></param>
       public ErrorModel(ILogger<ErrorModel> logger) => _logger = logger;
-
+      */
       /// <summary>
       ///
       /// </summary>
