@@ -79,6 +79,5 @@
 		<xs:attribute name="use" type="UseT" use="optional"/>
 		<xs:attribute name="default" type="xs:string" use="optional"/>
 		<xs:attribute name="summary" type="xs:string" use="optional"/>
-		<xs:attribute name="fromList" type="xs:string" use="optional"/>
 	</xs:complexType>
 </xs:schema>

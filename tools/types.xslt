@@ -157,7 +157,7 @@
             <xsl:value-of select="$nl1"/>
             <xsl:call-template name="Summary.ts"/>
             <xsl:value-of select="concat('export class ', @name, ' extends ', @name, 'Access {', $nl2)"/>
-            <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO) { super(dto) }', $nl2)"/>
+            <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Access.TypeId)}', $nl2)"/>
             <xsl:value-of select="concat('', '};')"/>
          </xsl:result-document>
       <!-- </xsl:if> -->
@@ -197,13 +197,13 @@
          <xsl:value-of select="$nl1"/>
          <xsl:call-template name="Summary.ts"/>
          <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl2)"/>
-         <xsl:value-of select="concat($t1, 'constructor(dto: CommandDTO){super(dto)}', $nl2)"/>
+         <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Access.TypeId)}', $nl2)"/>
          <!--  -->
          <xsl:value-of select="concat($t1, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
          <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
          <!--  -->
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
-         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Access.TypeId; }', $nl2)" />
+         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Access.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
          <xsl:apply-templates select="PropertyType" mode="access.ts"/>
          <xsl:value-of select="concat('', '};')"/>
@@ -216,7 +216,10 @@
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
-      <xsl:value-of select="concat($t1, @name, '?: ', ts:data-type(.))"/>
+      <xsl:value-of select="concat($t1, @name, '?: ', ts:dto-data-type(.))"/>
+      <xsl:if test="@default">
+         <xsl:value-of select="concat(' = ', @default)"/>
+      </xsl:if>
       <xsl:value-of select="concat(';', $nl1)"/>
    </xsl:template>
    <!--=======================================================================-->
@@ -226,7 +229,7 @@
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
-      <xsl:variable name="dt" as="xs:string" select="ts:data-type(.)"/>
+      <xsl:variable name="dt" as="xs:string" select="ts:wrapper-data-type(.)"/>
       <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $dt, '{', $nl1)"/>
       <xsl:choose>
          <xsl:when test="$dt='boolean'">
@@ -388,23 +391,18 @@
       <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
-      <xsl:value-of select="concat($t2, 'public virtual ', cs:data-type(.), ' ', $name)" />
-      <xsl:choose>
-         <xsl:when test="@fromList">
-            <xsl:value-of select="concat(' {', $nl1)" />
-            <xsl:value-of select="concat($t3, 'get { return ', @type, 'FromPropertyList( this.', @fromList, ', &quot;', @name, '&quot; ); }', $nl1)" />
-            <xsl:value-of select="concat($t3, 'set { ', @type, 'ToPropertyList( this.', @fromList, ', &quot;', @name, '&quot;, value ); }', $nl1)" />
-            <!-- <xsl:value-of select="concat($t4, 'get =&gt; this.', @fromList, '.Find(a =&gt; a.Name==&quot;', @name, '&quot;)?.Value;', $nl1)" />
-                 <xsl:value-of select="concat($t4, 'set {', $nl1)" />
-                 <xsl:value-of select="concat($t4, '}', $nl1)" /> -->
-            <xsl:value-of select="concat($t2, '}')" />
-         </xsl:when>
-         <xsl:otherwise>
-            <xsl:value-of select="concat(' { get; set; }', '')" />
-         </xsl:otherwise>
-      </xsl:choose>
+      <xsl:variable name="dt" as="xs:string" select="cs:data-type(.)"/>
+      <xsl:value-of select="concat($t2, 'public virtual ', $dt)" />
+      <xsl:value-of select="concat(' ', $name, ' { get; set; }')" />
       <xsl:if test="@default">
-         <xsl:value-of select="concat(' = ', @default, ';')" />
+         <xsl:choose>
+            <xsl:when test="starts-with($dt, 'List')">
+               <xsl:value-of select="concat(' = new ', @dt, '(){', '};')" />
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="concat(' = ', @default, ';')" />
+            </xsl:otherwise>
+         </xsl:choose>
       </xsl:if>
       <xsl:value-of select="concat($nl1, '')" />
    </xsl:template>
@@ -484,12 +482,22 @@
    <!--=======================================================================-->
    <!-- Evaluate the datatype for TypeScript -->
    <!--=======================================================================-->
-   <xsl:function name="ts:data-type">
+   <xsl:function name="ts:wrapper-data-type">
       <xsl:param name="pt" as="node()"/>
       <xsl:choose>
          <xsl:when test="$pt/@type='Boolean'">boolean</xsl:when>
          <xsl:when test="$pt/@type='Int32'">number</xsl:when>
          <xsl:when test="$pt/@type='UuId'">Guid</xsl:when>
+         <xsl:when test="matches($pt/@type, 'DTO(\[\])?$')"><xsl:value-of select="$pt/@type"/></xsl:when>
+         <xsl:otherwise>string</xsl:otherwise>
+      </xsl:choose>
+   </xsl:function>
+   <xsl:function name="ts:dto-data-type">
+      <xsl:param name="pt" as="node()"/>
+      <xsl:choose>
+         <xsl:when test="$pt/@type='Boolean'">boolean</xsl:when>
+         <xsl:when test="$pt/@type='Int32'">number</xsl:when>
+         <!-- <xsl:when test="$pt/@type='UuId'">Guid</xsl:when> -->
          <xsl:when test="matches($pt/@type, 'DTO(\[\])?$')"><xsl:value-of select="$pt/@type"/></xsl:when>
          <xsl:otherwise>string</xsl:otherwise>
       </xsl:choose>

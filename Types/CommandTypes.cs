@@ -13,7 +13,7 @@ namespace wEBcMD
 		/// <summary>Indicates if this is the answer</summary>
 		public virtual Boolean Response { get; set; } = false;
 		/// <summary>Arguments of the command</summary>
-		public virtual List<PropertyDTO> Arguments { get; set; }
+		public virtual List<PropertyDTO> Arguments { get; set; } = new (){};
 	};
 
 	/// <summary>

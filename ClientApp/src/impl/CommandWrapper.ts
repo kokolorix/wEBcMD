@@ -5,12 +5,12 @@ import { PropertyDTO } from "src/api/PropertyDTO";
 type CommandWrapperFactory = (dto: CommandDTO) => CommandWrapper;
 export class CommandWrapper {
    private _dto: CommandDTO;
-   constructor(dto: CommandDTO){
+   constructor(dto: CommandDTO, type?: Guid){
       this._dto = dto ? dto : new CommandDTO();
       if(!this._dto.Type)
-         this._dto.Type = CommandDTO.TypeId;
+         this._dto.Type = type ? type.toString() : CommandDTO.TypeId.toString();
       if(!this._dto.Id)
-         this._dto.Id = Guid.create();
+         this._dto.Id = Guid.create().toString();
    }
    public get DTO(): CommandDTO { return this._dto; }
 
@@ -18,6 +18,10 @@ export class CommandWrapper {
    get Response(): boolean { return this.DTO?.Response };
 	/** Arguments of the command */
    get Arguments(): PropertyDTO[] { return this.DTO?.Arguments };
+	/** Type Guid of the command */
+   get Type(): Guid { return Guid.parse(this.DTO?.Type) };
+	/** Id of the command */
+   get Id(): Guid { return Guid.parse(this.DTO?.Id) };
 
    public getArgument(name:string){
       return this._dto.Arguments.find(a => a.Name == name)?.Value;

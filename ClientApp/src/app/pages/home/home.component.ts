@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommandDTO } from 'src/api/CommandDTO';
 import { SampleCommand } from 'src/impl/SampleCommand';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
    selector: 'app-home',
@@ -26,13 +27,19 @@ export class HomeComponent implements OnInit {
 
    public executeCommand(): void {
       console.log('call executeCommand')
-      let cmd = new CommandDTO();
-      let sample = new SampleCommand(cmd);
+      let sample = new SampleCommand();
       sample.FirstOne = "The First";
       // sample.Ar[]
-      this._http.post(this._baseUrl + 'command/execute', JSON.stringify(cmd)).subscribe(result => {
+      const headers = new HttpHeaders().set("Content-Type", 'application/json');
+      this._http.post<CommandDTO>(
+         this._baseUrl + 'Command/execute',
+         sample.DTO
+         , { headers, responseType: "json" }
+      ).subscribe(result => {
          console.log(result);
-      }, error => console.error(error));
+      }, error => {
+            console.error(error)
+         });
    }
 
 }
