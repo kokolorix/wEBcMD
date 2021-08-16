@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+	<ObjectType name="AdressDTO" category="Adresses" id="71959238-5bfd-459b-8fba-e48657d8ff2b">
+		<Summary/>
+		<Base name="BaseDTO" category="Base"/>
+		<PropertyType name="Name1" type="String" summary=""/>
+		<PropertyType name="Name2" type="String" summary=""/>
+		<PropertyType name="Adress1" type="String" summary=""/>
+		<PropertyType name="Adress2" type="String" summary=""/>
+		<PropertyType name="Housenumber" type="String" summary=""/>
+		<PropertyType name="City" type="String" summary=""/>
+		<PropertyType name="Postcode" type="String" summary=""/>
+	</ObjectType>
+	<CommandWrapper name="FindAdresses" category="Adresses" id="13b2f4da-711a-451e-b435-2c2dc1fbbe4e">
+		<Summary/>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="SearchText" type="String">
+		</ParameterType>
+		<ParameterType name="SearchResult" type="AdressDTO[]" summary=""/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+</Types>

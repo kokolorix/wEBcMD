@@ -1,0 +1,119 @@
+
+		         Base command object. Has all arguments in generig list,          can be wrapped by concrete command wrappers         
+		
+		
+		
+		
+	
+		
+This is the sample command. He has two Parameters
+and a multiline summary.
+``` typescript
+CommandDTO cmd;
+if(SampleCommand.IsForMe(dto)){
+   let sample = new SampleCommand(cmd);
+   console.log(sample.FirstOne);
+}
+```
+      
+		
+		
+         
+The FirstOne is a string parameter
+and has a multiline comment
+         
+      
+		
+		
+	
+		
+This is the sample command. He has two Parameters
+and a multiline summary.
+``` typescript
+CommandDTO cmd;
+if(SampleCommand.IsForMe(dto)){
+   let sample = new SampleCommand(cmd);
+   console.log(sample.FirstOne);
+}
+```
+      
+		
+		
+         
+The FirstOne is a string parameter
+and has a multiline comment
+         
+      
+		
+		
+	
+		
+This is the sample command. He has two Parameters
+and a multiline summary.
+``` typescript
+CommandDTO cmd;
+if(SampleCommand.IsForMe(dto)){
+   let sample = new SampleCommand(cmd);
+   console.log(sample.FirstOne);
+}
+```
+      
+		
+		
+         
+The FirstOne is a string parameter
+and has a multiline comment
+         
+      
+		
+		
+	
+		         Base command object. Has all arguments in generig list,          can be wrapped by concrete command wrappers         
+		
+		
+		
+		
+	
+		         Base command object. Has all arguments in generig list,          can be wrapped by concrete command wrappers         
+		
+			/** Indicates if this is the answer */
+	get Response() : boolean{
+		return Boolean(JSON.parse(this.getArgument("Response")));
+	}
+	set Response( val : boolean) {
+		this.setArgument("Response", val.toString());
+	}
+
+
+			/** Arguments of the command */
+	get Arguments() : PropertyDTO[]{
+		return this.getArgument("Arguments");
+	}
+	set Arguments( val : PropertyDTO[]) {
+		this.setArgument("Arguments", val);
+	}
+
+
+		
+	
+		
+This is the sample command. He has two Parameters
+and a multiline summary.
+``` typescript
+CommandDTO cmd;
+if(SampleCommand.IsForMe(dto)){
+   let sample = new SampleCommand(cmd);
+   console.log(sample.FirstOne);
+}
+```
+      
+		
+		
+         
+The FirstOne is a string parameter
+and has a multiline comment
+         
+      
+		
+		
+	

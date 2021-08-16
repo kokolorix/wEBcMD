@@ -18,16 +18,4 @@
 	<ObjectType name="TypeDTO" category="Base" id="2c8c1feb-0d04-45d2-bbe7-fe137450412e">
 		<Base name="BaseDTO" category="Base"/>
 	</ObjectType>
-	<ObjectType name="PropertyTypeDTO" category="Base" id="b070edd3-f270-4093-a500-94047d18c7f9">
-		<Base name="TypeDTO" category="Base"/>
-		<PropertyType name="Name" type="String"/>
-		<PropertyType name="DataType" type="String"/>
-		<PropertyType name="Default" type="String" use="optional"/>
-	</ObjectType>
-	<ObjectType name="ObjectTypeDTO" category="Base" id="38b38794-0a2e-466c-b198-c831708298f6">
-		<Base name="TypeDTO" category="Base"/>
-		<PropertyType name="Category" type="String"/>
-		<PropertyType name="Name" type="String"/>
-		<PropertyType name="PropertyTypes" type="PropertyTypeDTO[]"/>
-	</ObjectType>
 </Types>
