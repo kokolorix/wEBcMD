@@ -29,10 +29,10 @@ namespace wEBcMD.Controllers
       /// <returns>The type requested, or null if not exist</returns>
       [HttpGet]
       [Route("{Id:Guid}")]
-      public ObjectTypeDTO GetObjectType(Guid Id)
+      public TypeDTO GetObjectType(Guid Id)
       {
          Log.Trace(_logger);
-         ObjectTypeDTO type = new()
+         TypeDTO type = new()
          {
             Id = Id,
             Type = Guid.Parse("38b38794-0a2e-466c-b198-c831708298f6"),
@@ -45,14 +45,14 @@ namespace wEBcMD.Controllers
       /// </summary>
       /// <returns></returns>
       [HttpGet]
-      public IEnumerable<ObjectTypeDTO> GetObjectTypes()
+      public IEnumerable<TypeDTO> GetObjectTypes()
       {
          Log.Trace(_logger);
-         ObjectTypeDTO[] types =
+         TypeDTO[] types =
          {
-                new ObjectTypeDTO {
+                new TypeDTO {
                     Id=Guid.NewGuid(), Type=Guid.Parse("38b38794-0a2e-466c-b198-c831708298f6"),
-                    Category="", Name=""}
+                    }
             };
          return types;
       }

@@ -57,7 +57,6 @@ namespace wEBcMD.Controllers
       ///        ]
       ///      }
       ///
-      /// Sample request for <see cref="SampleCommand2.ExecuteCommand()"/>:
       ///
       ///      {
       ///        "id": "ee72eaab-d696-46e6-ab41-56f499579be7",
@@ -83,8 +82,8 @@ namespace wEBcMD.Controllers
          Log.Trace(_logger, $"Command of type '{cmd.Type}' was called");
          if(SampleCommand.IsForMe(cmd))
             return SampleCommand.ExecuteCommand(cmd);
-         else if(SampleCommand2.IsForMe(cmd))
-            return SampleCommand2.ExecuteCommand(cmd);
+         else if(FindAdresses.IsForMe(cmd))
+            return FindAdresses.ExecuteCommand(cmd);
          // cmd.Arguments.Add(new PropertyDTO{Name="B", Value="b value"});
          return cmd;
          // throw new NotImplementedException();

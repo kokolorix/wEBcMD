@@ -3,7 +3,7 @@ import { SampleCommandAccess } from "../api/SampleCommandAccess";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
- * This is the sample caommand. He has two Parameters
+ * This is the sample command. He has two Parameters
  * and a multiline summary.
  * ``` typescript
  * CommandDTO cmd;

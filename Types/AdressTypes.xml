@@ -3,20 +3,33 @@
 	<ObjectType name="AdressDTO" category="Adresses" id="71959238-5bfd-459b-8fba-e48657d8ff2b">
 		<Summary/>
 		<Base name="BaseDTO" category="Base"/>
-		<PropertyType name="Name1" type="String" summary=""/>
-		<PropertyType name="Name2" type="String" summary=""/>
-		<PropertyType name="Adress1" type="String" summary=""/>
-		<PropertyType name="Adress2" type="String" summary=""/>
-		<PropertyType name="Housenumber" type="String" summary=""/>
-		<PropertyType name="City" type="String" summary=""/>
-		<PropertyType name="Postcode" type="String" summary=""/>
+		<PropertyType name="Name1" type="String" summary="First name of the person or name of the company"/>
+		<PropertyType name="Name2" type="String" summary="Surname of the person or additional name of the company"/>
+		<PropertyType name="Adress1" type="String" summary="Street name"/>
+		<PropertyType name="Adress2" type="String" summary="Address supplement"/>
+		<PropertyType name="Housenumber" type="String" summary="House no."/>
+		<PropertyType name="City" type="String" summary="Village"/>
+		<PropertyType name="Postcode" type="String" summary="Postal code"/>
 	</ObjectType>
 	<CommandWrapper name="FindAdresses" category="Adresses" id="13b2f4da-711a-451e-b435-2c2dc1fbbe4e">
+		<Summary>Addresses search, with multiple tokens</Summary>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="SearchText" type="String" summary="Search text, can contain several words separated by spaces"/>
+		<ParameterType name="SearchResult" type="AdressDTO[]" summary="The result of the search is a list of AddressDTO objects"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+	<CommandWrapper name="GetAdress" category="Adresses" id="c6771f60-a64b-4775-a006-a2bce00b23a4">
 		<Summary/>
 		<Base name="CommandWrapper"/>
-		<ParameterType name="SearchText" type="String">
-		</ParameterType>
-		<ParameterType name="SearchResult" type="AdressDTO[]" summary=""/>
+		<ParameterType name="Id" type="UuId"/>
+		<ParameterType name="Adress" type="AdressDTO" summary=""/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+	<CommandWrapper name="SetAdress" category="Adresses" id="c84bb99b-2d11-4426-87fa-119dc892f4ec">
+		<Summary/>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="Id" type="UuId"/>
+		<ParameterType name="Adress" type="AdressDTO" summary=""/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
 </Types>

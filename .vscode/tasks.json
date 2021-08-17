@@ -75,5 +75,20 @@
             "$saxon-xslt"
          ]
       },
+      {
+         "type": "xslt",
+         "label": "xslt: Saxon Transform (AdressTypes)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${file}",
+         "xmlSource": "${workspaceFolder}/Types/AdressTypes.xml",
+         "resultPath": "${workspaceFolder}/AdressTypes.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": false
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
    ]
 }

@@ -7,9 +7,9 @@
 		<PropertyType name="Arguments" type="PropertyDTO[]" default="[]" summary="Arguments of the command"/>
 		<!-- <PropertyType name="Default" type="PropertyDTO" summary="Default Argument of the command"/> -->
 	</ObjectType>
-	<ObjectWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
+	<CommandWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
 		<Summary>
-This is the sample caommand. He has two Parameters
+This is the sample command. He has two Parameters
 and a multiline summary.
 ``` typescript
 CommandDTO cmd;
@@ -20,19 +20,13 @@ if(SampleCommand.IsForMe(dto)){
 ```
       </Summary>
 		<Base name="CommandWrapper"/>
-		<PropertyType name="FirstOne" type="String">
+		<ParameterType name="FirstOne" type="String">
          <Summary>
 The FirstOne is a string parameter
 and has a multiline comment
          </Summary>
-      </PropertyType>
-		<PropertyType name="SecondOne" type="Boolean" summary="The SecondOne is a boolean parameter"/>
+      </ParameterType>
+		<ParameterType name="SecondOne" type="Boolean" summary="The SecondOne is a boolean parameter"/>
 		<DTO name="CommandDTO"/>
-	</ObjectWrapper>
-	<ObjectWrapper name="SampleCommand2" category="Samples" id="cb0ab4ab-9aeb-4b42-ac2d-152a4555370a">
-		<Base name="CommandWrapper"/>
-		<PropertyType name="FirstOne" type="String"/>
-		<PropertyType name="SecondOne" type="Boolean"/>
-		<DTO name="CommandDTO"/>
-	</ObjectWrapper>
+	</CommandWrapper>
 </Types>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 #pragma warning disable 1591
 
 namespace wEBcMD
@@ -59,7 +60,7 @@ namespace wEBcMD
             }
          }
       }
-      public StringValues String{
+      protected StringValues String{
          get => new(Cmd.Arguments);
       }
 
@@ -80,8 +81,52 @@ namespace wEBcMD
             }
          }
       }
-      public BooleanValues Boolean{
+      protected BooleanValues Boolean{
          get => new(Cmd.Arguments);
       }
+      public class GuidValues
+      {
+         private readonly List<PropertyDTO> _list;
+         public GuidValues(List<PropertyDTO> list) => _list = list;
+         public System.Guid this[string name]
+         {
+            get => System.Guid.Parse(_list.Find(p => p.Name == name)?.Value);
+            set
+            {
+               var p = _list.Find(i => i.Name == name);
+               if (null == p)
+                  _list.Add(new PropertyDTO() { Name = name, Value = value.ToString() });
+               else
+                  p.Value = value.ToString();
+            }
+         }
+      }
+      protected GuidValues Guid{
+         get => new(Cmd.Arguments);
+      }
+      protected class DTOValues<T>
+      {
+         private readonly List<PropertyDTO> _list;
+         public DTOValues(List<PropertyDTO> list) => _list = list;
+         public T this[string name]
+         {
+            get
+            {
+               string jsonString = _list.Find(p => p.Name == name)?.Value;
+               T dto = JsonSerializer.Deserialize<T>(jsonString);
+               return dto;
+            }
+            set
+            {
+               string jsonString = JsonSerializer.Serialize(value);
+               var p = _list.Find(i => i.Name == name);
+               if (null == p)
+                  _list.Add(new PropertyDTO() { Name = name, Value = jsonString });
+               else
+                  p.Value = jsonString;
+            }
+         }
+      }
+      protected DTOValues<BaseDTO> BaseDTO { get => new(Cmd.Arguments); }
    }
 }
