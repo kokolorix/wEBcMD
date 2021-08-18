@@ -42,7 +42,7 @@
       <!-- <xsl:apply-templates select="Types/*" mode="controller.cs"/> -->
       <!-- <xsl:apply-templates select="Types/*" mode="service.ts"/> -->
       <xsl:apply-templates select="Types/*" mode="dto.ts"/>
-      <!-- <xsl:apply-templates select="Types/*" mode="wrapper.ts" /> -->
+      <xsl:apply-templates select="Types/*" mode="wrapper.ts" />
       <!-- <xsl:apply-templates select="Types/*" mode="access.ts" /> -->
    </xsl:template>
    <!--=======================================================================-->
@@ -117,7 +117,7 @@
             <xsl:value-of select="concat('export class ', @name, ts:extends(.), ' {', $nl2)"/>
             <!--  -->
             <xsl:value-of select="concat($t1, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
-            <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return System.Guid.Parse(&quot;', @id, '&quot;); }', $nl2)" />
+            <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
             <!--  -->
             <xsl:apply-templates select="PropertyType" mode="dto.ts"/>
             <xsl:value-of select="concat('', '};')"/>
@@ -125,7 +125,7 @@
       <!-- </xsl:if> -->
    </xsl:template>
    <!--=======================================================================-->
-   <!-- TypeScript wrappers -->
+   <!-- TypeScript object wrapper -->
    <!--=======================================================================-->
    <xsl:template match="ObjectWrapper" mode="wrapper.ts">
       <!-- file name -->
@@ -166,6 +166,8 @@
       <!-- </xsl:if> -->
    </xsl:template>
    <!--=======================================================================-->
+   <!-- TypeScript object wrapper -->
+   <!--=======================================================================-->
     <xsl:template match="CommandWrapper" mode="wrapper.ts">
       <!-- file name -->
       <xsl:variable name="fn" select="concat(@name, '.ts')" />
@@ -204,7 +206,8 @@
          </xsl:result-document>
       <!-- </xsl:if> -->
    </xsl:template>
-  <!-- TypeScript wrappers -->
+   <!--=======================================================================-->
+  <!-- TypeScript access wrappers -->
    <!--=======================================================================-->
    <xsl:template match="ObjectWrapper" mode="access.ts">
       <!-- file name -->
@@ -251,7 +254,7 @@
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
-   <!-- TypeScript Properties -->
+   <!-- TypeScript DTO Properties -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="dto.ts">
       <xsl:call-template name="Summary.ts">
@@ -264,7 +267,7 @@
       <xsl:value-of select="concat(';', $nl1)"/>
    </xsl:template>
    <!--=======================================================================-->
-   <!-- TypeScript Properties -->
+   <!-- TypeScript access Properties -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="access.ts">
       <xsl:call-template name="Summary.ts">
@@ -294,7 +297,11 @@
 
       <xsl:value-of select="concat($t1, '}', $nl2)"/>
    </xsl:template>
-   <xsl:template match="ParameterType" mode="access.ts">
+    <!--=======================================================================-->
+   <!--=======================================================================-->
+   <!-- TypeScript access Parameters -->
+   <!--=======================================================================-->
+  <xsl:template match="ParameterType" mode="access.ts">
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
@@ -398,6 +405,8 @@
       <xsl:value-of select="concat($t1, '};', $nl2)" />
    </xsl:template>
    <!--=======================================================================-->
+   <!--process an CommandWrapper node -->
+   <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="wrapper.cs">
       <xsl:message select="concat('process CommandWrapper mode wrapper.cs ', @name)"/>
       <xsl:variable name="category" select="@category" />
@@ -429,6 +438,7 @@
       <xsl:apply-templates select="ParameterType" mode="wrapper.cs" />
       <xsl:value-of select="concat($t1, '};', $nl2)" />
    </xsl:template>
+   <!--=======================================================================-->
    <!--create the Impl, if not exists -->
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="impl.wrapper.cs">
@@ -620,6 +630,9 @@
          <xsl:otherwise>string</xsl:otherwise>
       </xsl:choose>
    </xsl:function>
+   <!--=======================================================================-->
+   <!-- Evaluate the DTO-data type for TypeScript -->
+   <!--=======================================================================-->
    <xsl:function name="ts:dto-data-type">
       <xsl:param name="pt" as="node()"/>
       <xsl:choose>
