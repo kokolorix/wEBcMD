@@ -4,6 +4,7 @@ import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
 /**
+ * Addresses search, with multiple tokens
  */
 export class FindAdressesAccess  extends CommandWrapper {
 
@@ -15,7 +16,7 @@ export class FindAdressesAccess  extends CommandWrapper {
 	/** Checks if the type of the DTO fits */
 	static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === FindAdressesAccess.TypeId; }
 
-	/** SearchText */
+	/** Search text, can contain several words separated by spaces */
 	get SearchText() : string{
 		return this.getArgument("SearchText");
 	}
@@ -23,12 +24,25 @@ export class FindAdressesAccess  extends CommandWrapper {
 		this.setArgument("SearchText", val);
 	}
 
-	/**  */
+	/** The result of the search is a list of AddressDTO objects */
 	get SearchResult() : AdressDTO[]{
-		return this.getArgument("SearchResult");
+		return JSON.parse(this.getArgument("SearchResult")) as AdressDTO[] ;
 	}
 	set SearchResult( val : AdressDTO[]) {
-		this.setArgument("SearchResult", val);
+		this.setArgument("SearchResult", JSON.stringify(val));
 	}
 
-};
+
+public execute(id:Guid):Promise<AdressDTO> {
+      const headers = new HttpHeaders().set("Content-Type", 'application/json');
+      this._http.post<;CommandDTO>;(
+         this._baseUrl + 'Command/execute',
+         sample.DTO
+         , { headers, responseType: "json" }
+      ).subscribe(result => {
+         console.log(result);
+      }, error => {
+            console.error(error)
+         });
+}
+         };

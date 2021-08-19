@@ -35,6 +35,6 @@ set xslt=%cd%\tools\types.xslt
 
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%"
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1"
-if exist "%~1" Transform.exe  -xsl:"%xslt%" -s:"%~1"
+if exist "%~1" Transform.exe  -xsl:"%xslt%" -s:"%~1">nul
 goto:eof
 

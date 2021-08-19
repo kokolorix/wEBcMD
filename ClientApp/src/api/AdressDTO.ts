@@ -6,7 +6,7 @@ import { BaseDTO } from "./BaseDTO";
 export class AdressDTO extends BaseDTO {
 
 	/** 71959238-5bfd-459b-8fba-e48657d8ff2b is the Id of AdressDTO type. */
-	static get TypeId(): Guid { return System.Guid.Parse("71959238-5bfd-459b-8fba-e48657d8ff2b"); }
+	static get TypeId(): Guid { return Guid.parse("71959238-5bfd-459b-8fba-e48657d8ff2b"); }
 
 	/** First name of the person or name of the company */
 	Name1?: string;
