@@ -176,8 +176,8 @@
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
          <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Access.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
-         <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
-public execute(id:Guid):Promise&lt;AdressDTO&gt; {
+          <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
+<!--public execute(id:Guid):Promise&lt;AdressDTO&gt; {
       const headers = new HttpHeaders().set("Content-Type", 'application/json');
       this._http.post&lt;;CommandDTO&gt;;(
          this._baseUrl + 'Command/execute',
@@ -188,7 +188,7 @@ public execute(id:Guid):Promise&lt;AdressDTO&gt; {
       }, error => {
             console.error(error)
          });
-}
+} -->
          <xsl:value-of select="concat('', '};')"/>
       </xsl:result-document>
    </xsl:template>

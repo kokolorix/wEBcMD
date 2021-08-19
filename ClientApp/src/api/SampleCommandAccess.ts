@@ -42,17 +42,4 @@ export class SampleCommandAccess  extends CommandWrapper {
 		this.setArgument("SecondOne", val.toString());
 	}
 
-
-public execute(id:Guid):Promise<AdressDTO> {
-      const headers = new HttpHeaders().set("Content-Type", 'application/json');
-      this._http.post<;CommandDTO>;(
-         this._baseUrl + 'Command/execute',
-         sample.DTO
-         , { headers, responseType: "json" }
-      ).subscribe(result => {
-         console.log(result);
-      }, error => {
-            console.error(error)
-         });
-}
-         };
+};
