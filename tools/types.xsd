@@ -91,7 +91,7 @@
 					</xs:sequence>
 					<xs:element name="Base" type="BaseT"/>
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="ParameterType" type="PropT"/>
+						<xs:element name="ParameterType" type="ParamT"/>
 					</xs:sequence>
 				</xs:sequence>
 				<xs:attribute name="id" type="UuIdT" use="required"/>
@@ -100,7 +100,17 @@
 	</xs:complexType>
 	<xs:complexType name="ParamT">
 		<xs:complexContent>
-			<xs:extension base="PropT"/>
+			<xs:extension base="PropT">
+				<xs:attribute name="modifier" use="optional" default="inout">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="in"/>
+							<xs:enumeration value="out"/>
+							<xs:enumeration value="inout"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="CmdWrapT">

@@ -7,6 +7,6 @@ import { CommandDTO } from "../api/CommandDTO";
  */
 export class GetAdress extends GetAdressAccess {
 
-	constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressAccess.TypeId)}
 
 };

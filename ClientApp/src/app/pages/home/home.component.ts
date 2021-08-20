@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CommandDTO } from 'src/api/CommandDTO';
-import { SampleCommand } from 'src/impl/SampleCommand';
-import { error } from '@angular/compiler/src/util';
+import { Guid } from 'guid-typescript';
+import { SetAdress } from 'src/impl/SetAdress';
+import { AdressDTO } from 'src/api/AdressDTO';
 
 @Component({
    selector: 'app-home',
@@ -27,20 +27,32 @@ export class HomeComponent implements OnInit {
 
    public executeCommand(): void {
       console.log('call executeCommand')
-      let sample = new SampleCommand();
-      sample.FirstOne = "The First";
+      let setAdress = new SetAdress();
+      let adress: AdressDTO = {
+         Name1: "Heiri",
+         Name2: "Krüppelsack",
+         Adress1: "Am Ende",
+         Adress2: "",
+         Housenumber: "42",
+         City: "Nieniken",
+         Postcode: "0000"
+      }
+      setAdress.execute(Guid.createEmpty(), adress).then(a => this._adress = a);
+
       // sample.Ar[]
-      const headers = new HttpHeaders().set("Content-Type", 'application/json');
-      this._http.post<CommandDTO>(
-         this._baseUrl + 'Command/execute',
-         sample.DTO
-         , { headers, responseType: "json" }
-      ).subscribe(result => {
-         console.log(result);
-      }, error => {
-            console.error(error)
-         });
+      // const headers = new HttpHeaders().set("Content-Type", 'application/json');
+      // this._http.post<CommandDTO>(
+      //    this._baseUrl + 'Command/execute',
+      //    sample.DTO
+      //    , { headers, responseType: "json" }
+      // ).subscribe(result => {
+      //    console.log(result);
+      // }, error => {
+      //       console.error(error)
+      //    });
    }
+
+   _adress: AdressDTO;
 
 }
 

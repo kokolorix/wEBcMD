@@ -7,11 +7,11 @@ import { BaseDTO } from "./BaseDTO";
  */
 export class CommandDTO extends BaseDTO {
 
-	/** c1eda1fc-cc45-4658-889f-ccd989c2848a is the Id of CommandDTO type. */
-	static get TypeId(): Guid { return Guid.parse("c1eda1fc-cc45-4658-889f-ccd989c2848a"); }
+   /** c1eda1fc-cc45-4658-889f-ccd989c2848a is the Id of CommandDTO type. */
+   static get TypeId(): Guid { return Guid.parse("c1eda1fc-cc45-4658-889f-ccd989c2848a"); }
 
-	/** Indicates if this is the answer */
-	Response?: boolean = false;
-	/** Arguments of the command */
-	Arguments?: PropertyDTO[] = [];
+   /** Indicates if this is the answer */
+   Response?: boolean = false;
+   /** Arguments of the command */
+   Arguments?: PropertyDTO[] = [];
 };

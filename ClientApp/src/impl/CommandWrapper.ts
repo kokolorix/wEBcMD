@@ -1,16 +1,27 @@
+import { Injector } from "@angular/core";
 import { Guid } from "guid-typescript";
 import { CommandDTO } from "src/api/CommandDTO";
 import { PropertyDTO } from "src/api/PropertyDTO";
+import { CommandService } from "src/app/services/command.service";
 
 type CommandWrapperFactory = (dto: CommandDTO) => CommandWrapper;
 export class CommandWrapper {
    private _dto: CommandDTO;
+
+   private static _injector = Injector.create({providers: []});
+   protected static get injector() : Injector {
+      return CommandWrapper._injector;
+   }
+   protected _service: CommandService;
+
    constructor(dto: CommandDTO, type?: Guid){
       this._dto = dto ? dto : new CommandDTO();
       if(!this._dto.Type)
          this._dto.Type = type ? type.toString() : CommandDTO.TypeId.toString();
       if(!this._dto.Id)
          this._dto.Id = Guid.create().toString();
+
+      this._service = CommandWrapper.injector.get<CommandService>(CommandService);
    }
    public get DTO(): CommandDTO { return this._dto; }
 

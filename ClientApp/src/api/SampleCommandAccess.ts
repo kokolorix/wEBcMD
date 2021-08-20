@@ -15,31 +15,33 @@ import { CommandDTO } from "./CommandDTO";
  */
 export class SampleCommandAccess  extends CommandWrapper {
 
-	constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
 
-	/** e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type. */
-	static get TypeId(): Guid { return Guid.parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
+   /** e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type. */
+   static get TypeId(): Guid { return Guid.parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
 
-	/** Checks if the type of the DTO fits */
-	static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SampleCommandAccess.TypeId; }
+   /** Checks if the type of the DTO fits */
+   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SampleCommandAccess.TypeId; }
 
-	/**
-	 * The FirstOne is a string parameter
-	 * and has a multiline comment
-	 */
-	get FirstOne() : string{
-		return this.getArgument("FirstOne");
-	}
-	set FirstOne( val : string) {
-		this.setArgument("FirstOne", val);
-	}
+   /**
+    * The FirstOne is a string parameter
+    * and has a multiline comment
+    */
+   get FirstOne() : string{
+      return this.getArgument("FirstOne");
+   }
+   set FirstOne( val : string) {
+      this.setArgument("FirstOne", val);
+   }
 
-	/** The SecondOne is a boolean parameter */
-	get SecondOne() : boolean{
-		return Boolean(JSON.parse(this.getArgument("SecondOne")));
-	}
-	set SecondOne( val : boolean) {
-		this.setArgument("SecondOne", val.toString());
-	}
+   /** The SecondOne is a boolean parameter */
+   get SecondOne() : boolean{
+      return Boolean(JSON.parse(this.getArgument("SecondOne")));
+   }
+   set SecondOne( val : boolean) {
+      this.setArgument("SecondOne", val.toString());
+   }
 
-};
+
+
+   execute(firstOne: stringsecondOne: boolean): Promise<
