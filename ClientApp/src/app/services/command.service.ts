@@ -9,7 +9,7 @@ export class CommandService {
    protected _http: HttpClient;
    protected _baseUri: string;
 
-   constructor(http: HttpClient, @Inject('BASE_API_URL') baseUrl: string) {
+   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
       this._http = http;
       this._baseUri = baseUrl;
    }

@@ -43,7 +43,7 @@ export class SetAdressAccess  extends CommandWrapper {
    execute(id: Guid, adress: AdressDTO): Promise<AdressDTO> {
       this.Id = id;
       this.Adress = adress;
-      return this._service.executeCommand(this.DTO)
+      return SetAdressAccess._service.executeCommand(this.DTO)
       .then((cmd) => {
          return new SetAdressAccess(cmd).Result
       })
@@ -53,4 +53,3 @@ export class SetAdressAccess  extends CommandWrapper {
       });
    }
 };
-      
