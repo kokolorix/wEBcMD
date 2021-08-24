@@ -43,5 +43,19 @@ export class SampleCommandAccess  extends CommandWrapper {
    }
 
 
-
-   execute(firstOne: stringsecondOne: boolean): Promise<
+         
+   /// <summary>Calls the command</summary>
+   execute(firstOne: string, secondOne: boolean): Promise<void> {
+      this.FirstOne = firstOne;
+      this.SecondOne = secondOne;
+      return SampleCommandAccess._service.executeCommand(this.DTO)
+      .then((cmd) => {
+         return new SampleCommandAccess(cmd).Result
+      })
+      .catch((e) =>{
+         console.log(e);
+         return new Promise<void>(null);
+      });
+   }
+};
+      

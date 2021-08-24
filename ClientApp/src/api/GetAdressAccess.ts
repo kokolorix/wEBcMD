@@ -28,10 +28,11 @@ export class GetAdressAccess  extends CommandWrapper {
       return JSON.parse(this.getArgument("Result")) as AdressDTO ;
    }
 
-
+         
+   /// <summary>Calls the command</summary>
    execute(id: Guid): Promise<AdressDTO> {
       this.Id = id;
-      return this._service.executeCommand(this.DTO)
+      return GetAdressAccess._service.executeCommand(this.DTO)
       .then((cmd) => {
          return new GetAdressAccess(cmd).Result
       })

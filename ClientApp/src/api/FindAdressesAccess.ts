@@ -29,10 +29,11 @@ export class FindAdressesAccess  extends CommandWrapper {
       return JSON.parse(this.getArgument("SearchResult")) as AdressDTO[] ;
    }
 
-
+         
+   /// <summary>Calls the command</summary>
    execute(searchText: string): Promise<void> {
       this.SearchText = searchText;
-      return this._service.executeCommand(this.DTO)
+      return FindAdressesAccess._service.executeCommand(this.DTO)
       .then((cmd) => {
          return new FindAdressesAccess(cmd).Result
       })

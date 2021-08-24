@@ -47,6 +47,13 @@
       <xsl:apply-templates select="Types/*" mode="api.dto.ts"/>
       <xsl:apply-templates select="Types/*" mode="api.access.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
+
+      <!-- <xsl:result-document href="{$csFilePath}" format="text-def"></xs -->
+      <!-- <xsl:result-document href="">
+
+      </xsl:result-document> -->
+
+      <xsl:apply-templates select="Types/CommandWrapper" mode="dispatcher.cs"/>
       <!-- <xsl:apply-templates select="Types/*" mode="controller.cs"/> -->
       <!-- <xsl:apply-templates select="Types/*" mode="service.ts"/> -->
    </xsl:template>
@@ -177,25 +184,26 @@
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
          <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Access.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
-          <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
-<!--
-   execute(id:Guid, adress:AdressDTO):Promise<AdressDTO>{
-      this.Id = id;
-      this.Adress = adress;
-      return this._service.executeCommand(this.DTO)
-      .then((cmd) => {
-         return new SetAdressAccess(cmd).Result
-      })
-      .catch((e) =>{
-         console.log(e);
-         return new Promise<AdressDTO>(null);
-      })
-   }
-} -->
+         <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
+         <!--
+              execute(id:Guid, adress:AdressDTO):Promise<AdressDTO>{
+              this.Id = id;
+              this.Adress = adress;
+              return this._service.executeCommand(this.DTO)
+              .then((cmd) => {
+              return new SetAdressAccess(cmd).Result
+              })
+              .catch((e) =>{
+              console.log(e);
+              return new Promise<AdressDTO>(null);
+              })
+              }
+              } -->
+   /// &lt;summary&gt;Calls the command&lt;/summary&gt;
    execute(<xsl:apply-templates select="ParameterType" mode="api.access.execute.ts"/>): <xsl:text/>
-<xsl:text/>Promise&lt;<xsl:value-of select="ts:result-type(.)"/>&gt; {<xsl:text/>
-<xsl:apply-templates select="ParameterType" mode="api.access.execute1.ts"/>
-      return this._service.executeCommand(this.DTO)
+      <xsl:text/>Promise&lt;<xsl:value-of select="ts:result-type(.)"/>&gt; {<xsl:text/>
+      <xsl:apply-templates select="ParameterType" mode="api.access.execute1.ts"/>
+      return <xsl:value-of select="@name"/>Access._service.executeCommand(this.DTO)
       .then((cmd) => {
          return new <xsl:value-of select="@name"/>Access(cmd).Result
       })
@@ -211,18 +219,18 @@
    <!-- TypeScript execute arguments -->
    <!--=======================================================================-->
    <xsl:template match="ParameterType" mode="api.access.execute.ts">
-   <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
-<xsl:if test="position()>1">, </xsl:if>
-<xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
-   </xsl:if>
+      <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
+         <xsl:if test="position()>1">, </xsl:if>
+         <xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
+      </xsl:if>
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript execute arguments1 -->
    <!--=======================================================================-->
    <xsl:template match="ParameterType" mode="api.access.execute1.ts">
-   <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
+      <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
       this.<xsl:value-of select="@name"/> = <xsl:value-of select="wc:camelCaseWord(@name)"/>;<xsl:text/>
-   </xsl:if>
+      </xsl:if>
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript DTO Properties -->
@@ -247,21 +255,21 @@
       <xsl:variable name="datatype" as="xs:string" select="ts:wrapper-data-type(.)"/>
       <!-- <xsl:if test="not(lower-case(@modifier)='out')"> -->
          <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $datatype, '{', $nl1)"/>
-         <xsl:choose>
-            <xsl:when test="$datatype='boolean'">
-               <xsl:value-of select="concat($t2, 'return Boolean(JSON.parse(this.getArgument(&quot;', @name, '&quot;)));', $nl1)"/>
-            </xsl:when>
-            <xsl:when test="$datatype='Guid'">
-               <xsl:value-of select="concat($t2, 'return Guid.parse(this.getArgument(&quot;', @name, '&quot;));', $nl1)"/>
-            </xsl:when>
-            <xsl:when test="matches($datatype,'.+DTO')">
-               <xsl:value-of select="concat($t2, 'return JSON.parse(this.getArgument(&quot;', @name, '&quot;))', ' as ', $datatype, ' ;', $nl1)"/>
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:value-of select="concat($t2, 'return this.getArgument(&quot;', @name, '&quot;);', $nl1)"/>
-            </xsl:otherwise>
-         </xsl:choose>
-         <xsl:value-of select="concat($t1, '}', $nl1)"/>
+      <xsl:choose>
+         <xsl:when test="$datatype='boolean'">
+            <xsl:value-of select="concat($t2, 'return Boolean(JSON.parse(this.getArgument(&quot;', @name, '&quot;)));', $nl1)"/>
+         </xsl:when>
+         <xsl:when test="$datatype='Guid'">
+            <xsl:value-of select="concat($t2, 'return Guid.parse(this.getArgument(&quot;', @name, '&quot;));', $nl1)"/>
+         </xsl:when>
+         <xsl:when test="matches($datatype,'.+DTO')">
+            <xsl:value-of select="concat($t2, 'return JSON.parse(this.getArgument(&quot;', @name, '&quot;))', ' as ', $datatype, ' ;', $nl1)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="concat($t2, 'return this.getArgument(&quot;', @name, '&quot;);', $nl1)"/>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="concat($t1, '}', $nl1)"/>
       <!-- </xsl:if> -->
       <!-- <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/> -->
       <xsl:if test="not(lower-case(@modifier)='out')">
@@ -517,6 +525,28 @@
       </xsl:choose>
    </xsl:template>
    <!--=======================================================================-->
+   <!-- The dispatcher for alle commands -->
+   <!--=======================================================================-->
+   <xsl:template match="CommandWrapper" mode="dispatcher.cs">
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="fn" select="concat('Command', 'Controller.cs')" />
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
+      <xsl:variable name="text" select="unparsed-text($filePath, 'utf-8')"/>
+      <!-- <xsl:message select="concat( 'TODO: ', @name, ' dispatcher should insert into ', $text)" /> -->
+      <xsl:variable name="name" as="xs:string" select="@name"/>
+      <!-- <xsl:message select="concat( 'SEARCH: ', $name, '\.IsForMe')" /> -->
+      <!-- <xsl:analyze-string select="$text" regex="concat('.*', $name, '.IsForMe.*')"> -->
+      <xsl:analyze-string select="$text" regex="$name">
+         <xsl:matching-substring>
+            <xsl:message select="concat( $name, ' dispatcher found')" />
+         </xsl:matching-substring>
+         <!-- <xsl:non-matching-substring>
+            <xsl:message select="concat( 'TODO: ', $name, ' dispatcher should insert')" />
+         </xsl:non-matching-substring> -->
+      </xsl:analyze-string>
+   </xsl:template>
+   <!--=======================================================================-->
    <!-- The controller, if it not exist -->
    <!--=======================================================================-->
    <xsl:template match="ObjectType" mode="controller.cs">
@@ -525,8 +555,8 @@
       <xsl:variable name="fn" select="concat($name, 'Controller.cs')" />
       <!-- <xsl:message select="$fn" /> -->
       <!-- delimiter -->
-      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <!-- path tokens -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
       <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>

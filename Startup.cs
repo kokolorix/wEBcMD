@@ -32,43 +32,49 @@ namespace wEBcMD
 /// <value></value>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+      // This method gets called by the runtime. Use this method to add services to the container.
 
-/// <summary>
-///
-/// </summary>
-/// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+      /// <summary>
+      ///
+      /// </summary>
+      /// <param name="services"></param>
+      public void ConfigureServices(IServiceCollection services)
+      {
+         services.AddControllersWithViews().
+            AddJsonOptions(options =>
             {
-                configuration.RootPath = "ClientApp/dist";
+               options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+               options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
+         services.AddControllersWithViews();
+         // In production, the Angular files will be served from this directory
+         services.AddSpaStaticFiles(configuration =>
+         {
+            configuration.RootPath = "ClientApp/dist";
+         });
 
-			 services.AddSwaggerGen(c =>
-            {
-               c.SwaggerDoc("v1", new OpenApiInfo
-               {
-                  Title = "wEBcMD",
-                  Version = "v1",
-                  Description = "Simple project to play around with commands and specialized DTOs"
-               });
+         services.AddSwaggerGen(c =>
+           {
+              c.SwaggerDoc("v1", new OpenApiInfo
+              {
+                 Title = "wEBcMD",
+                 Version = "v1",
+                 Description = "Simple project to play around with commands and specialized DTOs"
+              });
                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
+               var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+              var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+              c.IncludeXmlComments(xmlPath);
+           });
 
-        }
+      }
 
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+      /// <summary>
+      /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+      /// </summary>
+      /// <param name="app"></param>
+      /// <param name="env"></param>
+      public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

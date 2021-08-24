@@ -39,7 +39,8 @@ export class SetAdressAccess  extends CommandWrapper {
       return JSON.parse(this.getArgument("Result")) as AdressDTO ;
    }
 
-
+         
+   /// <summary>Calls the command</summary>
    execute(id: Guid, adress: AdressDTO): Promise<AdressDTO> {
       this.Id = id;
       this.Adress = adress;
@@ -53,3 +54,4 @@ export class SetAdressAccess  extends CommandWrapper {
       });
    }
 };
+      

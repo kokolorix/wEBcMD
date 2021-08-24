@@ -15,6 +15,6 @@ import { CommandDTO } from "../api/CommandDTO";
  */
 export class SampleCommand extends SampleCommandAccess {
 
-	constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
 
 };

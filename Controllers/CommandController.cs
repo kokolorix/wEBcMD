@@ -84,6 +84,7 @@ namespace wEBcMD.Controllers
             return SampleCommand.ExecuteCommand(cmd);
          else if(FindAdresses.IsForMe(cmd))
             return FindAdresses.ExecuteCommand(cmd);
+         // INSERT NEW DISPATCHERS HERE
          // cmd.Arguments.Add(new PropertyDTO{Name="B", Value="b value"});
          return cmd;
          // throw new NotImplementedException();
