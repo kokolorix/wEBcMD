@@ -15,7 +15,7 @@
 		<Summary>Addresses search, with multiple tokens</Summary>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="SearchText" type="String" modifier="in" summary="Search text, can contain several words separated by spaces"/>
-		<ParameterType name="SearchResult" type="AdressDTO[]" modifier="out" summary="The result of the search is a list of AddressDTO objects"/>
+		<ParameterType name="Result" type="AdressDTO[]" modifier="out" summary="The result of the search is a list of AddressDTO objects"/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
 	<CommandWrapper name="GetAdress" category="Adresses" id="c6771f60-a64b-4775-a006-a2bce00b23a4">

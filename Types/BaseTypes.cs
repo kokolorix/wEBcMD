@@ -41,4 +41,15 @@ namespace wEBcMD
       new public static Guid TypeId { get => System.Guid.Parse("2c8c1feb-0d04-45d2-bbe7-fe137450412e"); }
    };
 
+
+   static class BaseTypesDispatcher
+   {
+      public static CommandDTO Dispatch(CommandDTO dto)
+      {
+         if (null == dto)
+            return dto;
+         
+         return null;
+      }
+   }
 }

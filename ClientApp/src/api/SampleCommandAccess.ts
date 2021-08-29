@@ -28,7 +28,8 @@ export class SampleCommandAccess  extends CommandWrapper {
     * and has a multiline comment
     */
    get FirstOne() : string{
-      return this.getArgument("FirstOne");
+      let firstOne : string = this.getArgument("FirstOne");
+         return firstOne;
    }
    set FirstOne( val : string) {
       this.setArgument("FirstOne", val);
@@ -36,26 +37,29 @@ export class SampleCommandAccess  extends CommandWrapper {
 
    /** The SecondOne is a boolean parameter */
    get SecondOne() : boolean{
-      return Boolean(JSON.parse(this.getArgument("SecondOne")));
+      let secondOne : string = this.getArgument("SecondOne");
+      if (!secondOne)
+         return false;
+      return Boolean(JSON.parse(secondOne));
    }
    set SecondOne( val : boolean) {
       this.setArgument("SecondOne", val.toString());
    }
 
 
-         
    /// <summary>Calls the command</summary>
    execute(firstOne: string, secondOne: boolean): Promise<void> {
       this.FirstOne = firstOne;
       this.SecondOne = secondOne;
-      return SampleCommandAccess._service.executeCommand(this.DTO)
+      console.log('call ' + JSON.stringify(this.DTO));
+      return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
-         return new SampleCommandAccess(cmd).Result
+         console.log('return with result ' + JSON.stringify(cmd));
+         return;
       })
       .catch((e) =>{
-         console.log(e);
+         console.log('return with error ' + JSON.stringify(e));
          return new Promise<void>(null);
       });
    }
 };
-      

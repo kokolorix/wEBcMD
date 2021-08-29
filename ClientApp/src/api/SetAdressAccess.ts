@@ -20,7 +20,10 @@ export class SetAdressAccess  extends CommandWrapper {
 
    /** Id */
    get Id() : Guid{
-      return Guid.parse(this.getArgument("Id"));
+      let id : string = this.getArgument("Id");
+      if (!id)
+         return Guid.parse(Guid.EMPTY);
+      return Guid.parse(id);
    }
    set Id( val : Guid) {
       this.setArgument("Id", val.toString());
@@ -28,7 +31,10 @@ export class SetAdressAccess  extends CommandWrapper {
 
    /** The address which should be saved, or null if it should be deleted. */
    get Adress() : AdressDTO{
-      return JSON.parse(this.getArgument("Adress")) as AdressDTO ;
+      let adress : string = this.getArgument("Adress");
+      if (!adress)
+         return null;
+      return JSON.parse(adress) as AdressDTO ;
    }
    set Adress( val : AdressDTO) {
       this.setArgument("Adress", JSON.stringify(val));
@@ -36,22 +42,25 @@ export class SetAdressAccess  extends CommandWrapper {
 
    /** The address stored */
    get Result() : AdressDTO{
-      return JSON.parse(this.getArgument("Result")) as AdressDTO ;
+      let result : string = this.getArgument("Result");
+      if (!result)
+         return null;
+      return JSON.parse(result) as AdressDTO ;
    }
 
-         
    /// <summary>Calls the command</summary>
    execute(id: Guid, adress: AdressDTO): Promise<AdressDTO> {
       this.Id = id;
       this.Adress = adress;
-      return SetAdressAccess._service.executeCommand(this.DTO)
+      console.log('call ' + JSON.stringify(this.DTO));
+      return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
-         return new SetAdressAccess(cmd).Result
+         console.log('return with result ' + JSON.stringify(cmd));
+         return new SetAdressAccess(cmd).Result;
       })
       .catch((e) =>{
-         console.log(e);
+         console.log('return with error ' + JSON.stringify(e));
          return new Promise<AdressDTO>(null);
       });
    }
 };
-      

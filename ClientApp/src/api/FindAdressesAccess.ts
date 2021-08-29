@@ -18,29 +18,33 @@ export class FindAdressesAccess  extends CommandWrapper {
 
    /** Search text, can contain several words separated by spaces */
    get SearchText() : string{
-      return this.getArgument("SearchText");
+      let searchText : string = this.getArgument("SearchText");
+         return searchText;
    }
    set SearchText( val : string) {
       this.setArgument("SearchText", val);
    }
 
    /** The result of the search is a list of AddressDTO objects */
-   get SearchResult() : AdressDTO[]{
-      return JSON.parse(this.getArgument("SearchResult")) as AdressDTO[] ;
+   get Result() : AdressDTO[]{
+      let result : string = this.getArgument("Result");
+      if (!result)
+         return null;
+      return JSON.parse(result) as AdressDTO[] ;
    }
 
-         
    /// <summary>Calls the command</summary>
-   execute(searchText: string): Promise<void> {
+   execute(searchText: string): Promise<AdressDTO[]> {
       this.SearchText = searchText;
-      return FindAdressesAccess._service.executeCommand(this.DTO)
+      console.log('call ' + JSON.stringify(this.DTO));
+      return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
-         return new FindAdressesAccess(cmd).Result
+         console.log('return with result ' + JSON.stringify(cmd));
+         return new FindAdressesAccess(cmd).Result;
       })
       .catch((e) =>{
-         console.log(e);
-         return new Promise<void>(null);
+         console.log('return with error ' + JSON.stringify(e));
+         return new Promise<AdressDTO[]>(null);
       });
    }
 };
-      

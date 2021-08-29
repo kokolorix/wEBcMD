@@ -17,7 +17,10 @@ export class GetAdressAccess  extends CommandWrapper {
 
    /** Id */
    get Id() : Guid{
-      return Guid.parse(this.getArgument("Id"));
+      let id : string = this.getArgument("Id");
+      if (!id)
+         return Guid.parse(Guid.EMPTY);
+      return Guid.parse(id);
    }
    set Id( val : Guid) {
       this.setArgument("Id", val.toString());
@@ -25,21 +28,24 @@ export class GetAdressAccess  extends CommandWrapper {
 
    /** The address found or null if it does not exist */
    get Result() : AdressDTO{
-      return JSON.parse(this.getArgument("Result")) as AdressDTO ;
+      let result : string = this.getArgument("Result");
+      if (!result)
+         return null;
+      return JSON.parse(result) as AdressDTO ;
    }
 
-         
    /// <summary>Calls the command</summary>
    execute(id: Guid): Promise<AdressDTO> {
       this.Id = id;
-      return GetAdressAccess._service.executeCommand(this.DTO)
+      console.log('call ' + JSON.stringify(this.DTO));
+      return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
-         return new GetAdressAccess(cmd).Result
+         console.log('return with result ' + JSON.stringify(cmd));
+         return new GetAdressAccess(cmd).Result;
       })
       .catch((e) =>{
-         console.log(e);
+         console.log('return with error ' + JSON.stringify(e));
          return new Promise<AdressDTO>(null);
       });
    }
 };
-      

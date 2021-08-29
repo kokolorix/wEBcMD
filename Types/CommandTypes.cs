@@ -58,4 +58,18 @@ namespace wEBcMD
       }
    };
 
+
+   static class CommandTypesDispatcher
+   {
+      public static CommandDTO Dispatch(CommandDTO dto)
+      {
+         if (null == dto)
+            return dto;
+         
+         else if(SampleCommand.IsForMe(dto))
+            return SampleCommand.ExecuteCommand(dto);
+         
+         return null;
+      }
+   }
 }

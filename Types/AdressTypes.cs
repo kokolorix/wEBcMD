@@ -45,12 +45,12 @@ namespace wEBcMD
          get => this.String["SearchText"];
          set => this.String["SearchText"] = value;
       }
-      /// <summary> access helper forSearchResult</summary>
-      protected DTOValues<List<AdressDTO>> ListSearchResult2 { get => new(Cmd.Arguments); }
+      /// <summary> access helper forResult</summary>
+      protected DTOValues<List<AdressDTO>> ListResult2 { get => new(Cmd.Arguments); }
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
-      public List<AdressDTO> SearchResult {
-         get => this.ListSearchResult2["SearchResult"];
-         set => this.ListSearchResult2["SearchResult"] = value;
+      public List<AdressDTO> Result {
+         get => this.ListResult2["Result"];
+         set => this.ListResult2["Result"] = value;
       }
    };
 
@@ -120,4 +120,24 @@ namespace wEBcMD
       }
    };
 
+
+   static class AdressTypesDispatcher
+   {
+      public static CommandDTO Dispatch(CommandDTO dto)
+      {
+         if (null == dto)
+            return dto;
+         
+         else if(FindAdresses.IsForMe(dto))
+            return FindAdresses.ExecuteCommand(dto);
+         
+         else if(GetAdress.IsForMe(dto))
+            return GetAdress.ExecuteCommand(dto);
+         
+         else if(SetAdress.IsForMe(dto))
+            return SetAdress.ExecuteCommand(dto);
+         
+         return null;
+      }
+   }
 }

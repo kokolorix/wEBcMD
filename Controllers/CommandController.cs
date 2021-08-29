@@ -57,37 +57,32 @@ namespace wEBcMD.Controllers
       ///        ]
       ///      }
       ///
-      ///
-      ///      {
-      ///        "id": "ee72eaab-d696-46e6-ab41-56f499579be7",
-      ///        "type": "cb0ab4ab-9aeb-4b42-ac2d-152a4555370a",
-      ///        "response": false,
-      ///        "arguments": [
-      ///          {
-      ///            "name": "FirstOne",
-      ///            "value": "The first argument"
-      ///          },
-      ///          {
-      ///            "name": "SecondOne",
-      ///            "value": "true"
-      ///          }
-      ///        ]
-      ///      }
-      ///
       /// </remarks>
       [HttpPost]
       [Route("execute")]
       public CommandDTO ExecuteCommand(CommandDTO cmd)
       {
          Log.Trace(_logger, $"Command of type '{cmd.Type}' was called");
-         if(SampleCommand.IsForMe(cmd))
-            return SampleCommand.ExecuteCommand(cmd);
-         else if(FindAdresses.IsForMe(cmd))
-            return FindAdresses.ExecuteCommand(cmd);
-         // INSERT NEW DISPATCHERS HERE
-         // cmd.Arguments.Add(new PropertyDTO{Name="B", Value="b value"});
-         return cmd;
-         // throw new NotImplementedException();
+         CommandDTO result;
+
+         //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
+
+         result = AdressTypesDispatcher.Dispatch(cmd);
+         if(null != result)
+            return result;
+
+         result = BaseTypesDispatcher.Dispatch(cmd);
+         if(null != result)
+            return result;
+
+         result = CommandTypesDispatcher.Dispatch(cmd);
+         if(null != result)
+            return result;
+
+         //******** NEW DISPATCHERS INSERTED HERE                      ********//
+         //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
+
+         throw new NotImplementedException();
       }
    }
 }

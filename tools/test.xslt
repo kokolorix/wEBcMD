@@ -19,7 +19,7 @@
             <xsl:for-each select="$lines">
             <xsl:message select="concat('pos: ', position())"/>
                <xsl:choose>
-                  <xsl:when test="contains(.,'INSERT NEW DISPATCHERS HERE')">
+                  <xsl:when test="contains(.,'NEW DISPATCHERS INSERTED HERE')">
                      <xsl:value-of select="'         '"/>
                      <xsl:if test="$lines[matches(.,'return \w+\.ExecuteCommand')]">
                         <xsl:value-of select="'else '"/>

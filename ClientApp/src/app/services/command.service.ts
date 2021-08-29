@@ -9,9 +9,13 @@ export class CommandService {
    protected _http: HttpClient;
    protected _baseUri: string;
 
+   private static _service : CommandService;
+   public static get Service() : CommandService { return CommandService._service; }
+
    constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
       this._http = http;
       this._baseUri = baseUrl;
+      CommandService._service = this;
    }
 
    executeCommand(command: CommandDTO): Promise<CommandDTO> {
