@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit {
          City: "Nieniken",
          Postcode: "0000"
       }
-      setAdress.execute(Guid.createEmpty(), adress).then(a => this._adress = a);
+      setAdress.execute(Guid.createEmpty(), adress).then(
+         a => this._adress = a).then(a=>this._adress = a
+      );
 
       // sample.Ar[]
       // const headers = new HttpHeaders().set("Content-Type", 'application/json');

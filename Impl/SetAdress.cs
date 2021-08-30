@@ -9,6 +9,10 @@ namespace wEBcMD
       public partial CommandDTO ExecuteCommand()
       {
          Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
+         this.Result = this.Adress;
+         this.Adress = null;
+         this.Result.Id = System.Guid.NewGuid();
+         this.Result.Type = AdressDTO.TypeId;
          return Cmd;
       }
    };

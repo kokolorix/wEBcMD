@@ -389,31 +389,31 @@
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
       <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Impl', $fn), $d)"/>
-      <!-- <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))"> -->
-      <xsl:message select="concat( $filePath, ' created')" />
-      <xsl:result-document href="{$filePath}" format="text-def">
-         <xsl:variable name="base" select="./Base/@name" />
-         <xsl:variable name="dto" select="./DTO/@name"/>
-         <xsl:value-of select="concat('using System;', $nl1)" />
-         <xsl:value-of select="concat('using System.Reflection;', $nl2)" />
-         <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
-         <xsl:value-of select="concat('{', $nl1)" />
-         <xsl:value-of select="concat($t1, 'public partial class ', $name, ' : ', $base)" />
-         <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
-         <!--  -->
-         <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Execute the command', '&lt;/summary&gt;', $nl1)" />
-         <xsl:value-of select="concat($t2, 'public partial ', $dto, ' ExecuteCommand()', $nl1)" />
-         <xsl:value-of select="concat($t2, '{', $nl1)" />
-         <!--  -->
-         <xsl:value-of select="concat($t3, 'Log.Trace($&quot;Implementation in {MethodBase.GetCurrentMethod()}&quot;);', $nl1)" />
-         <xsl:value-of select="concat($t3, 'return Cmd;', $nl1)" />
-         <!--  -->
-         <xsl:value-of select="concat($t2, '}', $nl1)" />
-         <!--  -->
-         <xsl:value-of select="concat($t1, '};', $nl2)" />
-         <xsl:value-of select="concat('}', $nl1)" />
-      </xsl:result-document>
-      <!-- </xsl:if> -->
+      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
+         <xsl:message select="concat( $filePath, ' created')" />
+         <xsl:result-document href="{$filePath}" format="text-def">
+            <xsl:variable name="base" select="./Base/@name" />
+            <xsl:variable name="dto" select="./DTO/@name"/>
+            <xsl:value-of select="concat('using System;', $nl1)" />
+            <xsl:value-of select="concat('using System.Reflection;', $nl2)" />
+            <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
+            <xsl:value-of select="concat('{', $nl1)" />
+            <xsl:value-of select="concat($t1, 'public partial class ', $name, ' : ', $base)" />
+            <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Execute the command', '&lt;/summary&gt;', $nl1)" />
+            <xsl:value-of select="concat($t2, 'public partial ', $dto, ' ExecuteCommand()', $nl1)" />
+            <xsl:value-of select="concat($t2, '{', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t3, 'Log.Trace($&quot;Implementation in {MethodBase.GetCurrentMethod()}&quot;);', $nl1)" />
+            <xsl:value-of select="concat($t3, 'return Cmd;', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t2, '}', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t1, '};', $nl2)" />
+            <xsl:value-of select="concat('}', $nl1)" />
+         </xsl:result-document>
+      </xsl:if>
    </xsl:template>
    <!--=======================================================================-->
    <!--process the Base node -->
