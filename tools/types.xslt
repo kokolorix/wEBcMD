@@ -306,7 +306,7 @@
    <!--process an ObjectType node -->
    <!--=======================================================================-->
    <xsl:template match="ObjectType" mode="dto.cs">
-      <xsl:message select="concat('process ObjectType mode dto.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process ObjectType mode dto.cs ', @name)"/> -->
       <xsl:variable name="category" select="@category" />
       <xsl:variable name="name" select="@name" />
       <xsl:variable name="id" select="@id" />
@@ -344,7 +344,7 @@
    <!--process an CommandWrapper node -->
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="wrapper.cs">
-      <xsl:message select="concat('process CommandWrapper mode wrapper.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process CommandWrapper mode wrapper.cs ', @name)"/> -->
       <xsl:variable name="category" select="@category" />
       <xsl:variable name="name" select="@name" />
       <xsl:variable name="id" select="@id" />
@@ -386,7 +386,7 @@
    <!--create the Impl, if not exists -->
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="impl.wrapper.cs">
-      <xsl:message select="concat('process CommandWrapper mode impl.wrapper.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process CommandWrapper mode impl.wrapper.cs ', @name)"/> -->
       <xsl:variable name="name" select="@name" />
       <!-- file name -->
       <xsl:variable name="fn" select="concat($name, '.cs')" />
@@ -427,7 +427,7 @@
    <!--process the Base node -->
    <!--=======================================================================-->
    <xsl:template match="Base" mode="dto.cs">
-      <xsl:message select="concat('process Base mode dto.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process Base mode dto.cs ', @name)"/> -->
       <xsl:variable name="category" select="@category" />
       <xsl:variable name="name" select="@name" />
       <xsl:variable name="base" select="concat($category, '::', $name)" />
@@ -439,7 +439,7 @@
    <!--process an Property node for PropertyT -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="dto.cs">
-      <xsl:message select="concat('process PropertyType mode dto.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process PropertyType mode dto.cs ', @name)"/> -->
       <xsl:variable name="name" select="@name" />
       <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t2" />
@@ -463,7 +463,7 @@
    <!--process an Property node for wrapper -->
    <!--=======================================================================-->
    <xsl:template match="PropertyType" mode="wrapper.cs">
-      <xsl:message select="concat('process PropertyType mode wrapper.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process PropertyType mode wrapper.cs ', @name)"/> -->
       <xsl:variable name="name" select="@name" />
       <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
@@ -477,7 +477,7 @@
    <!--process an Paarameter node for wrapper -->
    <!--=======================================================================-->
    <xsl:template match="ParameterType" mode="wrapper.cs">
-      <xsl:message select="concat('process ParameterType mode wrapper.cs ', @name)"/>
+      <!-- <xsl:message select="concat('process ParameterType mode wrapper.cs ', @name)"/> -->
       <xsl:variable name="name" select="@name" />
       <!-- data type -->
       <xsl:variable name="datatype" as="xs:string" select="cs:data-type(.)"/>
@@ -549,7 +549,7 @@
       <xsl:variable name="fn" select="concat('Command', 'Controller.cs')" />
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
-      <xsl:message select="concat('lines: ', count($lines))"/>
+      <!-- <xsl:message select="concat('lines: ', count($lines))"/> -->
       <xsl:variable name="name" select="concat(wc:file-name(.), 'Dispatcher')"/>
       <xsl:variable name="regex" select="concat($name, '\.Dispatch')"/>
       <xsl:if test="not($lines[matches(., $regex)])">
@@ -683,16 +683,15 @@
    <xsl:function name="cs:access-name" as="xs:string">
       <xsl:param name="pt" as="node()"/>
       <xsl:variable name="datatype" as="xs:string" select="cs:data-type($pt)" />
-      <xsl:value-of select="$datatype"/>
       <xsl:variable name="name" as="xs:string" select="$pt/@name"/>
-      <xsl:variable name="accessName" as="xs:string">
+      <xsl:variable name="accessName">
          <xsl:choose>
             <xsl:when test="starts-with($datatype, 'List&lt;')"><xsl:value-of select="concat('List', $name)"/></xsl:when>
-            <xsl:when test="ends-with($datatype, 'DTO')"><xsl:value-of select="concat($name)"/></xsl:when>
+            <xsl:when test="ends-with($datatype, 'DTO')"><xsl:value-of select="$name"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$datatype"/></xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <xsl:value-of select="$accessName"/>
+      <xsl:value-of select="concat('_', wc:camelCaseWord($accessName))"/>
    </xsl:function>
    <!--=======================================================================-->
    <!-- Evaluate the datatype for C# -->
