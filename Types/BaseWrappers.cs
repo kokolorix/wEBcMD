@@ -43,11 +43,11 @@ namespace wEBcMD
       public CommandDTO Cmd {get; init; }
 
       public CommandWrapper(CommandDTO dto) {
-         Cmd = null == dto ? new() : dto;
-         this.String = new(Cmd.Arguments);
-         this.Boolean = new(Cmd.Arguments);
-         this.Guid = new(Cmd.Arguments);
-         this.BaseDTO = new(Cmd.Arguments);
+         Cmd = dto ?? new();
+         this._string = new(Cmd.Arguments);
+         this._boolean = new(Cmd.Arguments);
+         this._guid = new(Cmd.Arguments);
+         this._baseDTO = new(Cmd.Arguments);
       }
       public class StringValues
       {
@@ -66,7 +66,7 @@ namespace wEBcMD
             }
          }
       }
-      protected StringValues String { get; }
+      protected StringValues _string;
 
       public class BooleanValues
       {
@@ -85,7 +85,7 @@ namespace wEBcMD
             }
          }
       }
-      protected BooleanValues Boolean { get; }
+      protected BooleanValues _boolean;
       public class GuidValues
       {
          private readonly List<PropertyDTO> _list;
@@ -103,11 +103,11 @@ namespace wEBcMD
             }
          }
       }
-      protected GuidValues Guid { get; }
+      protected GuidValues _guid;
       protected class DTOValues<T>
       {
          private readonly List<PropertyDTO> _list;
-         private Dictionary<string,T> _map;
+         private readonly Dictionary<string,T> _map;
          public DTOValues(List<PropertyDTO> list) {
             _list = list;
             _map = new();
@@ -128,14 +128,13 @@ namespace wEBcMD
          {
             get
             {
-               T dto;
-               if(!_map.TryGetValue(name, out dto))
-               {
-                  string jsonString = _list.Find(p => p.Name == name)?.Value;
-                  if(!string.IsNullOrEmpty(jsonString))
-                     dto = JsonSerializer.Deserialize<T>(jsonString);
-                  _map[name] = dto;
-              }
+               if (_map.TryGetValue(name, out T dto))
+                  return dto;
+
+               string jsonString = _list.Find(p => p.Name == name)?.Value;
+               if (!string.IsNullOrEmpty(jsonString))
+                  dto = JsonSerializer.Deserialize<T>(jsonString);
+               _map[name] = dto;
                return dto;
             }
             set
@@ -144,6 +143,6 @@ namespace wEBcMD
             }
          }
       }
-      protected DTOValues<BaseDTO> BaseDTO { get; }
+      protected DTOValues<BaseDTO> _baseDTO;
    }
 }

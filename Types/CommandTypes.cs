@@ -32,7 +32,7 @@ namespace wEBcMD
    public partial class SampleCommand : CommandWrapper
    {
       /// <summary>Constructor of SampleCommand</summary>
-      public SampleCommand(CommandDTO dto):base(dto){
+      public SampleCommand(CommandDTO dto = null):base(dto){
       }
       /// <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
@@ -49,13 +49,13 @@ namespace wEBcMD
       /// 
       /// </summary>
       public String FirstOne {
-         get => this.String["FirstOne"];
-         set => this.String["FirstOne"] = value;
+         get => this._string["FirstOne"];
+         set => this._string["FirstOne"] = value;
       }
       /// <summary>The SecondOne is a boolean parameter</summary>
       public Boolean SecondOne {
-         get => this.Boolean["SecondOne"];
-         set => this.Boolean["SecondOne"] = value;
+         get => this._boolean["SecondOne"];
+         set => this._boolean["SecondOne"] = value;
       }
    };
 

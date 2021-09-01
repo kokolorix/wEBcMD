@@ -31,9 +31,8 @@ namespace wEBcMD
    public partial class FindAdresses : CommandWrapper
    {
       /// <summary>Constructor of FindAdresses</summary>
-      public FindAdresses(CommandDTO dto):base(dto){
-         _string = new(Cmd.Arguments);
-         _listResult = new(Cmd.Arguments);
+      public FindAdresses(CommandDTO dto = null):base(dto){
+         _result = new(Cmd.Arguments);
       }
       /// <summary>13b2f4da-711a-451e-b435-2c2dc1fbbe4e is the Id of FindAdresses type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
@@ -43,19 +42,17 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new FindAdresses(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary> access helper forSearchText</summary>
-      protected DTOValues<String> _string { get; }
       /// <summary>Search text, can contain several words separated by spaces</summary>
       public String SearchText {
          get => this._string["SearchText"];
          set => this._string["SearchText"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<List<AdressDTO>> _listResult { get; }
+      /// <summary> access helper for Result</summary>
+      protected DTOValues<List<AdressDTO>> _result;
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
       public List<AdressDTO> Result {
-         get => this._listResult["Result"];
-         set => this._listResult["Result"] = value;
+         get => this._result["Result"];
+         set => this._result["Result"] = value;
       }
    };
 
@@ -64,8 +61,7 @@ namespace wEBcMD
    public partial class GetAdress : CommandWrapper
    {
       /// <summary>Constructor of GetAdress</summary>
-      public GetAdress(CommandDTO dto):base(dto){
-         _guid = new(Cmd.Arguments);
+      public GetAdress(CommandDTO dto = null):base(dto){
          _result = new(Cmd.Arguments);
       }
       /// <summary>c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type.</summary>
@@ -76,15 +72,13 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new GetAdress(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary> access helper forId</summary>
-      protected DTOValues<Guid> _guid { get; }
       /// <summary>Id</summary>
       public Guid Id {
          get => this._guid["Id"];
          set => this._guid["Id"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<AdressDTO> _result { get; }
+      /// <summary> access helper for Result</summary>
+      protected DTOValues<AdressDTO> _result;
       /// <summary>The address found or null if it does not exist</summary>
       public AdressDTO Result {
          get => this._result["Result"];
@@ -100,8 +94,7 @@ namespace wEBcMD
    public partial class SetAdress : CommandWrapper
    {
       /// <summary>Constructor of SetAdress</summary>
-      public SetAdress(CommandDTO dto):base(dto){
-         _guid = new(Cmd.Arguments);
+      public SetAdress(CommandDTO dto = null):base(dto){
          _adress = new(Cmd.Arguments);
          _result = new(Cmd.Arguments);
       }
@@ -113,22 +106,20 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new SetAdress(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary> access helper forId</summary>
-      protected DTOValues<Guid> _guid { get; }
       /// <summary>Id</summary>
       public Guid Id {
          get => this._guid["Id"];
          set => this._guid["Id"] = value;
       }
-      /// <summary> access helper forAdress</summary>
-      protected DTOValues<AdressDTO> _adress { get; }
+      /// <summary> access helper for Adress</summary>
+      protected DTOValues<AdressDTO> _adress;
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
       public AdressDTO Adress {
          get => this._adress["Adress"];
          set => this._adress["Adress"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<AdressDTO> _result { get; }
+      /// <summary> access helper for Result</summary>
+      protected DTOValues<AdressDTO> _result;
       /// <summary>The address stored</summary>
       public AdressDTO Result {
          get => this._result["Result"];

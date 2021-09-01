@@ -3,7 +3,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:filePath="http://www.w3.org/2005/02/xpath-functions"
-                xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes"
+                xmlns:xdt="http://www.w3.org/2005/02/xpath-dataTypes"
                 xmlns:functx="http://www.functx.com"
                 xmlns:wc="https://github.com/kokolorix/wEBcMD.git"
                 xmlns:ts="https://www.typescriptlang.org/"
@@ -258,26 +258,26 @@
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
-      <xsl:variable name="datatype" as="xs:string" select="ts:wrapper-data-type(.)"/>
+      <xsl:variable name="dataType" as="xs:string" select="ts:wrapper-data-type(.)"/>
       <!-- <xsl:if test="not(lower-case(@modifier)='out')"> -->
-      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $datatype, '{', $nl1)"/>
+      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $dataType, '{', $nl1)"/>
       <xsl:variable name="paramName" as="xs:string" select="wc:camelCaseWord(@name)"/>
       <xsl:value-of select="concat($t2, 'let ', $paramName, ' : string = this.getArgument(&quot;', @name, '&quot;);', $nl1)"/>
       <xsl:choose>
-         <xsl:when test="$datatype='boolean'">
+         <xsl:when test="$dataType='boolean'">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
             <xsl:value-of select="concat($t3, 'return false;', $nl1)"/>
             <xsl:value-of select="concat($t2, 'return Boolean(JSON.parse(', $paramName, '));', $nl1)"/>
          </xsl:when>
-         <xsl:when test="$datatype='Guid'">
+         <xsl:when test="$dataType='Guid'">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
             <xsl:value-of select="concat($t3, 'return Guid.parse(Guid.EMPTY);', $nl1)"/>
             <xsl:value-of select="concat($t2, 'return Guid.parse(', $paramName, ');', $nl1)"/>
          </xsl:when>
-         <xsl:when test="matches($datatype,'.+DTO')">
+         <xsl:when test="matches($dataType,'.+DTO')">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
             <xsl:value-of select="concat($t3, 'return null;', $nl1)"/>
-            <xsl:value-of select="concat($t2, 'return JSON.parse(', $paramName, ')', ' as ', $datatype, ' ;', $nl1)"/>
+            <xsl:value-of select="concat($t2, 'return JSON.parse(', $paramName, ')', ' as ', $dataType, ' ;', $nl1)"/>
          </xsl:when>
          <xsl:otherwise>
             <xsl:value-of select="concat($t3, 'return ', $paramName,';', $nl1)"/>
@@ -287,12 +287,12 @@
       <!-- </xsl:if> -->
       <!-- <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/> -->
       <xsl:if test="not(lower-case(@modifier)='out')">
-         <xsl:value-of select="concat($t1, 'set ', @name, '( val : ', $datatype, ') {', $nl1)"/>
+         <xsl:value-of select="concat($t1, 'set ', @name, '( val : ', $dataType, ') {', $nl1)"/>
          <xsl:choose>
-            <xsl:when test="matches($datatype,'(boolean)|(Guid)')">
+            <xsl:when test="matches($dataType,'(boolean)|(Guid)')">
                <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', @name, '&quot;, val.toString());', $nl1)"/>
             </xsl:when>
-            <xsl:when test="matches($datatype,'.+DTO')">
+            <xsl:when test="matches($dataType,'.+DTO')">
                <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', @name, '&quot;, JSON.stringify(val));', $nl1)"/>
             </xsl:when>
             <xsl:otherwise>
@@ -358,11 +358,11 @@
       <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Constructor of ', $name,'&lt;/summary&gt;', $nl1)" />
-      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto):base(dto){', $nl1)" />
+      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto = null):base(dto){', $nl1)" />
       <xsl:for-each select="ParameterType">
          <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
          <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
-         <xsl:if test="not($dataType = $accessName)">
+         <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
             <xsl:value-of select="concat($t3, $accessName, ' = new(Cmd.Arguments);', $nl1)" />
          </xsl:if>
       </xsl:for-each>
@@ -444,13 +444,13 @@
       <xsl:call-template name="Summary.cs">
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
-      <xsl:variable name="datatype" as="xs:string" select="cs:data-type(.)"/>
-      <xsl:value-of select="concat($t2, 'public virtual ', $datatype)" />
+      <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
+      <xsl:value-of select="concat($t2, 'public virtual ', $dataType)" />
       <xsl:value-of select="concat(' ', $name, ' { get; set; }')" />
       <xsl:if test="@default">
          <xsl:choose>
-            <xsl:when test="starts-with($datatype, 'List')">
-               <xsl:value-of select="concat(' = new ', @datatype, '(){', '};')" />
+            <xsl:when test="starts-with($dataType, 'List')">
+               <xsl:value-of select="concat(' = new ', @dataType, '(){', '};')" />
             </xsl:when>
             <xsl:otherwise>
                <xsl:value-of select="concat(' = ', @default, ';')" />
@@ -480,17 +480,17 @@
       <!-- <xsl:message select="concat('process ParameterType mode wrapper.cs ', @name)"/> -->
       <xsl:variable name="name" select="@name" />
       <!-- data type -->
-      <xsl:variable name="datatype" as="xs:string" select="cs:data-type(.)"/>
+      <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
       <!-- access name -->
       <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
-      <xsl:if test="$datatype != $accessName">
-         <xsl:value-of select="concat($t2, '/// &lt;summary&gt; access helper for', $name, '&lt;/summary&gt;', $nl1)" />
-         <xsl:value-of select="concat($t2, 'protected DTOValues&lt;', $datatype, '&gt; ', $accessName, ' { get; }', $nl1)" />
+      <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
+         <xsl:value-of select="concat($t2, '/// &lt;summary&gt; access helper for ', $name, '&lt;/summary&gt;', $nl1)" />
+         <xsl:value-of select="concat($t2, 'protected DTOValues&lt;', $dataType, '&gt; ', $accessName, ';', $nl1)" />
       </xsl:if>
       <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
-      <xsl:value-of select="concat($t2, 'public ', $datatype, ' ', $name, ' {', $nl1)" />
+      <xsl:value-of select="concat($t2, 'public ', $dataType, ' ', $name, ' {', $nl1)" />
       <xsl:value-of select="concat($t3, 'get =&gt; this.', $accessName, '[&quot;', @name, '&quot;];', $nl1)" />
       <xsl:value-of select="concat($t3, 'set =&gt; this.', $accessName, '[&quot;', @name, '&quot;] = value;', $nl1)" />
       <xsl:value-of select="concat($t2, '}', $nl1)" />
@@ -652,7 +652,7 @@
       </xsl:choose>
    </xsl:function>
    <!--=======================================================================-->
-   <!-- Evaluate the datatype for TypeScript -->
+   <!-- Evaluate the dataType for TypeScript -->
    <!--=======================================================================-->
    <xsl:function name="ts:wrapper-data-type">
       <xsl:param name="pt" as="node()"/>
@@ -682,19 +682,20 @@
    <!--=======================================================================-->
    <xsl:function name="cs:access-name" as="xs:string">
       <xsl:param name="pt" as="node()"/>
-      <xsl:variable name="datatype" as="xs:string" select="cs:data-type($pt)" />
+      <xsl:variable name="dataType" as="xs:string" select="cs:data-type($pt)" />
       <xsl:variable name="name" as="xs:string" select="$pt/@name"/>
+      <!-- <xsl:value-of select="concat('_', wc:camelCaseWord($name))"/> -->
       <xsl:variable name="accessName">
          <xsl:choose>
-            <xsl:when test="starts-with($datatype, 'List&lt;')"><xsl:value-of select="concat('List', $name)"/></xsl:when>
-            <xsl:when test="ends-with($datatype, 'DTO')"><xsl:value-of select="$name"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$datatype"/></xsl:otherwise>
+            <xsl:when test="starts-with($dataType, 'List&lt;')"><xsl:value-of select="concat('_', wc:camelCaseWord($name))"/></xsl:when>
+            <xsl:when test="ends-with($dataType, 'DTO')"><xsl:value-of select="concat('_', wc:camelCaseWord($name))"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="concat('_', wc:camelCaseWord($dataType))"/></xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <xsl:value-of select="concat('_', wc:camelCaseWord($accessName))"/>
+      <xsl:value-of select="$accessName"/>
    </xsl:function>
    <!--=======================================================================-->
-   <!-- Evaluate the datatype for C# -->
+   <!-- Evaluate the dataType for C# -->
    <!--=======================================================================-->
    <xsl:function name="cs:data-type" as="xs:string">
       <xsl:param name="pt" as="node()"/>
@@ -728,6 +729,14 @@
       <xsl:value-of select="concat($first, $everythingElse)"/>
    </xsl:function>
    <!--=======================================================================-->
+   <!-- Changes the passed identifier to PascalCase notation -->
+   <!--=======================================================================-->
+   <xsl:function name="wc:pascalCase" as="xs:string">
+      <xsl:param name="text" />
+      <xsl:variable name="first" select="translate(substring($text,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+      <xsl:variable name="everythingElse" select="substring($text,2,string-length($text)-1)" />
+      <xsl:value-of select="concat($first, $everythingElse)"/>
+   </xsl:function>   <!--=======================================================================-->
    <!-- determines the correct delimiter for the expanded path -->
    <!--=======================================================================-->
    <xsl:function name="wc:path-delimiter" as="xs:string">
