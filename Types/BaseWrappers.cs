@@ -42,7 +42,13 @@ namespace wEBcMD
    {
       public CommandDTO Cmd {get; init; }
 
-      public CommandWrapper(CommandDTO dto) => Cmd = dto;
+      public CommandWrapper(CommandDTO dto) {
+         Cmd = null == dto ? new() : dto;
+         this.String = new(Cmd.Arguments);
+         this.Boolean = new(Cmd.Arguments);
+         this.Guid = new(Cmd.Arguments);
+         this.BaseDTO = new(Cmd.Arguments);
+      }
       public class StringValues
       {
          private readonly List<PropertyDTO> _list;
@@ -60,9 +66,7 @@ namespace wEBcMD
             }
          }
       }
-      protected StringValues String{
-         get => new(Cmd.Arguments);
-      }
+      protected StringValues String { get; }
 
       public class BooleanValues
       {
@@ -81,9 +85,7 @@ namespace wEBcMD
             }
          }
       }
-      protected BooleanValues Boolean{
-         get => new(Cmd.Arguments);
-      }
+      protected BooleanValues Boolean { get; }
       public class GuidValues
       {
          private readonly List<PropertyDTO> _list;
@@ -101,32 +103,47 @@ namespace wEBcMD
             }
          }
       }
-      protected GuidValues Guid{
-         get => new(Cmd.Arguments);
-      }
+      protected GuidValues Guid { get; }
       protected class DTOValues<T>
       {
          private readonly List<PropertyDTO> _list;
-         public DTOValues(List<PropertyDTO> list) => _list = list;
-         public T this[string name]
+         private Dictionary<string,T> _map;
+         public DTOValues(List<PropertyDTO> list) {
+            _list = list;
+            _map = new();
+         }
+         ~DTOValues()
          {
-            get
+            foreach(var e in _map)
             {
-               string jsonString = _list.Find(p => p.Name == name)?.Value;
-               T dto = JsonSerializer.Deserialize<T>(jsonString);
-               return dto;
-            }
-            set
-            {
-               string jsonString = JsonSerializer.Serialize(value);
-               var p = _list.Find(i => i.Name == name);
+               string jsonString = JsonSerializer.Serialize(e.Value);
+               var p = _list.Find(i => i.Name == e.Key);
                if (null == p)
-                  _list.Add(new PropertyDTO() { Name = name, Value = jsonString });
+                  _list.Add(new PropertyDTO() { Name = e.Key, Value = jsonString });
                else
                   p.Value = jsonString;
             }
          }
+         public T this[string name]
+         {
+            get
+            {
+               T dto;
+               if(!_map.TryGetValue(name, out dto))
+               {
+                  string jsonString = _list.Find(p => p.Name == name)?.Value;
+                  if(!string.IsNullOrEmpty(jsonString))
+                     dto = JsonSerializer.Deserialize<T>(jsonString);
+                  _map[name] = dto;
+              }
+               return dto;
+            }
+            set
+            {
+               _map[name] = value;
+            }
+         }
       }
-      protected DTOValues<BaseDTO> BaseDTO { get => new(Cmd.Arguments); }
+      protected DTOValues<BaseDTO> BaseDTO { get; }
    }
 }

@@ -31,7 +31,8 @@ namespace wEBcMD
    public partial class FindAdresses : CommandWrapper
    {
       /// <summary>Constructor of FindAdresses</summary>
-      public FindAdresses(CommandDTO dto):base(dto){}
+      public FindAdresses(CommandDTO dto):base(dto){
+      }
       /// <summary>13b2f4da-711a-451e-b435-2c2dc1fbbe4e is the Id of FindAdresses type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -45,12 +46,10 @@ namespace wEBcMD
          get => this.String["SearchText"];
          set => this.String["SearchText"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<List<AdressDTO>> ListResult2 { get => new(Cmd.Arguments); }
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
       public List<AdressDTO> Result {
-         get => this.ListResult2["Result"];
-         set => this.ListResult2["Result"] = value;
+         get => this.List<AdressDTO>["Result"];
+         set => this.List<AdressDTO>["Result"] = value;
       }
    };
 
@@ -59,7 +58,8 @@ namespace wEBcMD
    public partial class GetAdress : CommandWrapper
    {
       /// <summary>Constructor of GetAdress</summary>
-      public GetAdress(CommandDTO dto):base(dto){}
+      public GetAdress(CommandDTO dto):base(dto){
+      }
       /// <summary>c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -73,12 +73,10 @@ namespace wEBcMD
          get => this.Guid["Id"];
          set => this.Guid["Id"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<AdressDTO> Result2 { get => new(Cmd.Arguments); }
       /// <summary>The address found or null if it does not exist</summary>
       public AdressDTO Result {
-         get => this.Result2["Result"];
-         set => this.Result2["Result"] = value;
+         get => this.AdressDTO["Result"];
+         set => this.AdressDTO["Result"] = value;
       }
    };
 
@@ -90,7 +88,8 @@ namespace wEBcMD
    public partial class SetAdress : CommandWrapper
    {
       /// <summary>Constructor of SetAdress</summary>
-      public SetAdress(CommandDTO dto):base(dto){}
+      public SetAdress(CommandDTO dto):base(dto){
+      }
       /// <summary>c84bb99b-2d11-4426-87fa-119dc892f4ec is the Id of SetAdress type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -104,19 +103,15 @@ namespace wEBcMD
          get => this.Guid["Id"];
          set => this.Guid["Id"] = value;
       }
-      /// <summary> access helper forAdress</summary>
-      protected DTOValues<AdressDTO> Adress2 { get => new(Cmd.Arguments); }
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
       public AdressDTO Adress {
-         get => this.Adress2["Adress"];
-         set => this.Adress2["Adress"] = value;
+         get => this.AdressDTO["Adress"];
+         set => this.AdressDTO["Adress"] = value;
       }
-      /// <summary> access helper forResult</summary>
-      protected DTOValues<AdressDTO> Result3 { get => new(Cmd.Arguments); }
       /// <summary>The address stored</summary>
       public AdressDTO Result {
-         get => this.Result3["Result"];
-         set => this.Result3["Result"] = value;
+         get => this.AdressDTO["Result"];
+         set => this.AdressDTO["Result"] = value;
       }
    };
 

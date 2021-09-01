@@ -358,7 +358,15 @@
       <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Constructor of ', $name,'&lt;/summary&gt;', $nl1)" />
-      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto):base(dto){}', $nl1)" />
+      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto):base(dto){', $nl1)" />
+      <xsl:for-each select="ParameterType">
+         <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
+         <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
+         <xsl:if test="not($dataType = $accessName)">
+            <xsl:value-of select="concat($t3, $accessName, ' = new(Cmd.Arguments);', $nl1)" />
+         </xsl:if>
+      </xsl:for-each>
+      <xsl:value-of select="concat($t2, '}', $nl1)" />
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', $id, ' is the Id of ', $name,' type.&lt;/summary&gt;', $nl1)" />
       <xsl:value-of select="concat($t2, 'public static Guid TypeId { get =&gt; System.Guid.Parse(&quot;', $id, '&quot;); }', $nl1)" />
@@ -474,16 +482,10 @@
       <!-- data type -->
       <xsl:variable name="datatype" as="xs:string" select="cs:data-type(.)"/>
       <!-- access name -->
-      <xsl:variable name="accessName" as="xs:string">
-         <xsl:choose>
-            <xsl:when test="starts-with($datatype, 'List&lt;')"><xsl:value-of select="concat('List', $name, position())"/></xsl:when>
-            <xsl:when test="ends-with($datatype, 'DTO')"><xsl:value-of select="concat($name, position())"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$datatype"/></xsl:otherwise>
-         </xsl:choose>
-      </xsl:variable>
+      <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
       <xsl:if test="$datatype != $accessName">
          <xsl:value-of select="concat($t2, '/// &lt;summary&gt; access helper for', $name, '&lt;/summary&gt;', $nl1)" />
-         <xsl:value-of select="concat($t2, 'protected DTOValues&lt;', $datatype, '&gt; ', $accessName, ' { get => new(Cmd.Arguments); }', $nl1)" />
+         <xsl:value-of select="concat($t2, 'protected DTOValues&lt;', $datatype, '&gt; ', $accessName, ' { get; }', $nl1)" />
       </xsl:if>
       <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
@@ -674,6 +676,23 @@
          <xsl:when test="matches($pt/@type, 'DTO(\[\])?$')"><xsl:value-of select="$pt/@type"/></xsl:when>
          <xsl:otherwise>string</xsl:otherwise>
       </xsl:choose>
+   </xsl:function>
+   <!--=======================================================================-->
+   <!-- Evaluate the parameters access name for C# -->
+   <!--=======================================================================-->
+   <xsl:function name="cs:access-name" as="xs:string">
+      <xsl:param name="pt" as="node()"/>
+      <xsl:variable name="datatype" as="xs:string" select="cs:data-type($pt)" />
+      <xsl:value-of select="$datatype"/>
+      <xsl:variable name="name" as="xs:string" select="$pt/@name"/>
+      <xsl:variable name="accessName" as="xs:string">
+         <xsl:choose>
+            <xsl:when test="starts-with($datatype, 'List&lt;')"><xsl:value-of select="concat('List', $name)"/></xsl:when>
+            <xsl:when test="ends-with($datatype, 'DTO')"><xsl:value-of select="concat($name)"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$datatype"/></xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+      <xsl:value-of select="$accessName"/>
    </xsl:function>
    <!--=======================================================================-->
    <!-- Evaluate the datatype for C# -->

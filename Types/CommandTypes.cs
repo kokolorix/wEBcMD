@@ -32,7 +32,8 @@ namespace wEBcMD
    public partial class SampleCommand : CommandWrapper
    {
       /// <summary>Constructor of SampleCommand</summary>
-      public SampleCommand(CommandDTO dto):base(dto){}
+      public SampleCommand(CommandDTO dto):base(dto){
+      }
       /// <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
       /// <summary>Checks if the type of the DTO fits</summary>
