@@ -1,0 +1,526 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>wEBcMD</name>
+    </assembly>
+    <members>
+        <member name="T:wEBcMD.Controllers.CommandController">
+            <summary>
+            Controller around the commands
+            <list type="table">
+                <listheader>
+                    <term>The possible Commands are:</term>
+                    <description>description</description>
+                </listheader>
+                <item>
+                    <term>SampleCommand</term>
+                    <description>Sample to show how dispatch and execute a command.
+                    <seealso cref="M:wEBcMD.SampleCommand.ExecuteCommand"/>
+                    </description>
+                </item>
+            </list>   /// </summary>
+        </member>
+        <member name="M:wEBcMD.Controllers.CommandController.#ctor(Microsoft.Extensions.Logging.ILogger{wEBcMD.Controllers.CommandController})">
+            <summary>
+            Initialize the logger
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:wEBcMD.Controllers.CommandController.ExecuteCommand(wEBcMD.CommandDTO)">
+             <summary>
+             Resolve and execute the given command
+             </summary>
+             <param name="cmd"></param>
+             <returns>the commands response</returns>
+             <remarks>
+             Sample request for <see cref="M:wEBcMD.SampleCommand.ExecuteCommand"/>:
+            
+                  {
+                    "id": "ee72eaab-d696-46e6-ab41-56f499579be7",
+                    "type": "e3e185bd-5237-4574-977f-a040bbe12d35",
+                    "response": false,
+                    "arguments": [
+                      {
+                        "name": "FirstOne",
+                        "value": "The first argument"
+                      },
+                      {
+                        "name": "SecondOne",
+                        "value": "true"
+                      }
+                    ]
+                  }
+            
+             </remarks>
+        </member>
+        <member name="T:wEBcMD.Controllers.ObjectController">
+            <summary>
+            Controller for Objects
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectController.#ctor(Microsoft.Extensions.Logging.ILogger{wEBcMD.Controllers.ObjectController})">
+            <summary>
+            Initialize the logger
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectController.GetObject(System.Guid)">
+            <summary>
+            Get the one object with the given id
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectController.WriteObject(wEBcMD.ObjectDTO)">
+            <summary>
+            Write the given object to storage
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectController.GetObjectsRandom">
+            <summary>
+            Get some random objects
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:wEBcMD.Controllers.ObjectTypeController">
+            <summary>
+            Controller for Object-Types
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectTypeController.#ctor(Microsoft.Extensions.Logging.ILogger{wEBcMD.Controllers.ObjectTypeController})">
+            <summary>
+            Initialize the logger
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectTypeController.GetObjectType(System.Guid)">
+            <summary>
+            Get one concrete type
+            </summary>
+            <param name="Id"></param>
+            <returns>The type requested, or null if not exist</returns>
+        </member>
+        <member name="M:wEBcMD.Controllers.ObjectTypeController.GetObjectTypes">
+            <summary>
+             Get all object types
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:wEBcMD.Controllers.WeatherForecastController">
+            <summary>
+            Sample Controller
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Controllers.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{wEBcMD.Controllers.WeatherForecastController})">
+             <summary>
+            
+             </summary>
+             <param name="logger"></param>
+        </member>
+        <member name="M:wEBcMD.Controllers.WeatherForecastController.Get">
+             <summary>
+            
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="T:wEBcMD.Pages.ErrorModel">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:wEBcMD.Pages.ErrorModel.RequestId">
+             <summary>
+            
+             </summary>
+             <value></value>
+        </member>
+        <member name="P:wEBcMD.Pages.ErrorModel.ShowRequestId">
+             <summary>
+            
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:wEBcMD.Pages.ErrorModel.OnGet">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="T:wEBcMD.FindAdresses">
+            <summary>
+            Addresses search, with multiple tokens
+            </summary>
+        </member>
+        <member name="M:wEBcMD.FindAdresses.#ctor(wEBcMD.CommandDTO)">
+            <summary>Constructor of FindAdresses</summary>
+        </member>
+        <member name="P:wEBcMD.FindAdresses.TypeId">
+            <summary>13b2f4da-711a-451e-b435-2c2dc1fbbe4e is the Id of FindAdresses type.</summary>
+        </member>
+        <member name="M:wEBcMD.FindAdresses.IsForMe(wEBcMD.CommandDTO)">
+            <summary>Checks if the type of the DTO fits</summary>
+        </member>
+        <member name="M:wEBcMD.FindAdresses.ExecuteCommand(wEBcMD.CommandDTO)">
+            <summary>Create the wrapper and execute the command</summary>
+        </member>
+        <member name="M:wEBcMD.FindAdresses.ExecuteCommand">
+            <summary>Execute the command</summary>
+        </member>
+        <member name="P:wEBcMD.FindAdresses.SearchText">
+            <summary>Search text, can contain several words separated by spaces</summary>
+        </member>
+        <member name="F:wEBcMD.FindAdresses._result">
+            <summary> access helper for Result</summary>
+        </member>
+        <member name="P:wEBcMD.FindAdresses.Result">
+            <summary>The result of the search is a list of AddressDTO objects</summary>
+        </member>
+        <member name="T:wEBcMD.GetAdress">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:wEBcMD.GetAdress.#ctor(wEBcMD.CommandDTO)">
+            <summary>Constructor of GetAdress</summary>
+        </member>
+        <member name="P:wEBcMD.GetAdress.TypeId">
+            <summary>c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type.</summary>
+        </member>
+        <member name="M:wEBcMD.GetAdress.IsForMe(wEBcMD.CommandDTO)">
+            <summary>Checks if the type of the DTO fits</summary>
+        </member>
+        <member name="M:wEBcMD.GetAdress.ExecuteCommand(wEBcMD.CommandDTO)">
+            <summary>Create the wrapper and execute the command</summary>
+        </member>
+        <member name="M:wEBcMD.GetAdress.ExecuteCommand">
+            <summary>Execute the command</summary>
+        </member>
+        <member name="P:wEBcMD.GetAdress.Id">
+            <summary>Id</summary>
+        </member>
+        <member name="F:wEBcMD.GetAdress._result">
+            <summary> access helper for Result</summary>
+        </member>
+        <member name="P:wEBcMD.GetAdress.Result">
+            <summary>The address found or null if it does not exist</summary>
+        </member>
+        <member name="T:wEBcMD.SampleCommand">
+            <summary>
+            
+            This is the sample command. He has two Parameters
+            and a multiline summary.
+            ``` typescript
+            CommandDTO cmd;
+            if(SampleCommand.IsForMe(dto)){
+            let sample = new SampleCommand(cmd);
+            console.log(sample.FirstOne);
+            }
+            ```
+            
+            </summary>
+        </member>
+        <member name="M:wEBcMD.SampleCommand.#ctor(wEBcMD.CommandDTO)">
+            <summary>Constructor of SampleCommand</summary>
+        </member>
+        <member name="P:wEBcMD.SampleCommand.TypeId">
+            <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type.</summary>
+        </member>
+        <member name="M:wEBcMD.SampleCommand.IsForMe(wEBcMD.CommandDTO)">
+            <summary>Checks if the type of the DTO fits</summary>
+        </member>
+        <member name="M:wEBcMD.SampleCommand.ExecuteCommand(wEBcMD.CommandDTO)">
+            <summary>Create the wrapper and execute the command</summary>
+        </member>
+        <member name="M:wEBcMD.SampleCommand.ExecuteCommand">
+            <summary>Execute the command</summary>
+        </member>
+        <member name="P:wEBcMD.SampleCommand.FirstOne">
+            <summary>
+            
+            The FirstOne is a string parameter
+            and has a multiline comment
+            
+            </summary>
+        </member>
+        <member name="P:wEBcMD.SampleCommand.SecondOne">
+            <summary>The SecondOne is a boolean parameter</summary>
+        </member>
+        <member name="T:wEBcMD.SetAdress">
+            <summary>
+            Updates an existing address if Id is specified,
+            or creates a new one if Id is null.
+            The updated or newly created address is returned in Result.
+            </summary>
+        </member>
+        <member name="M:wEBcMD.SetAdress.#ctor(wEBcMD.CommandDTO)">
+            <summary>Constructor of SetAdress</summary>
+        </member>
+        <member name="P:wEBcMD.SetAdress.TypeId">
+            <summary>c84bb99b-2d11-4426-87fa-119dc892f4ec is the Id of SetAdress type.</summary>
+        </member>
+        <member name="M:wEBcMD.SetAdress.IsForMe(wEBcMD.CommandDTO)">
+            <summary>Checks if the type of the DTO fits</summary>
+        </member>
+        <member name="M:wEBcMD.SetAdress.ExecuteCommand(wEBcMD.CommandDTO)">
+            <summary>Create the wrapper and execute the command</summary>
+        </member>
+        <member name="M:wEBcMD.SetAdress.ExecuteCommand">
+            <summary>Execute the command</summary>
+        </member>
+        <member name="P:wEBcMD.SetAdress.Id">
+            <summary>Id</summary>
+        </member>
+        <member name="F:wEBcMD.SetAdress._adress">
+            <summary> access helper for Adress</summary>
+        </member>
+        <member name="P:wEBcMD.SetAdress.Adress">
+            <summary>The address which should be saved, or null if it should be deleted.</summary>
+        </member>
+        <member name="F:wEBcMD.SetAdress._result">
+            <summary> access helper for Result</summary>
+        </member>
+        <member name="P:wEBcMD.SetAdress.Result">
+            <summary>The address stored</summary>
+        </member>
+        <member name="T:wEBcMD.Log">
+            <summary>
+            Logging helpers
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Log.Trace(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Log Traces
+            </summary>
+            <param name="message"></param>
+            <param name="memberName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+        </member>
+        <member name="M:wEBcMD.Log.Trace(Microsoft.Extensions.Logging.ILogger,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Log Traces
+            </summary>
+            <param name="logger"></param>
+            <param name="message"></param>
+            <param name="memberName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+        </member>
+        <member name="M:wEBcMD.Log.Info(Microsoft.Extensions.Logging.ILogger,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Log Infos
+            </summary>
+            <param name="logger"></param>
+            <param name="message"></param>
+            <param name="memberName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+        </member>
+        <member name="M:wEBcMD.Log.Warn(Microsoft.Extensions.Logging.ILogger,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Log warnings
+            </summary>
+            <param name="logger"></param>
+            <param name="message"></param>
+            <param name="memberName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+        </member>
+        <member name="M:wEBcMD.Log.Error(Microsoft.Extensions.Logging.ILogger,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Log errors
+            </summary>
+            <param name="logger"></param>
+            <param name="message"></param>
+            <param name="memberName"></param>
+            <param name="sourceFilePath"></param>
+            <param name="sourceLineNumber"></param>
+        </member>
+        <member name="T:wEBcMD.Program">
+            <summary>
+            The beginning of all
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Program.Main(System.String[])">
+            <summary>
+            Main Method
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:wEBcMD.Program.CreateHostBuilder(System.String[])">
+             <summary>
+            
+             </summary>
+             <param name="args"></param>
+             <returns></returns>
+        </member>
+        <member name="T:wEBcMD.Startup">
+            <summary>
+            Startup
+            </summary>
+        </member>
+        <member name="M:wEBcMD.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+             <summary>
+            
+             </summary>
+             <param name="configuration"></param>
+        </member>
+        <member name="P:wEBcMD.Startup.Configuration">
+             <summary>
+            
+             </summary>
+             <value></value>
+        </member>
+        <member name="M:wEBcMD.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+             <summary>
+            
+             </summary>
+             <param name="services"></param>
+        </member>
+        <member name="M:wEBcMD.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="T:wEBcMD.AdressDTO">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.TypeId">
+            <summary>71959238-5bfd-459b-8fba-e48657d8ff2b is the Id of AdressDTO type.</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Name1">
+            <summary>First name of the person or name of the company</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Name2">
+            <summary>Surname of the person or additional name of the company</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Adress1">
+            <summary>Street name</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Adress2">
+            <summary>Address supplement</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Housenumber">
+            <summary>House no.</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.City">
+            <summary>Village</summary>
+        </member>
+        <member name="P:wEBcMD.AdressDTO.Postcode">
+            <summary>Postal code</summary>
+        </member>
+        <member name="T:wEBcMD.BaseDTO">
+            <summary>BaseDTO</summary>
+        </member>
+        <member name="M:wEBcMD.BaseDTO.StringFromPropertyList(System.Collections.Generic.List{wEBcMD.PropertyDTO},System.String)">
+            <summary>get string from Property-List</summary>
+        </member>
+        <member name="M:wEBcMD.BaseDTO.StringToPropertyList(System.Collections.Generic.List{wEBcMD.PropertyDTO},System.String,System.String)">
+            <summary>
+            Set string to Property-List.
+            If property not exists, it is newly created.
+            Otherwise the existing value is updated.
+            </summary>
+        </member>
+        <member name="M:wEBcMD.BaseDTO.BooleanFromPropertyList(System.Collections.Generic.List{wEBcMD.PropertyDTO},System.String)">
+            <summary>get Boolean from Property-List</summary>
+        </member>
+        <member name="M:wEBcMD.BaseDTO.BooleanToPropertyList(System.Collections.Generic.List{wEBcMD.PropertyDTO},System.String,System.Boolean)">
+            <summary>
+            Set Boolean to Property-List.
+            If property not exists, it is newly created.
+            Otherwise the existing value is updated.
+            </summary>
+        </member>
+        <member name="P:wEBcMD.BaseDTO.TypeId">
+            <summary>1a81bc99-28c2-4c03-ac5c-a1de4967cc36 is the Id of BaseDTO type.</summary>
+        </member>
+        <member name="P:wEBcMD.BaseDTO.Id">
+            <summary>Id</summary>
+        </member>
+        <member name="P:wEBcMD.BaseDTO.Type">
+            <summary>Type</summary>
+        </member>
+        <member name="T:wEBcMD.PropertyDTO">
+            <summary>PropertyDTO</summary>
+        </member>
+        <member name="P:wEBcMD.PropertyDTO.TypeId">
+            <summary>24ef4fd2-e337-4baa-89dd-404a72200871 is the Id of PropertyDTO type.</summary>
+        </member>
+        <member name="P:wEBcMD.PropertyDTO.Name">
+            <summary>Name</summary>
+        </member>
+        <member name="P:wEBcMD.PropertyDTO.Value">
+            <summary>Value</summary>
+        </member>
+        <member name="T:wEBcMD.ObjectDTO">
+            <summary>ObjectDTO</summary>
+        </member>
+        <member name="P:wEBcMD.ObjectDTO.TypeId">
+            <summary>1a81bc99-28c2-4c03-ac5c-a1de4967cc36 is the Id of ObjectDTO type.</summary>
+        </member>
+        <member name="P:wEBcMD.ObjectDTO.Properties">
+            <summary>Properties</summary>
+        </member>
+        <member name="T:wEBcMD.TypeDTO">
+            <summary>TypeDTO</summary>
+        </member>
+        <member name="P:wEBcMD.TypeDTO.TypeId">
+            <summary>2c8c1feb-0d04-45d2-bbe7-fe137450412e is the Id of TypeDTO type.</summary>
+        </member>
+        <member name="T:wEBcMD.ObjectWrapper">
+             <summary>
+             Base for all wrappers
+             </summary>
+             <example>
+            
+             </example>
+        </member>
+        <member name="T:wEBcMD.CommandDTO">
+            <summary>
+            Base command object. Has all arguments in generig list, can be wrapped by concrete command wrappers
+            </summary>
+        </member>
+        <member name="P:wEBcMD.CommandDTO.TypeId">
+            <summary>c1eda1fc-cc45-4658-889f-ccd989c2848a is the Id of CommandDTO type.</summary>
+        </member>
+        <member name="P:wEBcMD.CommandDTO.Response">
+            <summary>Indicates if this is the answer</summary>
+        </member>
+        <member name="P:wEBcMD.CommandDTO.Arguments">
+            <summary>Arguments of the command</summary>
+        </member>
+        <member name="T:wEBcMD.WeatherForecast">
+            <summary>
+            Sample data transfer object
+            </summary>
+        </member>
+        <member name="P:wEBcMD.WeatherForecast.Date">
+             <summary>
+            
+             </summary>
+             <value></value>
+        </member>
+        <member name="P:wEBcMD.WeatherForecast.TemperatureC">
+             <summary>
+            
+             </summary>
+             <value></value>
+        </member>
+        <member name="P:wEBcMD.WeatherForecast.TemperatureF">
+             <summary>
+            
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="P:wEBcMD.WeatherForecast.Summary">
+             <summary>
+            
+             </summary>
+             <value></value>
+        </member>
+    </members>
+</doc>
