@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj": {}
+    "D:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj": {
+    "D:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj",
+        "projectUniqueName": "D:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj",
         "projectName": "wEBcMDTests",
-        "projectPath": "C:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj",
-        "packagesPath": "C:\\Users\\srebe\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\wEBcMD\\wEBcMDTests\\obj\\",
+        "projectPath": "D:\\Projects\\wEBcMD\\wEBcMDTests\\wEBcMDTests.csproj",
+        "packagesPath": "C:\\Users\\srdev\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\wEBcMD\\wEBcMDTests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\srebe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\srdev\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "net5.0": {
             "targetAlias": ".NETCoreApp,Version=v5.0",
             "projectReferences": {
-              "C:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj": {
-                "projectPath": "C:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj"
+              "D:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj": {
+                "projectPath": "D:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj"
               }
             }
           }
@@ -80,17 +80,17 @@
         }
       }
     },
-    "C:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj": {
+    "D:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj",
+        "projectUniqueName": "D:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj",
         "projectName": "wEBcMD",
-        "projectPath": "C:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj",
-        "packagesPath": "C:\\Users\\srebe\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\wEBcMD\\wEBcMD\\obj\\",
+        "projectPath": "D:\\Projects\\wEBcMD\\wEBcMD\\wEBcMD.csproj",
+        "packagesPath": "C:\\Users\\srdev\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\wEBcMD\\wEBcMD\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\srebe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\srdev\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
