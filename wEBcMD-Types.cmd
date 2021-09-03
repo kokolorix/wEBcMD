@@ -1,6 +1,6 @@
 
 @echo off
-cd /d "%~dp0"
+cd /d "%~dp0\wEBcMD"
 set wait=3
 
 if not "%*"=="" echo %*
