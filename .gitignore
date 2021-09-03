@@ -1,4 +1,7 @@
-/TestResults
-obj
+TestResults/
+.vs/
+wEBcMDTests/bin/
+
 .vs
-bin
+
+wEBcMDTests/obj/Debug/.netcoreapp,version=v5.0/

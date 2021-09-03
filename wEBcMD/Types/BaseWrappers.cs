@@ -40,7 +40,7 @@ namespace wEBcMD
 
    public class CommandWrapper
    {
-      public CommandDTO Cmd {get; init; }
+      public virtual CommandDTO Cmd {get; set; }
 
       public CommandWrapper(CommandDTO dto) {
          Cmd = dto ?? new();
@@ -49,6 +49,38 @@ namespace wEBcMD
          this._guid = new(Cmd.Arguments);
          this._baseDTO = new(Cmd.Arguments);
       }
+      //string GetString(string name)
+      //{
+      //   //return this.Cmd.Arguments.Find(p => p.Name == name)?.Value;
+      //   string jsonString = this.Cmd.Arguments.Find(p => p.Name == name)?.Value;
+      //   if (!string.IsNullOrEmpty(jsonString))
+      //      return JsonSerializer.Deserialize<string>(jsonString);
+      //   return default(string);
+      //}
+      //Guid GetGuid(string name)      {
+      //   string jsonString = this.Cmd.Arguments.Find(p => p.Name == name)?.Value;
+      //   if (!string.IsNullOrEmpty(jsonString))
+      //      return JsonSerializer.Deserialize<Guid>(jsonString);
+      //   return default(Guid);
+      //}
+
+      protected T Get<T>(CommandDTO cmd, string name)
+      {
+         string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+         if (!string.IsNullOrEmpty(jsonString))
+            return JsonSerializer.Deserialize<T>(jsonString);
+         return default(T);
+      }
+      protected void Set<T>(CommandDTO cmd, string name, T value)
+      {
+         string jsonString = JsonSerializer.Serialize(value);
+         var p = cmd.Arguments.Find(i => i.Name == name);
+         if (null == p)
+            cmd.Arguments.Add(new PropertyDTO() { Name = name, Value = jsonString });
+         else
+            p.Value = jsonString;
+      }
+
       public class StringValues
       {
          private readonly List<PropertyDTO> _list;

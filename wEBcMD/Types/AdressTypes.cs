@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace wEBcMD
 {
@@ -95,9 +96,33 @@ namespace wEBcMD
    {
       /// <summary>Constructor of SetAdress</summary>
       public SetAdress(CommandDTO dto = null):base(dto){
-         _adress = new(Cmd.Arguments);
-         _result = new(Cmd.Arguments);
+         //_adress = new(Cmd.Arguments);
+         //_result = new(Cmd.Arguments);
       }
+
+      /// <summary></summary>
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+            this.Set(cmd, "Id", Id);
+            this.Set(cmd, "Adress", Adress);
+            this.Set(cmd, "Result", Result);
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+            Id = this.Get<Guid>(cmd, "Id");
+            Adress = Get<AdressDTO>(cmd, "Adress");
+            Result = Get<AdressDTO>(cmd, "Result");
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
+      }
+
       /// <summary>c84bb99b-2d11-4426-87fa-119dc892f4ec is the Id of SetAdress type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -108,22 +133,23 @@ namespace wEBcMD
       public partial CommandDTO ExecuteCommand();
       /// <summary>Id</summary>
       public Guid Id {
-         get => this._guid["Id"];
-         set => this._guid["Id"] = value;
+         get; set;
+         //get => this._guid["Id"];
+         //set => this._guid["Id"] = value;
       }
       /// <summary> access helper for Adress</summary>
       protected DTOValues<AdressDTO> _adress;
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
       public AdressDTO Adress {
-         get => this._adress["Adress"];
-         set => this._adress["Adress"] = value;
+         get;// => this._adress["Adress"];
+         set;// => this._adress["Adress"] = value;
       }
       /// <summary> access helper for Result</summary>
       protected DTOValues<AdressDTO> _result;
       /// <summary>The address stored</summary>
       public AdressDTO Result {
-         get => this._result["Result"];
-         set => this._result["Result"] = value;
+         get;// => this._result["Result"];
+         set;// => this._result["Result"] = value;
       }
    };
 
