@@ -30,7 +30,7 @@ pause
 goto:eof
 
 :doIt
-set path=tools;%path%
+set path=%cd%\tools;%path%
 set xslt=%cd%\tools\types.xslt
 
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%"

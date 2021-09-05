@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 namespace wEBcMD
 {
@@ -32,9 +31,7 @@ namespace wEBcMD
    public partial class FindAdresses : CommandWrapper
    {
       /// <summary>Constructor of FindAdresses</summary>
-      public FindAdresses(CommandDTO dto = null):base(dto){
-         _result = new(Cmd.Arguments);
-      }
+      public FindAdresses(CommandDTO dto = null):base(dto){}
       /// <summary>13b2f4da-711a-451e-b435-2c2dc1fbbe4e is the Id of FindAdresses type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -43,18 +40,38 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new FindAdresses(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary>Search text, can contain several words separated by spaces</summary>
-      public String SearchText {
-         get => this._string["SearchText"];
-         set => this._string["SearchText"] = value;
+
+      /// <summary>Serialize / Deserialize concrete FindAdresses to generic CommandDTO</summary>
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+      
+            this.Set(cmd, "SearchText", SearchText);
+            this.Set(cmd, "Result", Result);
+
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+      
+            this.Get(cmd, "SearchText",  (()=>this.SearchText, x => this.SearchText = x));
+            this.Get(cmd, "Result",  (()=>this.Result, x => this.Result = x));
+            
+
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
       }
+            /// <summary>Search text, can contain several words separated by spaces</summary>
+      public String SearchText { get; set; }
       /// <summary> access helper for Result</summary>
       protected DTOValues<List<AdressDTO>> _result;
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
-      public List<AdressDTO> Result {
-         get => this._result["Result"];
-         set => this._result["Result"] = value;
-      }
+      public List<AdressDTO> Result { get; set; }
    };
 
    /// <summary>
@@ -62,9 +79,7 @@ namespace wEBcMD
    public partial class GetAdress : CommandWrapper
    {
       /// <summary>Constructor of GetAdress</summary>
-      public GetAdress(CommandDTO dto = null):base(dto){
-         _result = new(Cmd.Arguments);
-      }
+      public GetAdress(CommandDTO dto = null):base(dto){}
       /// <summary>c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -73,18 +88,38 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new GetAdress(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary>Id</summary>
-      public Guid Id {
-         get => this._guid["Id"];
-         set => this._guid["Id"] = value;
+
+      /// <summary>Serialize / Deserialize concrete GetAdress to generic CommandDTO</summary>
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+      
+            this.Set(cmd, "Id", Id);
+            this.Set(cmd, "Result", Result);
+
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+      
+            this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x));
+            this.Get(cmd, "Result",  (()=>this.Result, x => this.Result = x));
+            
+
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
       }
+            /// <summary>Id</summary>
+      public Guid Id { get; set; }
       /// <summary> access helper for Result</summary>
       protected DTOValues<AdressDTO> _result;
       /// <summary>The address found or null if it does not exist</summary>
-      public AdressDTO Result {
-         get => this._result["Result"];
-         set => this._result["Result"] = value;
-      }
+      public AdressDTO Result { get; set; }
    };
 
    /// <summary>
@@ -95,34 +130,7 @@ namespace wEBcMD
    public partial class SetAdress : CommandWrapper
    {
       /// <summary>Constructor of SetAdress</summary>
-      public SetAdress(CommandDTO dto = null):base(dto){
-         //_adress = new(Cmd.Arguments);
-         //_result = new(Cmd.Arguments);
-      }
-
-      /// <summary></summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-            this.Set(cmd, "Id", Id);
-            this.Set(cmd, "Adress", Adress);
-            this.Set(cmd, "Result", Result);
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-            Id = this.Get<Guid>(cmd, "Id");
-            Adress = Get<AdressDTO>(cmd, "Adress");
-            Result = Get<AdressDTO>(cmd, "Result");
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-
+      public SetAdress(CommandDTO dto = null):base(dto){}
       /// <summary>c84bb99b-2d11-4426-87fa-119dc892f4ec is the Id of SetAdress type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -131,26 +139,44 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new SetAdress(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary>Id</summary>
-      public Guid Id {
-         get; set;
-         //get => this._guid["Id"];
-         //set => this._guid["Id"] = value;
+
+      /// <summary>Serialize / Deserialize concrete SetAdress to generic CommandDTO</summary>
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+      
+            this.Set(cmd, "Id", Id);
+            this.Set(cmd, "Adress", Adress);
+            this.Set(cmd, "Result", Result);
+
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+      
+            this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x));
+            this.Get(cmd, "Adress",  (()=>this.Adress, x => this.Adress = x));
+            this.Get(cmd, "Result",  (()=>this.Result, x => this.Result = x));
+            
+
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
       }
+            /// <summary>Id</summary>
+      public Guid Id { get; set; }
       /// <summary> access helper for Adress</summary>
       protected DTOValues<AdressDTO> _adress;
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
-      public AdressDTO Adress {
-         get;// => this._adress["Adress"];
-         set;// => this._adress["Adress"] = value;
-      }
+      public AdressDTO Adress { get; set; }
       /// <summary> access helper for Result</summary>
       protected DTOValues<AdressDTO> _result;
       /// <summary>The address stored</summary>
-      public AdressDTO Result {
-         get;// => this._result["Result"];
-         set;// => this._result["Result"] = value;
-      }
+      public AdressDTO Result { get; set; }
    };
 
 

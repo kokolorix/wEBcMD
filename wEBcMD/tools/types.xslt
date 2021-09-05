@@ -358,15 +358,15 @@
       <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Constructor of ', $name,'&lt;/summary&gt;', $nl1)" />
-      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto = null):base(dto){', $nl1)" />
-      <xsl:for-each select="ParameterType">
+      <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto = null):base(dto){}', $nl1)" />
+      <!-- <xsl:for-each select="ParameterType">
          <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
          <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
          <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
             <xsl:value-of select="concat($t3, $accessName, ' = new(Cmd.Arguments);', $nl1)" />
          </xsl:if>
-      </xsl:for-each>
-      <xsl:value-of select="concat($t2, '}', $nl1)" />
+      <xsl:value-of select=
+      </xsl:for-each> "concat($t2, '}', $nl1)" /> -->
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', $id, ' is the Id of ', $name,' type.&lt;/summary&gt;', $nl1)" />
       <xsl:value-of select="concat($t2, 'public static Guid TypeId { get =&gt; System.Guid.Parse(&quot;', $id, '&quot;); }', $nl1)" />
@@ -379,6 +379,35 @@
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Execute the command', '&lt;/summary&gt;', $nl1)" />
       <xsl:value-of select="concat($t2, 'public partial ', $dto, ' ExecuteCommand();', $nl1)" />
+      /// &lt;summary&gt;Serialize / Deserialize concrete <xsl:value-of select="@name"/> to generic CommandDTO&lt;/summary&gt;
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+      <xsl:for-each select="ParameterType">
+         <!-- parameter name -->
+         <xsl:variable name="pn" as="xs:string" select="@name"/>
+            this.Set(cmd, "<xsl:value-of select="$pn"/>", <xsl:value-of select="$pn"/>);<xsl:text/>
+      </xsl:for-each>
+
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+      <xsl:for-each select="ParameterType">
+         <!-- parameter name, data type -->
+         <xsl:variable name="pn" as="xs:string" select="@name"/>
+            this.Get(cmd, "<xsl:value-of select="$pn"/>",  (()=>this.<xsl:value-of select="$pn"/>, x => this.<xsl:value-of select="$pn"/> = x));<xsl:text/>
+      </xsl:for-each>
+            <!-- this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x)); -->
+
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
+      }
       <xsl:apply-templates select="ParameterType" mode="wrapper.cs" />
       <xsl:value-of select="concat($t1, '};', $nl2)" />
    </xsl:template>
@@ -490,10 +519,10 @@
       <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
-      <xsl:value-of select="concat($t2, 'public ', $dataType, ' ', $name, ' {', $nl1)" />
-      <xsl:value-of select="concat($t3, 'get =&gt; this.', $accessName, '[&quot;', @name, '&quot;];', $nl1)" />
+      <xsl:value-of select="concat($t2, 'public ', $dataType, ' ', $name, ' { get; set; }', $nl1)" />
+      <!-- <xsl:value-of select="concat($t3, 'get =&gt; this.', $accessName, '[&quot;', @name, '&quot;];', $nl1)" />
       <xsl:value-of select="concat($t3, 'set =&gt; this.', $accessName, '[&quot;', @name, '&quot;] = value;', $nl1)" />
-      <xsl:value-of select="concat($t2, '}', $nl1)" />
+      <xsl:value-of select="concat($t2, '}', $nl1)" /> -->
    </xsl:template>
    <!--=======================================================================-->
    <!--process the Summary node or Attribute -->

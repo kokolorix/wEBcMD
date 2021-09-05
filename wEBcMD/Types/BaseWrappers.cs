@@ -63,14 +63,30 @@ namespace wEBcMD
       //      return JsonSerializer.Deserialize<Guid>(jsonString);
       //   return default(Guid);
       //}
-
-      protected T Get<T>(CommandDTO cmd, string name)
+      protected void Get<T>(CommandDTO cmd, string name, (Func<T> get, Action<T> set) target)
       {
          string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
          if (!string.IsNullOrEmpty(jsonString))
-            return JsonSerializer.Deserialize<T>(jsonString);
-         return default(T);
+            target.set(JsonSerializer.Deserialize<T>(jsonString));
+         else
+            target.set(default(T));
       }
+      protected void Get(CommandDTO cmd, string name, (Func<Guid> get, Action<Guid> set) target)
+      {
+         string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+         if (!string.IsNullOrEmpty(jsonString))
+            target.set(Guid.Parse(jsonString));
+         else
+            target.set(default(Guid));
+      }
+
+      //protected T Get<T>(CommandDTO cmd, string name)
+      //{
+      //   string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+      //   if (!string.IsNullOrEmpty(jsonString))
+      //      return JsonSerializer.Deserialize<T>(jsonString);
+      //   return default(T);
+      //}
       protected void Set<T>(CommandDTO cmd, string name, T value)
       {
          string jsonString = JsonSerializer.Serialize(value);

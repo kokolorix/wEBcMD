@@ -37,8 +37,12 @@ export class HomeComponent implements OnInit {
          City: "Nieniken",
          Postcode: "0000"
       }
-      setAdress.execute(Guid.createEmpty(), adress).then(
-         a => this._adress = a).then(a=>this._adress = a
+      setAdress.execute(Guid.createEmpty(), adress)
+      .then(
+         a => this._adress = a
+      )
+      .catch(
+         e => console.error(e)
       );
 
       // sample.Ar[]

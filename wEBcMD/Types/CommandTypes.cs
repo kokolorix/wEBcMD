@@ -32,8 +32,7 @@ namespace wEBcMD
    public partial class SampleCommand : CommandWrapper
    {
       /// <summary>Constructor of SampleCommand</summary>
-      public SampleCommand(CommandDTO dto = null):base(dto){
-      }
+      public SampleCommand(CommandDTO dto = null):base(dto){}
       /// <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
       /// <summary>Checks if the type of the DTO fits</summary>
@@ -42,21 +41,41 @@ namespace wEBcMD
       public static CommandDTO ExecuteCommand(CommandDTO dto) => new SampleCommand(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
-      /// <summary>
+
+      /// <summary>Serialize / Deserialize concrete SampleCommand to generic CommandDTO</summary>
+      public override CommandDTO Cmd
+      {
+         get
+         {
+            CommandDTO cmd = base.Cmd;
+      
+            this.Set(cmd, "FirstOne", FirstOne);
+            this.Set(cmd, "SecondOne", SecondOne);
+
+            cmd.Response = true;
+            return cmd;
+         }
+         set
+         {
+            CommandDTO cmd = value;
+      
+            this.Get(cmd, "FirstOne",  (()=>this.FirstOne, x => this.FirstOne = x));
+            this.Get(cmd, "SecondOne",  (()=>this.SecondOne, x => this.SecondOne = x));
+            
+
+            base.Cmd = cmd;
+            cmd.Response = false;
+         }
+      }
+            /// <summary>
       /// 
       /// The FirstOne is a string parameter
       /// and has a multiline comment
       /// 
       /// </summary>
-      public String FirstOne {
-         get => this._string["FirstOne"];
-         set => this._string["FirstOne"] = value;
-      }
+      public String FirstOne { get; set; }
       /// <summary>The SecondOne is a boolean parameter</summary>
-      public Boolean SecondOne {
-         get => this._boolean["SecondOne"];
-         set => this._boolean["SecondOne"] = value;
-      }
+      public Boolean SecondOne { get; set; }
    };
 
 
