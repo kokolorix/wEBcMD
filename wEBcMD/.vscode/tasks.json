@@ -40,7 +40,7 @@
       },
       {
          "label": "types",
-         "command": "wEBcMD-Types.cmd",
+         "command": "../wEBcMD-Types.cmd",
          "type": "process",
          "args": [],
          "problemMatcher": []
