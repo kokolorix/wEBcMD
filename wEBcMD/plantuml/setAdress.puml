@@ -1,0 +1,69 @@
+@startuml setAdress
+class CommandService {
+    #_http: HttpClient
+    #_baseUri: string
+    +executeCommand(command: CommandDTO): Promise<any>
+    -{static} _service: CommandService
+    +{static} Service: CommandService
+}
+class BaseDTO {
+    +Id?: Guid
+    +Type?: Guid
+    +{static} TypeId: Guid
+}
+class AdressDTO extends BaseDTO {
+    +Name1?: string
+    +Name2?: string
+    +Adress1?: string
+    +Adress2?: string
+    +Housenumber?: string
+    +City?: string
+    +Postcode?: string
+    +{static} TypeId: Guid
+}
+class CommandWrapper {
+    -_dto: any
+    -_service: CommandService
+    +Service: CommandService
+    +DTO: any
+    +Response: boolean
+    +Arguments: any[]
+    +Type: Guid
+    +Id: Guid
+    +getArgument(name: string): any
+    +setArgument(name: string, value: string): void
+    -{static} _factories: any
+    +{static} register(typeId: Guid, factory: CommandWrapperFactory): void
+}
+class PropertyDTO {
+    +Name?: string
+    +Value?: string
+    +{static} TypeId: Guid
+}
+class CommandDTO extends BaseDTO {
+    +Response?: boolean
+    +Arguments?: PropertyDTO[]
+    +{static} TypeId: Guid
+}
+class SetAdressBase extends CommandWrapper {
+    +Id: Guid
+    +Id: Guid
+    +Adress: AdressDTO
+    +Adress: AdressDTO
+    +Result: AdressDTO
+    +execute(id: Guid, adress: AdressDTO): Promise<AdressDTO>
+    +{static} TypeId: Guid
+    +{static} IsForMe(dto: CommandDTO): boolean
+}
+note top of SetAdressBase: The generated access class. Do not make any changes here.
+class SetAdress extends SetAdressBase
+note right of SetAdress: The effective implementation of the command.\nIf there is something special to implement, do it here.
+
+CommandWrapper -- CommandService: Service
+CommandWrapper "1" .. "1" CommandDTO : DTO
+CommandWrapper "1".."*" PropertyDTO : Arguments
+
+SetAdressBase .. AdressDTO : Adress
+SetAdressBase .. AdressDTO : Result
+
+@enduml

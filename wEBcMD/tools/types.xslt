@@ -148,13 +148,13 @@
                <xsl:value-of select="concat('import { ', $type, ' } from &quot;../api/', $type, '&quot;;', $nl1)"/>
             </xsl:if>
          </xsl:for-each>
-         <xsl:value-of select="concat('import { ', @name, 'Access } from &quot;../api/', @name, 'Access&quot;;', $nl1)"/>
+         <xsl:value-of select="concat('import { ', @name, 'Base } from &quot;../api/', @name, 'Base&quot;;', $nl1)"/>
          <xsl:value-of select="concat('import { CommandDTO } from &quot;../api/CommandDTO&quot;;', $nl1)"/>
          <!--  -->
          <xsl:value-of select="$nl1"/>
          <xsl:call-template name="Summary.ts"/>
-         <xsl:value-of select="concat('export class ', @name, ' extends ', @name, 'Access {', $nl2)"/>
-         <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Access.TypeId)}', $nl2)"/>
+         <xsl:value-of select="concat('export class ', @name, ' extends ', @name, 'Base {', $nl2)"/>
+         <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Base.TypeId)}', $nl2)"/>
          <xsl:value-of select="concat('', '};')"/>
       </xsl:result-document>
       <!-- </xsl:if> -->
@@ -164,7 +164,7 @@
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="api.access.ts">
       <!-- file name -->
-      <xsl:variable name="fn" select="concat(@name, 'Access.ts')" />
+      <xsl:variable name="fn" select="concat(@name, 'Base.ts')" />
       <!-- delimiter -->
       <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <!-- path tokens -->
@@ -193,15 +193,15 @@
          <!--  -->
          <xsl:value-of select="$nl1"/>
          <xsl:call-template name="Summary.ts"/>
-         <xsl:value-of select="concat('export class ', @name, 'Access ', ts:extends(.), ' {', $nl2)"/>
-         <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Access.TypeId)}', $nl2)"/>
+         <xsl:value-of select="concat('export class ', @name, 'Base ', ts:extends(.), ' {', $nl2)"/>
+         <xsl:value-of select="concat($t1, 'constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : ', @name, 'Base.TypeId)}', $nl2)"/>
          <!--  -->
          <xsl:value-of select="concat($t1, '/** ', @id, ' is the Id of ', @name, ' type. */', $nl1)" />
          <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
          <!--  -->
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
-         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Access.TypeId; }', $nl2)" />
-         <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandAccess.TypeId; } -->
+         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Base.TypeId; }', $nl2)" />
+         <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; } -->
          <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
          <xsl:variable name="resultType" as="xs:string" select="ts:result-type(.)"/>
    /// &lt;summary&gt;Calls the command&lt;/summary&gt;
@@ -212,7 +212,7 @@
       return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
          console.log('return with result ' + JSON.stringify(cmd));
-         return<xsl:if test="$resultType!='void'"> new <xsl:value-of select="@name"/>Access(cmd).Result</xsl:if>;
+         return<xsl:if test="$resultType!='void'"> new <xsl:value-of select="@name"/>Base(cmd).Result</xsl:if>;
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));
@@ -701,7 +701,7 @@
       <xsl:choose>
          <xsl:when test="$pt/@type='Boolean'">boolean</xsl:when>
          <xsl:when test="$pt/@type='Int32'">number</xsl:when>
-         <!-- <xsl:when test="$pt/@type='UuId'">Guid</xsl:when> -->
+         <xsl:when test="$pt/@type='UuId'">Guid</xsl:when>
          <xsl:when test="matches($pt/@type, 'DTO(\[\])?$')"><xsl:value-of select="$pt/@type"/></xsl:when>
          <xsl:otherwise>string</xsl:otherwise>
       </xsl:choose>

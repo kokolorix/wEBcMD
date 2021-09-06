@@ -13,15 +13,15 @@ import { CommandDTO } from "./CommandDTO";
  * }
  * ```
  */
-export class SampleCommandAccess  extends CommandWrapper {
+export class SampleCommandBase  extends CommandWrapper {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandBase.TypeId)}
 
    /** e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type. */
    static get TypeId(): Guid { return Guid.parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SampleCommandAccess.TypeId; }
+   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SampleCommandBase.TypeId; }
 
    /**
     * The FirstOne is a string parameter

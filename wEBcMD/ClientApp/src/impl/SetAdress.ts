@@ -1,6 +1,6 @@
 import { Guid} from "guid-typescript";
 import { AdressDTO } from "../api/AdressDTO";
-import { SetAdressAccess } from "../api/SetAdressAccess";
+import { SetAdressBase } from "../api/SetAdressBase";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
@@ -8,8 +8,8 @@ import { CommandDTO } from "../api/CommandDTO";
  * or creates a new one if Id is null.
  * The updated or newly created address is returned in Result.
  */
-export class SetAdress extends SetAdressAccess {
+export class SetAdress extends SetAdressBase {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SetAdressAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SetAdressBase.TypeId)}
 
 };

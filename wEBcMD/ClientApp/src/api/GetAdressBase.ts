@@ -5,15 +5,15 @@ import { CommandDTO } from "./CommandDTO";
 
 /**
  */
-export class GetAdressAccess  extends CommandWrapper {
+export class GetAdressBase  extends CommandWrapper {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressBase.TypeId)}
 
    /** c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type. */
    static get TypeId(): Guid { return Guid.parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === GetAdressAccess.TypeId; }
+   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === GetAdressBase.TypeId; }
 
    /** Id */
    get Id() : Guid{
@@ -41,7 +41,7 @@ export class GetAdressAccess  extends CommandWrapper {
       return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
          console.log('return with result ' + JSON.stringify(cmd));
-         return new GetAdressAccess(cmd).Result;
+         return new GetAdressBase(cmd).Result;
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));

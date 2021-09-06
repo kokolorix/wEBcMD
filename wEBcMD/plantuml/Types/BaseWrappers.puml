@@ -1,0 +1,32 @@
+@startuml
+class ObjectWrapper {
+    + ObjectWrapper(dto:ObjectDTO)
+}
+class CommandWrapper {
+    + CommandWrapper(dto:CommandDTO)
+}
+class StringValues <<struct>> {
+    + StringValues(list:List<PropertyDTO>)
+}
+class StringValues {
+    + StringValues(list:List<PropertyDTO>)
+}
+class BooleanValues {
+    + BooleanValues(list:List<PropertyDTO>)
+}
+class GuidValues {
+    + GuidValues(list:List<PropertyDTO>)
+}
+class "DTOValues`1"<T> {
+    + DTOValues(list:List<PropertyDTO>)
+}
+class "Deserialize`1"<T> {
+}
+ObjectWrapper --> "String" StringValues
+CommandWrapper --> "Cmd" CommandDTO
+ObjectWrapper +-- StringValues
+CommandWrapper +-- StringValues
+CommandWrapper +-- BooleanValues
+CommandWrapper +-- GuidValues
+CommandWrapper +-- "DTOValues`1"
+@enduml

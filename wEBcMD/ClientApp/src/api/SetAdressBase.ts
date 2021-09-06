@@ -8,15 +8,15 @@ import { CommandDTO } from "./CommandDTO";
  * or creates a new one if Id is null.
  * The updated or newly created address is returned in Result.
  */
-export class SetAdressAccess  extends CommandWrapper {
+export class SetAdressBase  extends CommandWrapper {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SetAdressAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SetAdressBase.TypeId)}
 
    /** c84bb99b-2d11-4426-87fa-119dc892f4ec is the Id of SetAdress type. */
    static get TypeId(): Guid { return Guid.parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SetAdressAccess.TypeId; }
+   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SetAdressBase.TypeId; }
 
    /** Id */
    get Id() : Guid{
@@ -56,7 +56,7 @@ export class SetAdressAccess  extends CommandWrapper {
       return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
          console.log('return with result ' + JSON.stringify(cmd));
-         return new SetAdressAccess(cmd).Result;
+         return new SetAdressBase(cmd).Result;
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));

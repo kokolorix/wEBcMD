@@ -11,31 +11,10 @@ type CommandWrapperFactory = (dto: CommandDTO) => CommandWrapper;
 // @Injectable({
 //    providedIn: 'root'
 //  })
- class InjectorHelper{
-   private  _service: CommandService;
-   constructor(service: CommandService) {
-      this._service = service;
-   }
-   public get Service() : CommandService { return this._service; }
-}
 export class CommandWrapper {
    private _dto: CommandDTO;
 
    private _service: CommandService;
-   // private static initHelper() : boolean {
-      // let ih: {new(): InjectorHelper} = class extends InjectorHelper {
-      //    constructor(){
-      //       super(service: CommandService)
-      //    }
-      // };
-      //  CommandWrapper._service = ih.InjectorInstance.get<CommandService>(CommandService);
-      // CommandWrapper._service = AppInjector.get<CommandService>(CommandService);
-      // CommandWrapper._service = ih.Service;
-      //  return true;
-   // }
-   // private static InitHelper = CommandWrapper.initHelper();
-
-   // public static setCommandService(service : CommandService) : void{ CommandWrapper._service = service;}
    public get Service() { return this._service; }
 
    constructor(dto: CommandDTO, type?: Guid){
