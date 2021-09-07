@@ -1,0 +1,6 @@
+@startuml
+class FindAdresses <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- FindAdresses
+@enduml

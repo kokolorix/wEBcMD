@@ -1,0 +1,43 @@
+@startuml SetAdress
+
+class BaseDTO <<partial>> {
+    +Id: Guid
+    +Type: Guid
+    # StringFromPropertyList(list:List<PropertyDTO>, name:string) : string
+    # StringToPropertyList(list:List<PropertyDTO>, name:string, newValue:string) : void
+}
+
+class PropertyDTO {
+   +TypeId: Guid
+   +Name: String
+   +Value: String
+}
+
+class CommandDTO {
+   +Response: Boolean
+   +TypeId: Guid
+}
+BaseDTO <|-- CommandDTO
+CommandDTO o-> PropertyDTO: "ArgumentList"
+
+class CommandWrapper {
+    + CommandWrapper(dto:CommandDTO)
+    # Get(cmd:CommandDTO, name:string, target:(Func<T> get, Action<T> set)) : void
+    # Get(cmd:CommandDTO, name:string, target:(Func<Guid> get, Action<Guid> set)) : void
+    # Set(cmd:CommandDTO, name:string, value:T) : void
+}
+CommandWrapper --> "Cmd" CommandDTO
+
+class SetAdress <<partial>> {
+    + SetAdress(dto:CommandDTO)
+    + Id: Guid
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+
+CommandWrapper <|-- SetAdress
+SetAdress --> "Adress" AdressDTO
+SetAdress --> "Result" AdressDTO
+
+@enduml

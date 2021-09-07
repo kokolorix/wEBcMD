@@ -68,8 +68,6 @@ namespace wEBcMD
       }
             /// <summary>Search text, can contain several words separated by spaces</summary>
       public String SearchText { get; set; }
-      /// <summary> access helper for Result</summary>
-      protected DTOValues<List<AdressDTO>> _result;
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
       public List<AdressDTO> Result { get; set; }
    };
@@ -116,8 +114,6 @@ namespace wEBcMD
       }
             /// <summary>Id</summary>
       public Guid Id { get; set; }
-      /// <summary> access helper for Result</summary>
-      protected DTOValues<AdressDTO> _result;
       /// <summary>The address found or null if it does not exist</summary>
       public AdressDTO Result { get; set; }
    };
@@ -169,12 +165,8 @@ namespace wEBcMD
       }
             /// <summary>Id</summary>
       public Guid Id { get; set; }
-      /// <summary> access helper for Adress</summary>
-      protected DTOValues<AdressDTO> _adress;
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
       public AdressDTO Adress { get; set; }
-      /// <summary> access helper for Result</summary>
-      protected DTOValues<AdressDTO> _result;
       /// <summary>The address stored</summary>
       public AdressDTO Result { get; set; }
    };

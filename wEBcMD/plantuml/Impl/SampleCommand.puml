@@ -1,6 +1,0 @@
-@startuml
-class SampleCommand <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- SampleCommand
-@enduml

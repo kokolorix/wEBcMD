@@ -46,9 +46,12 @@
       <!-- <xsl:result-document href="{$tsFilePath}" format="text-def"> -->
       <!-- </xsl:result-document> -->
       <xsl:apply-templates select="Types/*" mode="api.dto.ts"/>
-      <xsl:apply-templates select="Types/*" mode="api.access.ts" />
+      <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
+      <xsl:call-template name="command.readme.md"/>
+      <!-- <xsl:variable name="mdFilePath" select="replace(base-uri(.),'.xml' ,'.md')" />
+      <xsl:message select="$mdFilePath" /> -->
       <!-- <xsl:result-document href="{$csFilePath}" format="text-def"></xs -->
       <!-- <xsl:result-document href="">
 
@@ -162,7 +165,7 @@
    <!--=======================================================================-->
    <!-- TypeScript access wrappers -->
    <!--=======================================================================-->
-   <xsl:template match="CommandWrapper" mode="api.access.ts">
+   <xsl:template match="CommandWrapper" mode="api.base.ts">
       <!-- file name -->
       <xsl:variable name="fn" select="concat(@name, 'Base.ts')" />
       <!-- delimiter -->
@@ -202,7 +205,7 @@
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
          <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === ', @name, 'Base.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; } -->
-         <xsl:apply-templates select="ParameterType" mode="api.access.ts"/>
+         <xsl:apply-templates select="ParameterType" mode="api.base.ts"/>
          <xsl:variable name="resultType" as="xs:string" select="ts:result-type(.)"/>
    /// &lt;summary&gt;Calls the command&lt;/summary&gt;
    execute(<xsl:apply-templates select="ParameterType" mode="api.access.execute.ts"/>): <xsl:text/>
@@ -254,7 +257,7 @@
    <!--=======================================================================-->
    <!-- TypeScript access Parameters -->
    <!--=======================================================================-->
-   <xsl:template match="ParameterType" mode="api.access.ts">
+   <xsl:template match="ParameterType" mode="api.base.ts">
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
@@ -503,7 +506,7 @@
       <xsl:value-of select="concat($t2, '}', $nl1)" />
    </xsl:template>
    <!--=======================================================================-->
-   <!--process an Paarameter node for wrapper -->
+   <!--process an Parameter node for wrapper -->
    <!--=======================================================================-->
    <xsl:template match="ParameterType" mode="wrapper.cs">
       <!-- <xsl:message select="concat('process ParameterType mode wrapper.cs ', @name)"/> -->
@@ -512,10 +515,10 @@
       <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
       <!-- access name -->
       <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
-      <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
+      <!-- <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
          <xsl:value-of select="concat($t2, '/// &lt;summary&gt; access helper for ', $name, '&lt;/summary&gt;', $nl1)" />
          <xsl:value-of select="concat($t2, 'protected DTOValues&lt;', $dataType, '&gt; ', $accessName, ';', $nl1)" />
-      </xsl:if>
+      </xsl:if> -->
       <xsl:call-template name="Summary.cs" >
          <xsl:with-param name="indent" select="$t2" />
       </xsl:call-template>
@@ -602,6 +605,44 @@
             </xsl:for-each>
          </xsl:result-document>
       </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- The Entry in Readme, if not exist -->
+   <!--=======================================================================-->
+   <xsl:template name="command.readme.md">
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="fn" select="'README.md'" />
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Types', $fn), $d)"/>
+      <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
+      <xsl:variable name="name" select="wc:file-name(.)"/>
+<!-- - [SampleCommand](../Doc/SampleCommand.md) -->
+      <xsl:variable name="regex" select="concat('- \[',$name, '\]\(\.\./Doc/', $name, '\.md\)')"/>
+      <xsl:if test="not($lines[matches(., $regex)])">
+         <xsl:message select="concat('not found ', $regex)"/>
+         <xsl:result-document href="{$filePath}" format="text-def">
+            <xsl:for-each select="$lines">
+               <xsl:choose>
+                  <xsl:when test="contains(.,'HERE INSERT DOCUMENT LINK')">
+<xsl:value-of select="concat('- [', $name, '](../Doc/', $name, '.md)&#xA;&#xA;')"/>
+                     <xsl:message select="concat('insert ', .)"/>
+<xsl:value-of select="concat(., '&#xA;')"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                     <xsl:value-of select="concat(., '&#xA;')"/>
+                  </xsl:otherwise>
+               </xsl:choose>
+            </xsl:for-each>
+         </xsl:result-document>
+      </xsl:if>
+      <xsl:variable name="mdFileName" select="concat(wc:file-name(.), '.md')" />
+      <xsl:variable name="mdFilePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', $mdFileName), $d)"/>
+      <xsl:message select="$mdFilePath"/>
+      <xsl:result-document href="{$mdFilePath}" format="text-def">
+
+[wEBcMD Commands](../Types/Readme.md)
+
+      </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
    <!-- The controller, if it not exist -->

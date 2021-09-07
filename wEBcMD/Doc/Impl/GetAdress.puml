@@ -1,0 +1,6 @@
+@startuml
+class GetAdress <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- GetAdress
+@enduml
