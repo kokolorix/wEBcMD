@@ -13,7 +13,7 @@ export class GetAdressBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === GetAdressBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return dto.Type === GetAdressBase.TypeId; }
 
    /** Id */
    get Id() : Guid{

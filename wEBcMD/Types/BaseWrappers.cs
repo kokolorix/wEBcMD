@@ -24,10 +24,6 @@ namespace wEBcMD
 
       public CommandWrapper(CommandDTO dto) {
          Cmd = dto ?? new();
-         this._string = new(Cmd.Arguments);
-         this._boolean = new(Cmd.Arguments);
-         this._guid = new(Cmd.Arguments);
-         this._baseDTO = new(Cmd.Arguments);
       }
 
       protected void Get<T>(CommandDTO cmd, string name, (Func<T> get, Action<T> set) target)

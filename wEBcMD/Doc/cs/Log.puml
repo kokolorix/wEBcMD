@@ -1,0 +1,9 @@
+@startuml
+class Log {
+    + {static} Trace(message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Trace(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Info(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Warn(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Error(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+}
+@enduml

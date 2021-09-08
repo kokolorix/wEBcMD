@@ -21,7 +21,7 @@ export class SampleCommandBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return Guid.parse(dto.Type) === SampleCommandBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; }
 
    /**
     * The FirstOne is a string parameter

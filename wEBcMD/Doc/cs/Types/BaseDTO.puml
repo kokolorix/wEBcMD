@@ -1,0 +1,8 @@
+@startuml
+class BaseDTO <<partial>> {
+    # StringFromPropertyList(list:List<PropertyDTO>, name:string) : string
+    # StringToPropertyList(list:List<PropertyDTO>, name:string, newValue:string) : void
+    # BooleanFromPropertyList(list:List<PropertyDTO>, name:string) : Boolean
+    # BooleanToPropertyList(list:List<PropertyDTO>, name:string, newValue:Boolean) : void
+}
+@enduml

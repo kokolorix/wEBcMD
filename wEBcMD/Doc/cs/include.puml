@@ -1,4 +1,37 @@
 @startuml
+class Log {
+    + {static} Trace(message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Trace(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Info(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Warn(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+    + {static} Error(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
+}
+class Program {
+    + {static} Main(args:string[]) : void
+    + {static} CreateHostBuilder(args:string[]) : IHostBuilder
+}
+class Startup {
+    + Startup(configuration:IConfiguration)
+    + ConfigureServices(services:IServiceCollection) : void
+    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
+}
+Startup --> "Configuration" IConfiguration
+class FindAdresses <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- FindAdresses
+class GetAdress <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- GetAdress
+class SampleCommand <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- SampleCommand
+class SetAdress <<partial>> {
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+CommandWrapper <|-- SetAdress
 class AdressDTO {
 }
 class FindAdresses <<partial>> {
@@ -22,8 +55,6 @@ class SetAdress <<partial>> {
 class AdressTypesDispatcher <<static>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
 }
-class "DTOValues`1"<T> {
-}
 class "List`1"<T> {
 }
 BaseDTO <|-- AdressDTO
@@ -39,21 +70,17 @@ CommandWrapper <|-- FindAdresses
 FindAdresses --> "TypeId" Guid
 FindAdresses --> "Cmd" CommandDTO
 FindAdresses --> "SearchText" String
-FindAdresses --> "_result<List<AdressDTO>>" "DTOValues`1"
 FindAdresses --> "Result<AdressDTO>" "List`1"
 CommandWrapper <|-- GetAdress
 GetAdress --> "TypeId" Guid
 GetAdress --> "Cmd" CommandDTO
 GetAdress --> "Id" Guid
-GetAdress --> "_result<AdressDTO>" "DTOValues`1"
 GetAdress --> "Result" AdressDTO
 CommandWrapper <|-- SetAdress
 SetAdress --> "TypeId" Guid
 SetAdress --> "Cmd" CommandDTO
 SetAdress --> "Id" Guid
-SetAdress --> "_adress<AdressDTO>" "DTOValues`1"
 SetAdress --> "Adress" AdressDTO
-SetAdress --> "_result<AdressDTO>" "DTOValues`1"
 SetAdress --> "Result" AdressDTO
 class BaseDTO <<partial>> {
     # StringFromPropertyList(list:List<PropertyDTO>, name:string) : string
@@ -94,45 +121,8 @@ class CommandWrapper {
     # Get(cmd:CommandDTO, name:string, target:(Func<Guid> get, Action<Guid> set)) : void
     # Set(cmd:CommandDTO, name:string, value:T) : void
 }
-class StringValues <<struct>> {
-    + StringValues(list:List<PropertyDTO>)
-}
-class StringValues {
-    + StringValues(list:List<PropertyDTO>)
-}
-class BooleanValues {
-    + BooleanValues(list:List<PropertyDTO>)
-}
-class GuidValues {
-    + GuidValues(list:List<PropertyDTO>)
-}
-class "DTOValues`1"<T> {
-    + DTOValues(list:List<PropertyDTO>)
-}
-class "List`1"<T> {
-}
-class "Dictionary`2"<T1,T2> {
-}
-class "Deserialize`1"<T> {
-}
 ObjectWrapper --> "_dto" ObjectDTO
-ObjectWrapper --> "String" StringValues
 CommandWrapper --> "Cmd" CommandDTO
-CommandWrapper --> "_string" StringValues
-CommandWrapper --> "_boolean" BooleanValues
-CommandWrapper --> "_guid" GuidValues
-CommandWrapper --> "_baseDTO<BaseDTO>" "DTOValues`1"
-ObjectWrapper +-- StringValues
-StringValues --> "_list<PropertyDTO>" "List`1"
-CommandWrapper +-- StringValues
-StringValues --> "_list<PropertyDTO>" "List`1"
-CommandWrapper +-- BooleanValues
-BooleanValues --> "_list<PropertyDTO>" "List`1"
-CommandWrapper +-- GuidValues
-GuidValues --> "_list<PropertyDTO>" "List`1"
-CommandWrapper +-- "DTOValues`1"
-"DTOValues`1" --> "_list<PropertyDTO>" "List`1"
-"DTOValues`1" --> "_map<string,T>" "Dictionary`2"
 class CommandDTO {
 }
 class SampleCommand <<partial>> {
