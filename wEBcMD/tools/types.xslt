@@ -616,8 +616,20 @@
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Types', $fn), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
       <xsl:variable name="name" select="wc:file-name(.)"/>
-<!-- - [SampleCommand](../Doc/SampleCommand.md) -->
-      <xsl:variable name="regex" select="concat('- \[',$name, '\]\(\.\./Doc/', $name, '\.md\)')"/>
+
+      <xsl:variable name="commands" select="Types/CommandWrapper"/>
+      <xsl:if test="$commands">
+         <xsl:variable name="cmdFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc'), $d), '/Generate-', $name,'-Diagrams.cmd')"/>
+         <xsl:message select="$cmdFilePath"/>
+         <xsl:result-document href="{$cmdFilePath}" format="text-def">
+         <xsl:for-each select="$commands">
+         <!-- <xsl:message select="."/> -->
+call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\CommandWrapper.ts --output ts\<xsl:value-of select="@name"/>.puml -A
+         </xsl:for-each>
+         </xsl:result-document>
+      </xsl:if>
+
+      <xsl:variable name="regex" select="concat('- \[',$name, '\]\(\.\./Doc/Types/', $name, '\.md\)')"/>
       <xsl:if test="not($lines[matches(., $regex)])">
          <xsl:message select="concat('not found ', $regex)"/>
          <xsl:result-document href="{$filePath}" format="text-def">
@@ -635,13 +647,23 @@
             </xsl:for-each>
          </xsl:result-document>
       </xsl:if>
-      <xsl:variable name="mdFileName" select="concat(wc:file-name(.), '.md')" />
-      <xsl:variable name="mdFilePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', $mdFileName), $d)"/>
+      <xsl:variable name="mdFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc/Types', wc:file-name(.)), $d), '.md')"/>
       <xsl:message select="$mdFilePath"/>
       <xsl:result-document href="{$mdFilePath}" format="text-def">
 
-[wEBcMD Commands](../Types/Readme.md)
+[wEBcMD Documentation](../Readme.md)
+[wEBcMD Types](../../Types/Readme.md)
 
+         <xsl:variable name="svgFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc/Types', wc:file-name(.)), $d), '.svg')"/>
+         <xsl:choose>
+            <xsl:when test="doc-available($svgFilePath)">
+               ![Alt text](<xsl:value-of select="concat('./', wc:file-name(.), '.svg')"/>)
+            </xsl:when>
+            <xsl:otherwise>
+![Alt text](<xsl:value-of select="concat('./cs/', wc:file-name(.), '.svg')"/>)
+![Alt text](<xsl:value-of select="concat('./ts/', wc:file-name(.), '.svg')"/>)
+            </xsl:otherwise>
+         </xsl:choose>
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
@@ -806,7 +828,8 @@
       <xsl:variable name="first" select="translate(substring($text,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
       <xsl:variable name="everythingElse" select="substring($text,2,string-length($text)-1)" />
       <xsl:value-of select="concat($first, $everythingElse)"/>
-   </xsl:function>   <!--=======================================================================-->
+   </xsl:function>
+   <!--=======================================================================-->
    <!-- determines the correct delimiter for the expanded path -->
    <!--=======================================================================-->
    <xsl:function name="wc:path-delimiter" as="xs:string">

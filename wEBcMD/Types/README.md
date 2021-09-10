@@ -1,16 +1,18 @@
 ## wEBcMD Commands
 
+[wEBcMD Documentation](../Doc/Readme.md)
+[wEBcMD](../README.md)
 ### List of all available commands
 
-- [SampleCommand](../Doc/SampleCommand.md)
+- [SampleCommand](../Doc/Types/SampleCommand.md)
 
 <!-- THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION  -->
 
-- [AdressTypes](../Doc/AdressTypes.md)
+- [AdressTypes](../Doc/Types/AdressTypes.md)
 
-- [BaseTypes](../Doc/BaseTypes.md)
+- [BaseTypes](../Doc/Types/BaseTypes.md)
 
-- [CommandTypes](../Doc/CommandTypes.md)
+- [CommandTypes](../Doc/Types/CommandTypes.md)
 
 <!--- HERE INSERT DOCUMENT LINK --->
 <!-- THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION  -->
