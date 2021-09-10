@@ -59,12 +59,14 @@ call tplant --input ClientApp\src\api\FindAdressesBase.ts ClientApp\src\impl\Fin
 
 Generate svg from puml
 ~~~~~~~~~~{cmd}
-call java -jar tools\plantuml.jar Doc\Types\*.puml -svg    ~~~~~~~~~~~~~~~
+call java -jar tools\plantuml.jar Doc\Types\*.puml -svg   
+~~~~~~~~~~~~~~~
 
 Install PlantUML C#-Generator
 ~~~~~~~~~~{cmd}
 call dotnet tool install --global PlantUmlClassDiagramGenerator
 ~~~~~~~~~~~~~~~
+
 Install PlantUML Typescrip-Generator
 ~~~~~~~~~~{cmd}
 call npm install --global tplant
