@@ -1,37 +1,4 @@
 @startuml
-class Log {
-    + {static} Trace(message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
-    + {static} Trace(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
-    + {static} Info(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
-    + {static} Warn(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
-    + {static} Error(logger:ILogger, message:string, memberName:string, sourceFilePath:string, sourceLineNumber:int) : void
-}
-class Program {
-    + {static} Main(args:string[]) : void
-    + {static} CreateHostBuilder(args:string[]) : IHostBuilder
-}
-class Startup {
-    + Startup(configuration:IConfiguration)
-    + ConfigureServices(services:IServiceCollection) : void
-    + Configure(app:IApplicationBuilder, env:IWebHostEnvironment) : void
-}
-Startup --> "Configuration" IConfiguration
-class FindAdresses <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- FindAdresses
-class GetAdress <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- GetAdress
-class SampleCommand <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- SampleCommand
-class SetAdress <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- SetAdress
 class AdressDTO {
 }
 class FindAdresses <<partial>> {

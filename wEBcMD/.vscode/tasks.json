@@ -40,10 +40,15 @@
       },
       {
          "label": "types",
-         "command": "../wEBcMD-Types.cmd",
+         "command": "${workspaceFolder}/tools/generate-types.cmd",
          "type": "process",
          "args": [],
-         "problemMatcher": []
+         "options": {
+            "cwd": "${workspaceFolder}/tools"
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
       },
       {
          "type": "xslt",
@@ -92,7 +97,7 @@
       },
       {
          "type": "shell",
-         "label": "test env",
+         "label": "test xslt",
          "command": "${workspaceFolder}/tools/run-saxon",
          "args": [
             "${workspaceFolder}/tools/test.xslt",

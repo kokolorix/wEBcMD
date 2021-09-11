@@ -1,21 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="uwc-8"?>
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:tf="https://github.com/kokolorix/this-file"
+                xmlns:wc="https://github.com/kokolorix/this-file"
    >
    <xsl:output name="text-def" method="text" />
    <xsl:template match="/">
       <xsl:message select="base-uri(.)"/>
-      <xsl:variable name="d" select="tf:path-delimiter(.)"/>
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-diagarams.cmd'), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
       <xsl:message select="$filePath"/>
-      <!-- if not exist, make one -->
-      <!-- <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
-           <xsl:result-document href="{$filePath}" format="text-def">@echo off</xsl:result-document>
-           </xsl:if> -->
       <xsl:message select="concat('lines: ', count($lines))"/>
       <xsl:result-document href="{$filePath}" format="text-def">
          <xsl:for-each select="$lines">
@@ -38,7 +34,7 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
    <!--=======================================================================-->
    <!-- determines the correct delimiter for the expanded path -->
    <!--=======================================================================-->
-   <xsl:function name="tf:path-delimiter" as="xs:string">
+   <xsl:function name="wc:path-delimiter" as="xs:string">
       <xsl:param name="node" as="node()"/>
       <xsl:choose>
          <xsl:when test="contains(base-uri($node), ':/')">/</xsl:when>

@@ -1,6 +1,0 @@
-@startuml
-class SetAdress <<partial>> {
-    + <<partial>> ExecuteCommand() : CommandDTO
-}
-CommandWrapper <|-- SetAdress
-@enduml

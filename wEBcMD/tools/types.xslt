@@ -49,7 +49,9 @@
       <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
+      <xsl:call-template name="generate.diagrams.cmd"/>
       <xsl:call-template name="command.readme.md"/>
+
       <!-- <xsl:variable name="mdFilePath" select="replace(base-uri(.),'.xml' ,'.md')" />
       <xsl:message select="$mdFilePath" /> -->
       <!-- <xsl:result-document href="{$csFilePath}" format="text-def"></xs -->
@@ -616,19 +618,6 @@
       <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Types', $fn), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
       <xsl:variable name="name" select="wc:file-name(.)"/>
-
-      <xsl:variable name="commands" select="Types/CommandWrapper"/>
-      <xsl:if test="$commands">
-         <xsl:variable name="cmdFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc'), $d), '/Generate-', $name,'-Diagrams.cmd')"/>
-         <xsl:message select="$cmdFilePath"/>
-         <xsl:result-document href="{$cmdFilePath}" format="text-def">
-         <xsl:for-each select="$commands">
-         <!-- <xsl:message select="."/> -->
-call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\CommandWrapper.ts --output ts\<xsl:value-of select="@name"/>.puml -A
-         </xsl:for-each>
-         </xsl:result-document>
-      </xsl:if>
-
       <xsl:variable name="regex" select="concat('- \[',$name, '\]\(\.\./Doc/Types/', $name, '\.md\)')"/>
       <xsl:if test="not($lines[matches(., $regex)])">
          <xsl:message select="concat('not found ', $regex)"/>
@@ -664,6 +653,37 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
 ![Alt text](<xsl:value-of select="concat('./ts/', wc:file-name(.), '.svg')"/>)
             </xsl:otherwise>
          </xsl:choose>
+      </xsl:result-document>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- The cmd file to generate the plantuml diagrams -->
+   <!--=======================================================================-->
+   <xsl:template name="generate.diagrams.cmd">
+      <xsl:message select="base-uri(.)"/>
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-diagarams.cmd'), $d)"/>
+      <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
+      <xsl:message select="$filePath"/>
+      <xsl:message select="concat('lines: ', count($lines))"/>
+      <xsl:result-document href="{$filePath}" format="text-def">
+         <!-- first we coppy all lines -->
+         <xsl:for-each select="$lines">
+            <xsl:value-of select="concat(., '&#xA;')"/>
+         </xsl:for-each>
+         <xsl:variable name="commands" select="Types/CommandWrapper"/>
+         <!-- for all commands we serach the call in lines -->
+         <xsl:for-each select="$commands">
+            <xsl:variable name="regex" select="concat('.+', @name, 'Base\.ts.+')"/>
+            <xsl:message select="concat('search for ', $regex)"/>
+            <!-- if we not found, add them at end of new file -->
+            <xsl:if test="not($lines[matches(., $regex)])">
+               <xsl:message select="'must work :-('"/>
+               <xsl:text/>
+echo generate typescript class diageram for <xsl:value-of select="@name"/>
+call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\CommandWrapper.ts --output Types\ts\<xsl:value-of select="@name"/>.puml -A<xsl:text/>
+            </xsl:if>
+         </xsl:for-each>
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
