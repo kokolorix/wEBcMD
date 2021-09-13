@@ -1,8 +1,15 @@
 
 
-[wEBcMD Documentation](../Readme.md)
-[wEBcMD Types](../../Types/Readme.md)
+[wEBcMD Documentation](../README.md)
 
-         
-![Alt text](./cs/BaseTypes.svg)
-         
+[wEBcMD Types](../../Types/README.md)
+
+## BaseTypes Documentation
+
+      
+
+### Serverside Classes for BaseTypes
+
+![Serverside Classes for BaseTypes](./cs/BaseTypes.svg)
+
+### Clientside Classes for BaseTypes

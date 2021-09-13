@@ -1,4 +1,4 @@
 # wEBcMD Documentation
 
 ## Index of Types
-[wEBcMD Types](../Types/Readme.md)
+[wEBcMD Types](../Types/README.md)

@@ -1,8 +1,12 @@
 ## wEBcMD Commands
 
-[wEBcMD Documentation](../Doc/Readme.md)
+[wEBcMD Documentation](../Doc/README.md)
 
 [wEBcMD](../README.md)
+
+### Sequence of a command
+
+![Sequence of a command](./CommandSequence.svg)
 
 
 ### List of all available commands

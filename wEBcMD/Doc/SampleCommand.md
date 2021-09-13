@@ -1,5 +1,5 @@
 
-[wEBcMD Commands](../Types/Readme.md)
+[wEBcMD Commands](../Types/README.md)
 
 ### SampleCommand
 
@@ -27,4 +27,4 @@ The SecondOne is a boolean parameter
 ![Alt text](./Types/CommandTypes.svg)
 
 
-[wEBcMD Commands](../Types/Readme.md)
+[wEBcMD Commands](../Types/README.md)

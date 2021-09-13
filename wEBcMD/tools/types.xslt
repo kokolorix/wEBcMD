@@ -41,27 +41,13 @@
       </xsl:result-document>
       <xsl:call-template name="command.dispatcher.cs"/>
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.cs" />
-      <!-- <xsl:variable name="tsFilePath" select="replace(base-uri(.),'.xml' ,'.ts')" /> -->
-      <!-- <xsl:message select="$tsFilePath" /> -->
-      <!-- <xsl:result-document href="{$tsFilePath}" format="text-def"> -->
-      <!-- </xsl:result-document> -->
       <xsl:apply-templates select="Types/*" mode="api.dto.ts"/>
       <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
-      <xsl:call-template name="generate.diagrams.cmd"/>
+      <xsl:call-template name="generate.ts.diagrams.cmd"/>
       <xsl:call-template name="command.readme.md"/>
 
-      <!-- <xsl:variable name="mdFilePath" select="replace(base-uri(.),'.xml' ,'.md')" />
-      <xsl:message select="$mdFilePath" /> -->
-      <!-- <xsl:result-document href="{$csFilePath}" format="text-def"></xs -->
-      <!-- <xsl:result-document href="">
-
-      </xsl:result-document> -->
-
-      <!-- <xsl:apply-templates select="Types/CommandWrapper" mode="dispatcher.cs"/> -->
-      <!-- <xsl:apply-templates select="Types/*" mode="controller.cs"/> -->
-      <!-- <xsl:apply-templates select="Types/*" mode="service.ts"/> -->
    </xsl:template>
    <xsl:template name="dispatcher.cs">
    static class <xsl:value-of select="wc:file-name(.)"/>Dispatcher
@@ -640,29 +626,47 @@
       <xsl:message select="$mdFilePath"/>
       <xsl:result-document href="{$mdFilePath}" format="text-def">
 
-[wEBcMD Documentation](../Readme.md)
-[wEBcMD Types](../../Types/Readme.md)
+[wEBcMD Documentation](../README.md)
 
-         <xsl:variable name="svgFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc/Types', wc:file-name(.)), $d), '.svg')"/>
-         <xsl:choose>
-            <xsl:when test="doc-available($svgFilePath)">
-               ![Alt text](<xsl:value-of select="concat('./', wc:file-name(.), '.svg')"/>)
-            </xsl:when>
-            <xsl:otherwise>
-![Alt text](<xsl:value-of select="concat('./cs/', wc:file-name(.), '.svg')"/>)
-![Alt text](<xsl:value-of select="concat('./ts/', wc:file-name(.), '.svg')"/>)
-            </xsl:otherwise>
-         </xsl:choose>
+[wEBcMD Types](../../Types/README.md)
+
+## <xsl:value-of select="wc:file-name(.)"/> Documentation
+
+      <xsl:variable name="customMdFilePath" select="concat(string-join((subsequence($pt, 1,count($pt) - 2), 'Doc/Types', wc:file-name(.)), $d), wc:file-name(.), '.md')"/>
+      <xsl:message select="concat('search for the file ', $customMdFilePath)"/>
+      <xsl:choose>
+         <xsl:when test="doc-available($customMdFilePath)">
+
+[<xsl:value-of select="wc:file-name(.)"/> Documentation](<xsl:value-of select="$customMdFilePath"/>)
+
+         </xsl:when>
+         <xsl:otherwise>
+
+### Serverside Classes for <xsl:value-of select="wc:file-name(.)"/>
+
+![Serverside Classes for <xsl:value-of select="wc:file-name(.)"/>](<xsl:value-of select="concat('./cs/', wc:file-name(.), '.svg')"/>)
+
+### Clientside Classes for <xsl:value-of select="wc:file-name(.)"/>
+         <xsl:variable name="commands" select="Types/CommandWrapper"/>
+         <!-- for all commands we serach the call in lines -->
+         <xsl:for-each select="$commands">
+
+#### Classes for <xsl:value-of select="@name"/>
+
+![Classes for <xsl:value-of select="@name"/>](<xsl:value-of select="concat('./ts/', @name, '.svg')"/>)
+         </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
    <!-- The cmd file to generate the plantuml diagrams -->
    <!--=======================================================================-->
-   <xsl:template name="generate.diagrams.cmd">
+   <xsl:template name="generate.ts.diagrams.cmd">
       <xsl:message select="base-uri(.)"/>
       <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-diagarams.cmd'), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-ts-diagrams.cmd'), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
       <xsl:message select="$filePath"/>
       <xsl:message select="concat('lines: ', count($lines))"/>
@@ -680,7 +684,7 @@
             <xsl:if test="not($lines[matches(., $regex)])">
                <xsl:message select="'must work :-('"/>
                <xsl:text/>
-echo generate typescript class diageram for <xsl:value-of select="@name"/>
+echo generate typescript class diagram for <xsl:value-of select="@name"/>
 call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\CommandWrapper.ts --output Types\ts\<xsl:value-of select="@name"/>.puml -A<xsl:text/>
             </xsl:if>
          </xsl:for-each>

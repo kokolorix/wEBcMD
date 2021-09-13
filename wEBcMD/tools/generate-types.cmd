@@ -11,9 +11,13 @@ if "%*" EQU "" for /r %%f in (..\Types\*.xml) do call %0 %%f Q
 
 :loop
 @REM echo loop: %*
-if "%~1"=="Q" goto:eof
+if "%~1"=="Q" (
+   call:diagrams
+   goto:eof
+)
 :: if no more arguments break the loop
 if "%~1"=="" (
+   call:diagrams
   :: Wenn mit Coderunner in VS-Code gestartet wurde, sofort beeenden
   if not "%VSCODE_PID%"=="" goto:eof
 
@@ -21,7 +25,7 @@ if "%~1"=="" (
   if errorlevel 2 goto:eof
   if errorlevel 1 goto:pause
 )
-call:doIt %1
+call:transform %1
 shift
 goto:loop
 
@@ -29,15 +33,28 @@ goto:loop
 pause
 goto:eof
 
-:doIt
+:transform
 @REM set path=%cd%\tools;%path%
 set xslt=%cd%\types.xslt
 
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1" -param outFile='file:///%outFile:\=/%' -out "%outFile%"
 @REM if exist "%~1" AltovaXML.exe -xslt2 "%xslt-cs%" -in "%~1"
 if exist "%~1" Transform.exe  -xsl:"%xslt%" -s:"%~1">nul
+
+goto:eof
+
+:diagrams
+
+echo generate typescript diagrams
 pushd ..\Doc
-if exist generate-diagarams.cmd call generate-diagarams
+if exist generate-ts-diagrams.cmd call generate-ts-diagrams
 popd
+
+echo generate csharp diagrams
+call puml-gen ..\Types ..\Doc\Types\cs -dir  -createAssociation -allInOne
+
+echo convert plantuml diagrams to svg
+call java -jar plantuml.jar ..\Doc\Types\**\*.puml -svg
+
 goto:eof
 

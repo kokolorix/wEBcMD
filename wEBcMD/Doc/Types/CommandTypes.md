@@ -1,10 +1,20 @@
 
 
-[wEBcMD Documentation](../Readme.md)
-[wEBcMD Types](../../Types/Readme.md)
+[wEBcMD Documentation](../README.md)
 
-         
-![Alt text](./cs/CommandTypes.svg)
-         
-![Alt text](./ts/SampleCommand.svg)
+[wEBcMD Types](../../Types/README.md)
+
+## CommandTypes Documentation
+
+      
+
+### Serverside Classes for CommandTypes
+
+![Serverside Classes for CommandTypes](./cs/CommandTypes.svg)
+
+### Clientside Classes for CommandTypes
+
+#### Classes for SampleCommand
+
+![Classes for SampleCommand](./ts/SampleCommand.svg)
          

@@ -9,7 +9,7 @@
       <xsl:message select="base-uri(.)"/>
       <xsl:variable name="d" select="wc:path-delimiter(.)"/>
       <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-diagarams.cmd'), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Doc', 'generate-diagrams.cmd'), $d)"/>
       <xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
       <xsl:message select="$filePath"/>
       <xsl:message select="concat('lines: ', count($lines))"/>
