@@ -5,4 +5,6 @@ CommandService->CommandController : httpPost
 CommandController->Dispatcher : Dispatch
 Dispatcher->Wrapper.cs : ExecuteCommand
 Wrapper.cs-->Dispatcher
+Dispatcher-->CommandController
+CommandController-->CommandService: httpResponse
 @enduml
