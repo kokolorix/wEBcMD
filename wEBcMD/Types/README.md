@@ -1,7 +1,10 @@
 ## wEBcMD Commands
 
 [wEBcMD Documentation](../Doc/Readme.md)
+
 [wEBcMD](../README.md)
+
+
 ### List of all available commands
 
 - [SampleCommand](../Doc/Types/SampleCommand.md)
