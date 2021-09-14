@@ -6,7 +6,7 @@
 
 ### Sequence of a command
 
-![Sequence of a command](./CommandSequence.svg)
+![Sequence of a command](../Doc/CommandSequence.svg)
 
 
 ### List of all available commands
