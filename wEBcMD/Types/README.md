@@ -11,7 +11,7 @@
 
 ### List of all available commands
 
-- [SampleCommand](../Doc/Types/SampleCommand.md)
+- [SampleCommand](../Doc/SampleCommand.md)
 
 <!-- THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION  -->
 
