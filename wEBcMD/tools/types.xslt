@@ -25,6 +25,21 @@
    <!-- TS DTOs and wrappers with lazy evaluation of DTO properties -->
    <!--=======================================================================-->
    <xsl:template match="/">
+      <xsl:call-template name="command.cs"/>
+      <xsl:call-template name="command.dispatcher.cs"/>
+      <xsl:apply-templates select="Types/*" mode="impl.wrapper.cs" />
+      <xsl:apply-templates select="Types/*" mode="api.dto.ts"/>
+      <xsl:apply-templates select="Types/*" mode="api.base.ts" />
+      <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
+
+      <xsl:call-template name="generate.ts.diagrams.cmd"/>
+      <xsl:call-template name="command.readme.md"/>
+
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Serverside classes -->
+   <!--=======================================================================-->
+   <xsl:template name="command.cs">
       <xsl:variable name="csFilePath" select="replace(base-uri(.),'.xml' ,'.cs')" />
       <xsl:message select="$csFilePath" />
       <xsl:result-document href="{$csFilePath}" format="text-def">
@@ -38,17 +53,10 @@
          <xsl:apply-templates select="Types/CommandWrapper" mode="wrapper.cs" />
          <xsl:call-template name="dispatcher.cs"/>
          <xsl:value-of select="concat('}', $nl1)" />
-      </xsl:result-document>
-      <xsl:call-template name="command.dispatcher.cs"/>
-      <xsl:apply-templates select="Types/*" mode="impl.wrapper.cs" />
-      <xsl:apply-templates select="Types/*" mode="api.dto.ts"/>
-      <xsl:apply-templates select="Types/*" mode="api.base.ts" />
-      <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
-
-      <xsl:call-template name="generate.ts.diagrams.cmd"/>
-      <xsl:call-template name="command.readme.md"/>
-
-   </xsl:template>
+      </xsl:result-document>   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Dispatcher, to find the matching wrapper -->
+   <!--=======================================================================-->
    <xsl:template name="dispatcher.cs">
    static class <xsl:value-of select="wc:file-name(.)"/>Dispatcher
    {
