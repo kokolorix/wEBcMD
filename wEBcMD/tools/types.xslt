@@ -32,9 +32,79 @@
       <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
+      <xsl:call-template name="controller.cs" />
+
       <xsl:call-template name="generate.ts.diagrams.cmd"/>
       <xsl:call-template name="command.readme.md"/>
 
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- The controller -->
+   <!--=======================================================================-->
+   <xsl:template  name="controller.cs">
+      <!-- <xsl:variable name="name" select="replace(@name, 'DTO', '')" /> -->
+      <xsl:variable name="fn" select="concat(wc:file-name(.), 'Controller.cs')" />
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
+      <!-- <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))"> -->
+      <!-- <xsl:message select="concat( 'TODO: ', $filePath, ' create (', name(.), ')')" /> -->
+      <!-- <xsl:message select="."/> -->
+      <xsl:result-document href="{$filePath}" format="text-def">
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+namespace wEBcMD.Controllers
+{
+<xsl:text/><xsl:apply-templates select="./Types" mode="controller.cs" /><xsl:text/>
+}
+      </xsl:result-document>
+      <!-- </xsl:if> -->
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Serverside controller -->
+   <!--=======================================================================-->
+   <xsl:template match="Types" mode="controller.cs">
+   <xsl:message select="'match Types'"/>
+         <xsl:call-template name="Summary.cs" >
+            <xsl:with-param name="indent" select="$t1" />
+         </xsl:call-template>
+   [ApiController]
+   [Route("[controller]")]
+   public class CommandController : ControllerBase
+   {
+      private readonly ILogger&lt;CommandController&gt; _logger;
+      /// &lt;summary&gt;
+      /// Initialize the logger
+      /// &lt;/summary&gt;
+      public CommandController(ILogger&lt;CommandController&gt; logger) =&gt; _logger = logger;
+
+<xsl:text/>
+<xsl:apply-templates select="./CommandWrapper[@http]" mode="controller.cs"/>
+<xsl:text/>
+   }
+<xsl:text/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Serverside classes -->
+   <!--=======================================================================-->
+   <xsl:template match="CommandWrapper" mode="controller.cs">
+<xsl:text/>
+         <xsl:call-template name="Summary.cs" >
+            <xsl:with-param name="indent" select="$t2" />
+         </xsl:call-template>
+<xsl:text/>
+      [Http<xsl:value-of select="wc:pascalCase(@http)"/>]
+      [Route("<xsl:value-of select="lower-case(@name)"/>")]
+      public <xsl:value-of select="cs:result-type(.)"/> <xsl:value-of select="wc:pascalCase(@name)"/>(
+         <xsl:value-of select="wc:param-list(.)"/>)
+      {
+      }
    </xsl:template>
    <!--=======================================================================-->
    <!-- Serverside classes -->
@@ -698,24 +768,7 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
          </xsl:for-each>
       </xsl:result-document>
    </xsl:template>
-   <!--=======================================================================-->
-   <!-- The controller, if it not exist -->
-   <!--=======================================================================-->
-   <xsl:template match="ObjectType" mode="controller.cs">
-      <xsl:variable name="name" select="replace(@name, 'DTO', '')" />
-      <!-- file name -->
-      <xsl:variable name="fn" select="concat($name, 'Controller.cs')" />
-      <!-- <xsl:message select="$fn" /> -->
-      <!-- delimiter -->
-      <!-- path tokens -->
-      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
-      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
-      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
-         <xsl:message select="concat( 'TODO: ', $filePath, ' create')" />
-      </xsl:if>
-   </xsl:template>
+
    <!--=======================================================================-->
    <!-- Client-side service, if not exist -->
    <!--=======================================================================-->
@@ -760,7 +813,22 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
       </xsl:choose>
    </xsl:function>
    <!--=======================================================================-->
-   <!-- get result type -->
+   <!-- get result type for csharp -->
+   <!--=======================================================================-->
+   <xsl:function name="cs:result-type" as="xs:string">
+      <xsl:param name="ot" as="node()"/>
+      <xsl:variable name="result" select="$ot/ParameterType[lower-case(@name)='result']"/>
+      <xsl:choose>
+         <xsl:when test="$result">
+            <xsl:value-of select="ts:wrapper-data-type($result)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:text>void</xsl:text>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:function>
+   <!--=======================================================================-->
+   <!-- get result type for typescript -->
    <!--=======================================================================-->
    <xsl:function name="ts:result-type" as="xs:string">
       <xsl:param name="ot" as="node()"/>
@@ -817,6 +885,17 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
          </xsl:choose>
       </xsl:variable>
       <xsl:value-of select="$accessName"/>
+   </xsl:function>
+   <!--=======================================================================-->
+   <!-- Evaluate the parameter list for C# -->
+   <!--=======================================================================-->
+   <xsl:function name="cs:param-list" as="xs:string">
+      <xsl:param name="pt" as="node()"/>
+      <xsl:value-of select="''"/>
+      <!-- <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
+         <xsl:if test="position()>1">, </xsl:if>
+         <xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
+      </xsl:if> -->
    </xsl:function>
    <!--=======================================================================-->
    <!-- Evaluate the dataType for C# -->
