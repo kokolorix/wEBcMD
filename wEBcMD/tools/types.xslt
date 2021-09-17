@@ -102,7 +102,7 @@ namespace wEBcMD.Controllers
       [Http<xsl:value-of select="wc:pascalCase(@http)"/>]
       [Route("<xsl:value-of select="lower-case(@name)"/>")]
       public <xsl:value-of select="cs:result-type(.)"/> <xsl:value-of select="wc:pascalCase(@name)"/>(
-         <xsl:value-of select="wc:param-list(.)"/>)
+         <xsl:value-of select="cs:param-list(.)"/>)
       {
       }
    </xsl:template>
