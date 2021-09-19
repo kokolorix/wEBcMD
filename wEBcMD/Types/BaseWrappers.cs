@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 #pragma warning disable 1591
 
 namespace wEBcMD
@@ -32,7 +33,7 @@ namespace wEBcMD
          if (!string.IsNullOrEmpty(jsonString))
             target.set(JsonSerializer.Deserialize<T>(jsonString));
          else
-            target.set(default(T));
+            target.set(default);
       }
       protected void Get(CommandDTO cmd, string name, (Func<Guid> get, Action<Guid> set) target)
       {
@@ -40,7 +41,7 @@ namespace wEBcMD
          if (!string.IsNullOrEmpty(jsonString))
             target.set(Guid.Parse(jsonString));
          else
-            target.set(default(Guid));
+            target.set(default);
       }
 
       protected void Set<T>(CommandDTO cmd, string name, T value)
