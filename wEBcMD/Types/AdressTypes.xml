@@ -18,14 +18,14 @@
 		<Summary>Addresses search, with multiple tokens</Summary>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="SearchText" type="String" modifier="in" summary="Search text, can contain several words separated by spaces"/>
-		<ParameterType name="Result" type="AdressDTO[]" modifier="out" summary="The result of the search is a list of AddressDTO objects"/>
+		<Result type="AdressDTO[]" summary="The result of the search is a list of AddressDTO objects"/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
 	<CommandWrapper name="GetAdress" http="get" category="Adresses" id="c6771f60-a64b-4775-a006-a2bce00b23a4">
 		<Summary/>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="Id" type="UuId" modifier="in"/>
-		<ParameterType name="Result" type="AdressDTO" summary="The address found or null if it does not exist" modifier="out"/>
+		<Result type="AdressDTO" summary="The address found or null if it does not exist" />
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
 	<CommandWrapper name="SetAdress" http="post" category="Adresses" id="c84bb99b-2d11-4426-87fa-119dc892f4ec">
@@ -35,7 +35,15 @@ The updated or newly created address is returned in Result.</Summary>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="Id" type="UuId" modifier="in"/>
 		<ParameterType name="Adress" type="AdressDTO" summary="The address which should be saved, or null if it should be deleted." modifier="in"/>
-		<ParameterType name="Result" type="AdressDTO" summary="The address stored" modifier="out"/>
+		<Result type="AdressDTO" summary="The address stored"/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
+   <CommandWrapper name="DeleteAdress" http="delete" id="c60a9e66-b60a-4228-a7e5-ca61285ce5de">
+      <Summary>Delete the Adress with the given id.
+         Returns the Adress which was deleted.</Summary>
+      <Base name="CommandWrapper"/>
+		<ParameterType name="Id" type="UuId" modifier="in"/>
+		<Result type="AdressDTO" summary="The deleted address"/>
+		<DTO name="CommandDTO"/>
+   </CommandWrapper>
 </Types>

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace wEBcMD
 {
-   public partial class SampleCommand : CommandWrapper
+   public partial class SampleCommandWrapper : CommandWrapper
    {
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand()

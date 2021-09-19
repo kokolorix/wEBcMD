@@ -32,7 +32,7 @@
       <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
-      <!-- <xsl:call-template name="controller.cs" /> -->
+      <xsl:call-template name="controller.cs" />
 
       <xsl:call-template name="generate.ts.diagrams.cmd"/>
       <xsl:call-template name="command.readme.md"/>
@@ -42,15 +42,17 @@
    <!-- The controller -->
    <!--=======================================================================-->
    <xsl:template  name="controller.cs">
-      <!-- <xsl:variable name="name" select="replace(@name, 'DTO', '')" /> -->
-      <xsl:variable name="fn" select="concat(wc:file-name(.), 'Controller.cs')" />
-      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
-      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
-      <!-- <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))"> -->
-      <!-- <xsl:message select="concat( 'TODO: ', $filePath, ' create (', name(.), ')')" /> -->
-      <!-- <xsl:message select="."/> -->
-      <xsl:result-document href="{$filePath}" format="text-def">
+      <xsl:variable name="commands" select="./Types/CommandWrapper[@http]"/>
+      <xsl:if test="count($commands)">
+         <!-- <xsl:variable name="name" select="replace(@name, 'DTO', '')" /> -->
+         <xsl:variable name="fn" select="concat(wc:file-name(.), 'Controller.cs')" />
+         <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+         <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+         <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
+         <!-- <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))"> -->
+         <!-- <xsl:message select="concat( 'TODO: ', $filePath, ' create (', name(.), ')')" /> -->
+         <!-- <xsl:message select="."/> -->
+         <xsl:result-document href="{$filePath}" format="text-def">
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -61,28 +63,29 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
-<xsl:text/><xsl:apply-templates select="./Types" mode="controller.cs" /><xsl:text/>
+            <xsl:text/><xsl:apply-templates select="./Types" mode="controller.cs" /><xsl:text/>
 }
-      </xsl:result-document>
-      <!-- </xsl:if> -->
+         </xsl:result-document>
+      </xsl:if>
    </xsl:template>
    <!--=======================================================================-->
    <!-- Serverside controller -->
    <!--=======================================================================-->
    <xsl:template match="Types" mode="controller.cs">
-   <xsl:message select="'match Types'"/>
-         <xsl:call-template name="Summary.cs" >
-            <xsl:with-param name="indent" select="$t1" />
-         </xsl:call-template>
+      <!-- <xsl:message select="'match Types'"/> -->
+      <xsl:call-template name="Summary.cs" >
+         <xsl:with-param name="indent" select="$t1" />
+      </xsl:call-template>
+         <xsl:variable name="name" select="wc:pascalCase(wc:file-name(.))"/>
    [ApiController]
    [Route("[controller]")]
-   public class CommandController : ControllerBase
+   public class <xsl:value-of select="$name"/>Controller : ControllerBase
    {
-      private readonly ILogger&lt;CommandController&gt; _logger;
+      private readonly ILogger&lt;<xsl:value-of select="$name"/>Controller&gt; _logger;
       /// &lt;summary&gt;
       /// Initialize the logger
       /// &lt;/summary&gt;
-      public CommandController(ILogger&lt;CommandController&gt; logger) =&gt; _logger = logger;
+      public <xsl:value-of select="$name"/>Controller(ILogger&lt;<xsl:value-of select="$name"/>Controller&gt; logger) =&gt; _logger = logger;
 
 <xsl:text/>
 <xsl:apply-templates select="./CommandWrapper[@http]" mode="controller.cs"/>
@@ -94,18 +97,47 @@ namespace wEBcMD.Controllers
    <!-- Serverside classes -->
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="controller.cs">
-<xsl:text/>
+      <xsl:text/>
          <xsl:call-template name="Summary.cs" >
             <xsl:with-param name="indent" select="$t2" />
          </xsl:call-template>
-<xsl:text/>
+      <xsl:text/>
       [Http<xsl:value-of select="wc:pascalCase(@http)"/>]
       [Route("<xsl:value-of select="lower-case(@name)"/>")]
-      public <xsl:value-of select="cs:result-type(.)"/> <xsl:value-of select="wc:pascalCase(@name)"/>(
-         <xsl:value-of select="cs:param-list(.)"/>)
+      <!-- <xsl:value-of select="cs:param-list(.)"/> -->
+      public <xsl:value-of select="cs:result-type(.)"/>
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="wc:pascalCase(@name)"/>
+      <xsl:text>( </xsl:text>
+      <xsl:value-of select="cs:param-list(.)"/>
+      <xsl:text> )</xsl:text>
       {
+         <xsl:value-of select="concat(@name, 'Wrapper')"/> wrapper = new();
+         <xsl:for-each select="./ParameterType">
+         wrapper.<xsl:value-of select="@name"/> = <xsl:value-of select="wc:camelCaseWord(@name)"/>;</xsl:for-each>
+
+         wrapper.ExecuteCommand();
+
+         return wrapper.Result;
       }
    </xsl:template>
+   <!--=======================================================================-->
+   <!-- build a csharp parameter list -->
+   <!--=======================================================================-->
+   <xsl:function name="cs:param-list">
+      <!-- wrapper node -->
+      <xsl:param name="wrapper" as="node()"/>
+      <xsl:variable name="params" select="$wrapper/ParameterType"/>
+      <xsl:variable name="result" >
+         <xsl:for-each select="$params">
+            <xsl:if test="position()>1">, </xsl:if>
+            <xsl:value-of select="cs:data-type(.)"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="wc:camelCaseWord(@name)"/>
+         </xsl:for-each>
+      </xsl:variable>
+      <xsl:value-of select="$result"/>
+   </xsl:function>
    <!--=======================================================================-->
    <!-- Serverside classes -->
    <!--=======================================================================-->
@@ -135,7 +167,7 @@ namespace wEBcMD.Controllers
          if (null == dto)
             return dto;
          <xsl:for-each select="Types/CommandWrapper">
-            <xsl:variable name="name" as="xs:string" select="./@name"/>
+            <xsl:variable name="name" as="xs:string" select="concat(./@name, 'Wrapper')"/>
          else if(<xsl:value-of select="$name"/>.IsForMe(dto))
             return <xsl:value-of select="$name"/>.ExecuteCommand(dto);
          </xsl:for-each>
@@ -186,6 +218,19 @@ namespace wEBcMD.Controllers
          <xsl:value-of select="concat('', '};')"/>
       </xsl:result-document>
       <!-- </xsl:if> -->
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript DTO Properties -->
+   <!--=======================================================================-->
+   <xsl:template match="PropertyType" mode="api.dto.ts">
+      <xsl:call-template name="Summary.ts">
+         <xsl:with-param name="indent" select="$t1" />
+      </xsl:call-template>
+      <xsl:value-of select="concat($t1, @name, '?: ', ts:dto-data-type(.))"/>
+      <xsl:if test="@default">
+         <xsl:value-of select="concat(' = ', @default)"/>
+      </xsl:if>
+      <xsl:value-of select="concat(';', $nl1)"/>
    </xsl:template>
    <!--=======================================================================-->
    <!-- TypeScript object wrapper -->
@@ -272,6 +317,7 @@ namespace wEBcMD.Controllers
          <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Base.TypeId; }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; } -->
          <xsl:apply-templates select="ParameterType" mode="api.base.ts"/>
+         <xsl:apply-templates select="Result" mode="api.base.ts"/>
          <xsl:variable name="resultType" as="xs:string" select="ts:result-type(.)"/>
    /// &lt;summary&gt;Calls the command&lt;/summary&gt;
    execute(<xsl:apply-templates select="ParameterType" mode="api.access.execute.ts"/>): <xsl:text/>
@@ -291,47 +337,37 @@ namespace wEBcMD.Controllers
       </xsl:result-document>
    </xsl:template>
    <!--=======================================================================-->
-   <!-- TypeScript execute arguments -->
-   <!--=======================================================================-->
-   <xsl:template match="ParameterType" mode="api.access.execute.ts">
-      <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
-         <xsl:if test="position()>1">, </xsl:if>
-         <xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
-      </xsl:if>
-   </xsl:template>
-   <!--=======================================================================-->
-   <!-- TypeScript execute arguments1 -->
-   <!--=======================================================================-->
-   <xsl:template match="ParameterType" mode="api.access.execute1.ts">
-      <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
-      this.<xsl:value-of select="@name"/> = <xsl:value-of select="wc:camelCaseWord(@name)"/>;<xsl:text/>
-      </xsl:if>
-   </xsl:template>
-   <!--=======================================================================-->
-   <!-- TypeScript DTO Properties -->
-   <!--=======================================================================-->
-   <xsl:template match="PropertyType" mode="api.dto.ts">
-      <xsl:call-template name="Summary.ts">
-         <xsl:with-param name="indent" select="$t1" />
-      </xsl:call-template>
-      <xsl:value-of select="concat($t1, @name, '?: ', ts:dto-data-type(.))"/>
-      <xsl:if test="@default">
-         <xsl:value-of select="concat(' = ', @default)"/>
-      </xsl:if>
-      <xsl:value-of select="concat(';', $nl1)"/>
-   </xsl:template>
-   <!--=======================================================================-->
    <!-- TypeScript access Parameters -->
    <!--=======================================================================-->
    <xsl:template match="ParameterType" mode="api.base.ts">
       <xsl:call-template name="Summary.ts">
          <xsl:with-param name="indent" select="$t1" />
       </xsl:call-template>
+      <xsl:call-template name="api.base.getter.ts"/>
+      <xsl:if test="not(lower-case(@modifier)='out')">
+         <xsl:call-template name="api.base.setter.ts"/>
+      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!--process the Result node for wrapper -->
+   <!--=======================================================================-->
+   <xsl:template match="Result" mode="api.base.ts">
+      <xsl:call-template name="Summary.ts" >
+         <xsl:with-param name="indent" select="$t2" />
+      </xsl:call-template>
+      <xsl:call-template name="api.base.getter.ts"/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript access getter -->
+   <!--=======================================================================-->
+   <xsl:template name="api.base.getter.ts">
+      <xsl:variable name="name">
+         <xsl:call-template name="api.base.paramName.ts"/>
+      </xsl:variable>
       <xsl:variable name="dataType" as="xs:string" select="ts:wrapper-data-type(.)"/>
-      <!-- <xsl:if test="not(lower-case(@modifier)='out')"> -->
-      <xsl:value-of select="concat($t1, 'get ', @name, '() : ', $dataType, '{', $nl1)"/>
-      <xsl:variable name="paramName" as="xs:string" select="wc:camelCaseWord(@name)"/>
-      <xsl:value-of select="concat($t2, 'let ', $paramName, ' : string = this.getArgument(&quot;', @name, '&quot;);', $nl1)"/>
+      <xsl:value-of select="concat($t1, 'get ', $name, '() : ', $dataType, '{', $nl1)"/>
+      <xsl:variable name="paramName" as="xs:string" select="wc:camelCaseWord($name)"/>
+      <xsl:value-of select="concat($t2, 'let ', $paramName, ' : string = this.getArgument(&quot;', $name, '&quot;);', $nl1)"/>
       <xsl:choose>
          <xsl:when test="$dataType='boolean'">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
@@ -353,23 +389,51 @@ namespace wEBcMD.Controllers
          </xsl:otherwise>
       </xsl:choose>
       <xsl:value-of select="concat($t1, '}', $nl1)"/>
-      <!-- </xsl:if> -->
-      <!-- <xsl:value-of select="concat($t2, 'return undefined;', $nl1)"/> -->
-      <xsl:if test="not(lower-case(@modifier)='out')">
-         <xsl:value-of select="concat($t1, 'set ', @name, '( val : ', $dataType, ') {', $nl1)"/>
-         <xsl:choose>
-            <xsl:when test="matches($dataType,'(boolean)|(Guid)')">
-               <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', @name, '&quot;, val.toString());', $nl1)"/>
-            </xsl:when>
-            <xsl:when test="matches($dataType,'.+DTO')">
-               <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', @name, '&quot;, JSON.stringify(val));', $nl1)"/>
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', @name, '&quot;, val);', $nl1)"/>
-            </xsl:otherwise>
-         </xsl:choose>
-         <xsl:value-of select="concat($t1, '}', $nl2)"/>
-      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript access setter -->
+   <!--=======================================================================-->
+   <xsl:template name="api.base.setter.ts">
+      <xsl:variable name="name">
+         <xsl:call-template name="api.base.paramName.ts"/>
+      </xsl:variable>
+      <xsl:variable name="dataType" as="xs:string" select="ts:wrapper-data-type(.)"/>
+      <xsl:value-of select="concat($t1, 'set ', $name, '( val : ', $dataType, ') {', $nl1)"/>
+      <xsl:choose>
+         <xsl:when test="matches($dataType,'(boolean)|(Guid)')">
+            <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', $name, '&quot;, val.toString());', $nl1)"/>
+         </xsl:when>
+         <xsl:when test="matches($dataType,'.+DTO')">
+            <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', $name, '&quot;, JSON.stringify(val));', $nl1)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="concat($t2, 'this.setArgument(&quot;', $name, '&quot;, val);', $nl1)"/>
+         </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="concat($t1, '}', $nl2)"/>
+   </xsl:template>
+   <xsl:template name="api.base.paramName.ts" as="xs:string">
+      <xsl:choose>
+         <xsl:when test="@name">
+            <xsl:value-of select="@name"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:value-of select="name()"/>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript execute arguments -->
+   <!--=======================================================================-->
+   <xsl:template match="ParameterType" mode="api.access.execute.ts">
+      <xsl:if test="position()>1">, </xsl:if>
+      <xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- TypeScript execute arguments1 -->
+   <!--=======================================================================-->
+   <xsl:template match="ParameterType" mode="api.access.execute1.ts">
+      this.<xsl:value-of select="@name"/> = <xsl:value-of select="wc:camelCaseWord(@name)"/>;<xsl:text/>
    </xsl:template>
    <!--=======================================================================-->
    <!--process an ObjectType node -->
@@ -410,12 +474,48 @@ namespace wEBcMD.Controllers
       <xsl:value-of select="concat($t1, '};', $nl2)" />
    </xsl:template>
    <!--=======================================================================-->
+   <!--process the Base node -->
+   <!--=======================================================================-->
+   <xsl:template match="Base" mode="dto.cs">
+      <!-- <xsl:message select="concat('process Base mode dto.cs ', @name)"/> -->
+      <xsl:variable name="category" select="@category" />
+      <xsl:variable name="name" select="@name" />
+      <xsl:variable name="base" select="concat($category, '::', $name)" />
+      <xsl:if test="$name!=''">
+         <xsl:value-of select="concat(' : ', $name)" />
+      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!--process an Property node for PropertyT -->
+   <!--=======================================================================-->
+   <xsl:template match="PropertyType" mode="dto.cs">
+      <!-- <xsl:message select="concat('process PropertyType mode dto.cs ', @name)"/> -->
+      <xsl:variable name="name" select="@name" />
+      <xsl:call-template name="Summary.cs">
+         <xsl:with-param name="indent" select="$t2" />
+      </xsl:call-template>
+      <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
+      <xsl:value-of select="concat($t2, 'public virtual ', $dataType)" />
+      <xsl:value-of select="concat(' ', $name, ' { get; set; }')" />
+      <xsl:if test="@default">
+         <xsl:choose>
+            <xsl:when test="starts-with($dataType, 'List')">
+               <xsl:value-of select="concat(' = new ', @dataType, '(){', '};')" />
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="concat(' = ', @default, ';')" />
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:if>
+      <xsl:value-of select="concat($nl1, '')" />
+   </xsl:template>
+   <!--=======================================================================-->
    <!--process an CommandWrapper node -->
    <!--=======================================================================-->
    <xsl:template match="CommandWrapper" mode="wrapper.cs">
       <!-- <xsl:message select="concat('process CommandWrapper mode wrapper.cs ', @name)"/> -->
       <xsl:variable name="category" select="@category" />
-      <xsl:variable name="name" select="@name" />
+      <xsl:variable name="name" select="concat(@name, 'Wrapper')" />
       <xsl:variable name="id" select="@id" />
       <xsl:variable name="base" select="./Base/@name" />
       <xsl:variable name="dto" select="./DTO/@name"/>
@@ -428,15 +528,7 @@ namespace wEBcMD.Controllers
       <!--  -->
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Constructor of ', $name,'&lt;/summary&gt;', $nl1)" />
       <xsl:value-of select="concat($t2, 'public ', $name, '(', $dto, ' dto = null):base(dto){}', $nl1)" />
-      <!-- <xsl:for-each select="ParameterType">
-         <xsl:variable name="accessName" as="xs:string" select="cs:access-name(.)"/>
-         <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
-         <xsl:if test="concat('_', wc:camelCaseWord($dataType)) != $accessName">
-            <xsl:value-of select="concat($t3, $accessName, ' = new(Cmd.Arguments);', $nl1)" />
-         </xsl:if>
-      <xsl:value-of select=
-      </xsl:for-each> "concat($t2, '}', $nl1)" /> -->
-      <!--  -->
+
       <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', $id, ' is the Id of ', $name,' type.&lt;/summary&gt;', $nl1)" />
       <xsl:value-of select="concat($t2, 'public static Guid TypeId { get =&gt; System.Guid.Parse(&quot;', $id, '&quot;); }', $nl1)" />
       <!--  -->
@@ -478,84 +570,9 @@ namespace wEBcMD.Controllers
          }
       }
       <xsl:apply-templates select="ParameterType" mode="wrapper.cs" />
-      <xsl:value-of select="concat($t1, '};', $nl2)" />
-   </xsl:template>
-   <!--=======================================================================-->
-   <!--create the Impl, if not exists -->
-   <!--=======================================================================-->
-   <xsl:template match="CommandWrapper" mode="impl.wrapper.cs">
-      <!-- <xsl:message select="concat('process CommandWrapper mode impl.wrapper.cs ', @name)"/> -->
-      <xsl:variable name="name" select="@name" />
-      <!-- file name -->
-      <xsl:variable name="fn" select="concat($name, '.cs')" />
-      <!-- <xsl:message select="$fn" /> -->
-      <!-- delimiter -->
-      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
-      <!-- path tokens -->
-      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-      <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
-      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Impl', $fn), $d)"/>
-      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
-         <xsl:message select="concat( $filePath, ' created')" />
-         <xsl:result-document href="{$filePath}" format="text-def">
-            <xsl:variable name="base" select="./Base/@name" />
-            <xsl:variable name="dto" select="./DTO/@name"/>
-            <xsl:value-of select="concat('using System;', $nl1)" />
-            <xsl:value-of select="concat('using System.Reflection;', $nl2)" />
-            <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
-            <xsl:value-of select="concat('{', $nl1)" />
-            <xsl:value-of select="concat($t1, 'public partial class ', $name, ' : ', $base)" />
-            <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
-            <!--  -->
-            <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Execute the command', '&lt;/summary&gt;', $nl1)" />
-            <xsl:value-of select="concat($t2, 'public partial ', $dto, ' ExecuteCommand()', $nl1)" />
-            <xsl:value-of select="concat($t2, '{', $nl1)" />
-            <!--  -->
-            <xsl:value-of select="concat($t3, 'Log.Trace($&quot;Implementation in {MethodBase.GetCurrentMethod()}&quot;);', $nl1)" />
-            <xsl:value-of select="concat($t3, 'return Cmd;', $nl1)" />
-            <!--  -->
-            <xsl:value-of select="concat($t2, '}', $nl1)" />
-            <!--  -->
-            <xsl:value-of select="concat($t1, '};', $nl2)" />
-            <xsl:value-of select="concat('}', $nl1)" />
-         </xsl:result-document>
-      </xsl:if>
-   </xsl:template>
-   <!--=======================================================================-->
-   <!--process the Base node -->
-   <!--=======================================================================-->
-   <xsl:template match="Base" mode="dto.cs">
-      <!-- <xsl:message select="concat('process Base mode dto.cs ', @name)"/> -->
-      <xsl:variable name="category" select="@category" />
-      <xsl:variable name="name" select="@name" />
-      <xsl:variable name="base" select="concat($category, '::', $name)" />
-      <xsl:if test="$name!=''">
-         <xsl:value-of select="concat(' : ', $name)" />
-      </xsl:if>
-   </xsl:template>
-   <!--=======================================================================-->
-   <!--process an Property node for PropertyT -->
-   <!--=======================================================================-->
-   <xsl:template match="PropertyType" mode="dto.cs">
-      <!-- <xsl:message select="concat('process PropertyType mode dto.cs ', @name)"/> -->
-      <xsl:variable name="name" select="@name" />
-      <xsl:call-template name="Summary.cs">
-         <xsl:with-param name="indent" select="$t2" />
-      </xsl:call-template>
-      <xsl:variable name="dataType" as="xs:string" select="cs:data-type(.)"/>
-      <xsl:value-of select="concat($t2, 'public virtual ', $dataType)" />
-      <xsl:value-of select="concat(' ', $name, ' { get; set; }')" />
-      <xsl:if test="@default">
-         <xsl:choose>
-            <xsl:when test="starts-with($dataType, 'List')">
-               <xsl:value-of select="concat(' = new ', @dataType, '(){', '};')" />
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:value-of select="concat(' = ', @default, ';')" />
-            </xsl:otherwise>
-         </xsl:choose>
-      </xsl:if>
-      <xsl:value-of select="concat($nl1, '')" />
+      <xsl:apply-templates select="Result" mode="wrapper.cs" />
+
+      <xsl:value-of select="concat($nl1, $t1, '};', $nl2)" />
    </xsl:template>
    <!--=======================================================================-->
    <!--process an Property node for wrapper -->
@@ -594,7 +611,57 @@ namespace wEBcMD.Controllers
       <xsl:value-of select="concat($t2, '}', $nl1)" /> -->
    </xsl:template>
    <!--=======================================================================-->
-   <!--process the Summary node or Attribute -->
+   <!--process the Result node for wrapper -->
+   <!--=======================================================================-->
+   <xsl:template match="Result" mode="wrapper.cs">
+      <xsl:call-template name="Summary.cs" >
+         <xsl:with-param name="indent" select="$t2" />
+      </xsl:call-template>
+      public <xsl:value-of select="cs:data-type(.)"/> Result { get; set; }<xsl:text/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!--create the Impl, if not exists -->
+   <!--=======================================================================-->
+   <xsl:template match="CommandWrapper" mode="impl.wrapper.cs">
+      <!-- <xsl:message select="concat('process CommandWrapper mode impl.wrapper.cs ', @name)"/> -->
+      <xsl:variable name="name" select="concat(@name, 'Wrapper')" />
+      <!-- file name -->
+      <xsl:variable name="fn" select="concat(@name, '.cs')" />
+      <!-- <xsl:message select="$fn" /> -->
+      <!-- delimiter -->
+      <xsl:variable name="d" select="wc:path-delimiter(.)"/>
+      <!-- path tokens -->
+      <xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
+      <!-- <xsl:variable name="path" select="replace(replace($uri, $dnp, $dn), $fnp, $fn)"/> -->
+      <xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Impl', $fn), $d)"/>
+      <xsl:if test="not(unparsed-text-available($filePath, 'utf-8'))">
+         <xsl:message select="concat( $filePath, ' created')" />
+         <xsl:result-document href="{$filePath}" format="text-def">
+            <xsl:variable name="base" select="./Base/@name" />
+            <xsl:variable name="dto" select="./DTO/@name"/>
+            <xsl:value-of select="concat('using System;', $nl1)" />
+            <xsl:value-of select="concat('using System.Reflection;', $nl2)" />
+            <xsl:value-of select="concat('namespace wEBcMD', $nl1)" />
+            <xsl:value-of select="concat('{', $nl1)" />
+            <xsl:value-of select="concat($t1, 'public partial class ', $name, ' : ', $base)" />
+            <xsl:value-of select="concat($nl1, $t1, '{', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t2, '/// &lt;summary&gt;', 'Execute the command', '&lt;/summary&gt;', $nl1)" />
+            <xsl:value-of select="concat($t2, 'public partial ', $dto, ' ExecuteCommand()', $nl1)" />
+            <xsl:value-of select="concat($t2, '{', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t3, 'Log.Trace($&quot;Implementation in {MethodBase.GetCurrentMethod()}&quot;);', $nl1)" />
+            <xsl:value-of select="concat($t3, 'return Cmd;', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t2, '}', $nl1)" />
+            <!--  -->
+            <xsl:value-of select="concat($t1, '};', $nl2)" />
+            <xsl:value-of select="concat('}', $nl1)" />
+         </xsl:result-document>
+      </xsl:if>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!--process the Summary node or Attribute for csharp -->
    <!--=======================================================================-->
    <xsl:template name="Summary.cs">
       <xsl:param name="indent" />
@@ -616,7 +683,7 @@ namespace wEBcMD.Controllers
       </xsl:choose>
    </xsl:template>
    <!--=======================================================================-->
-   <!--process the Summary node or Attribute -->
+   <!--process the Summary node or Attribute for typescript-->
    <!--=======================================================================-->
    <xsl:template name="Summary.ts">
       <xsl:param name="indent" select="''"/>
@@ -817,10 +884,11 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
    <!--=======================================================================-->
    <xsl:function name="cs:result-type" as="xs:string">
       <xsl:param name="ot" as="node()"/>
-      <xsl:variable name="result" select="$ot/ParameterType[lower-case(@name)='result']"/>
+      <!-- <xsl:variable name="result" select="$ot/ParameterType[lower-case(@name)='result']"/> -->
+      <xsl:variable name="result" select="$ot/Result"/>
       <xsl:choose>
          <xsl:when test="$result">
-            <xsl:value-of select="ts:wrapper-data-type($result)"/>
+            <xsl:value-of select="cs:data-type($result)"/>
          </xsl:when>
          <xsl:otherwise>
             <xsl:text>void</xsl:text>
@@ -832,8 +900,8 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
    <!--=======================================================================-->
    <xsl:function name="ts:result-type" as="xs:string">
       <xsl:param name="ot" as="node()"/>
-      <!-- <xsl:variable name="result-type" as="xs:string" select="ts:wrapper-data-type($ot/ParameterType[lower-case(@name)='result'])"/> -->
-      <xsl:variable name="result" select="$ot/ParameterType[lower-case(@name)='result']"/>
+      <!-- <xsl:variable name="result" select="$ot/ParameterType[lower-case(@name)='result']"/> -->
+      <xsl:variable name="result" select="$ot/Result"/>
       <xsl:choose>
          <xsl:when test="$result">
             <xsl:value-of select="ts:wrapper-data-type($result)"/>
@@ -887,17 +955,6 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
       <xsl:value-of select="$accessName"/>
    </xsl:function>
    <!--=======================================================================-->
-   <!-- Evaluate the parameter list for C# -->
-   <!--=======================================================================-->
-   <xsl:function name="cs:param-list" as="xs:string">
-      <xsl:param name="pt" as="node()"/>
-      <xsl:value-of select="''"/>
-      <!-- <xsl:if test="lower-case(@modifier)='in' or lower-case(@modifier)='inout' or lower-case(@modifier)=''">
-         <xsl:if test="position()>1">, </xsl:if>
-         <xsl:value-of select="wc:camelCaseWord(@name)"/>: <xsl:value-of select="ts:wrapper-data-type(.)"/>
-      </xsl:if> -->
-   </xsl:function>
-   <!--=======================================================================-->
    <!-- Evaluate the dataType for C# -->
    <!--=======================================================================-->
    <xsl:function name="cs:data-type" as="xs:string">
@@ -910,7 +967,8 @@ call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts .
       <xsl:variable name="cs-type" as="xs:string">
          <xsl:choose>
             <xsl:when test="$type='UuId'">Guid</xsl:when>
-            <xsl:otherwise><xsl:value-of select="$type" /></xsl:otherwise>
+            <xsl:when test="$type!=''"><xsl:value-of select="$type" /></xsl:when>
+            <xsl:otherwise>void</xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
       <xsl:choose>

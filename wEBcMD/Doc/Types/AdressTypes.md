@@ -28,3 +28,8 @@
 
 ![Classes for SetAdress](./ts/SetAdress.svg)
          
+
+#### Classes for DeleteAdress
+
+![Classes for DeleteAdress](./ts/DeleteAdress.svg)
+         

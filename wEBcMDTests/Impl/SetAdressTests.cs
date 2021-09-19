@@ -16,7 +16,7 @@ namespace wEBcMD.Tests
 		{
 			CommandDTO cmd1, cmd2;
 			//{
-			SetAdress setAdress = new();
+			SetAdressWrapper setAdress = new();
 			cmd2 = setAdress.Cmd;
 			AdressDTO adress = new()
 			{
@@ -32,7 +32,7 @@ namespace wEBcMD.Tests
 			if (setAdress.Result.Id == Guid.Empty)
 				Assert.Fail();
 			//}
-			SetAdress check1 = new(cmd1), check2 = new(cmd2);
+			SetAdressWrapper check1 = new(cmd1), check2 = new(cmd2);
 			Assert.AreNotEqual(check1.Result, check2.Result);
 		}
 	}

@@ -40,7 +40,7 @@ export class SetAdressBase  extends CommandWrapper {
       this.setArgument("Adress", JSON.stringify(val));
    }
 
-   /** The address stored */
+      /** The address stored */
    get Result() : AdressDTO{
       let result : string = this.getArgument("Result");
       if (!result)

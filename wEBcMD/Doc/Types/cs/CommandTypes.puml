@@ -1,8 +1,8 @@
 @startuml
 class CommandDTO {
 }
-class SampleCommand <<partial>> {
-    + SampleCommand(dto:CommandDTO)
+class SampleCommandWrapper <<partial>> {
+    + SampleCommandWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
     + <<partial>> ExecuteCommand() : CommandDTO
@@ -16,9 +16,9 @@ BaseDTO <|-- CommandDTO
 CommandDTO --> "TypeId" Guid
 CommandDTO o-> "Response" Boolean
 CommandDTO o-> "Arguments<PropertyDTO>" "List`1"
-CommandWrapper <|-- SampleCommand
-SampleCommand --> "TypeId" Guid
-SampleCommand --> "Cmd" CommandDTO
-SampleCommand --> "FirstOne" String
-SampleCommand --> "SecondOne" Boolean
+CommandWrapper <|-- SampleCommandWrapper
+SampleCommandWrapper --> "TypeId" Guid
+SampleCommandWrapper --> "Cmd" CommandDTO
+SampleCommandWrapper --> "FirstOne" String
+SampleCommandWrapper --> "SecondOne" Boolean
 @enduml

@@ -3,16 +3,18 @@ import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
 /**
+ * Delete the Adress with the given id.
+ *          Returns the Adress which was deleted.
  */
-export class GetAdressBase  extends CommandWrapper {
+export class DeleteAdressBase  extends CommandWrapper {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressBase.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : DeleteAdressBase.TypeId)}
 
-   /** c6771f60-a64b-4775-a006-a2bce00b23a4 is the Id of GetAdress type. */
-   static get TypeId(): Guid { return Guid.parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
+   /** c60a9e66-b60a-4228-a7e5-ca61285ce5de is the Id of DeleteAdress type. */
+   static get TypeId(): Guid { return Guid.parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === GetAdressBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return dto.Type === DeleteAdressBase.TypeId; }
 
    /** Id */
    get Id() : Guid{
@@ -25,7 +27,7 @@ export class GetAdressBase  extends CommandWrapper {
       this.setArgument("Id", val.toString());
    }
 
-      /** The address found or null if it does not exist */
+      /** The deleted address */
    get Result() : AdressDTO{
       let result : string = this.getArgument("Result");
       if (!result)
@@ -40,7 +42,7 @@ export class GetAdressBase  extends CommandWrapper {
       return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
          console.log('return with result ' + JSON.stringify(cmd));
-         return new GetAdressBase(cmd).Result;
+         return new DeleteAdressBase(cmd).Result;
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));

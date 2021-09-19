@@ -29,16 +29,16 @@ namespace wEBcMD
    /// ```
    /// 
    /// </summary>
-   public partial class SampleCommand : CommandWrapper
+   public partial class SampleCommandWrapper : CommandWrapper
    {
-      /// <summary>Constructor of SampleCommand</summary>
-      public SampleCommand(CommandDTO dto = null):base(dto){}
-      /// <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommand type.</summary>
+      /// <summary>Constructor of SampleCommandWrapper</summary>
+      public SampleCommandWrapper(CommandDTO dto = null):base(dto){}
+      /// <summary>e3e185bd-5237-4574-977f-a040bbe12d35 is the Id of SampleCommandWrapper type.</summary>
       public static Guid TypeId { get => System.Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
       /// <summary>Checks if the type of the DTO fits</summary>
-      public static bool IsForMe(CommandDTO dto) => dto.Type == SampleCommand.TypeId;
+      public static bool IsForMe(CommandDTO dto) => dto.Type == SampleCommandWrapper.TypeId;
       /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new SampleCommand(dto).ExecuteCommand();
+      public static CommandDTO ExecuteCommand(CommandDTO dto) => new SampleCommandWrapper(dto).ExecuteCommand();
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand();
 
@@ -76,6 +76,7 @@ namespace wEBcMD
       public String FirstOne { get; set; }
       /// <summary>The SecondOne is a boolean parameter</summary>
       public Boolean SecondOne { get; set; }
+
    };
 
 
@@ -86,8 +87,8 @@ namespace wEBcMD
          if (null == dto)
             return dto;
          
-         else if(SampleCommand.IsForMe(dto))
-            return SampleCommand.ExecuteCommand(dto);
+         else if(SampleCommandWrapper.IsForMe(dto))
+            return SampleCommandWrapper.ExecuteCommand(dto);
          
          return null;
       }

@@ -28,7 +28,7 @@ class CommandDTO extends BaseDTO {
     +Arguments?: PropertyDTO[]
     +{static} TypeId: Guid
 }
-class GetAdressBase extends CommandWrapper {
+class DeleteAdressBase extends CommandWrapper {
     +Id: Guid
     +Id: Guid
     +Result: any
@@ -37,5 +37,5 @@ class GetAdressBase extends CommandWrapper {
     +{static} IsForMe(dto: CommandDTO): boolean
 }
 CommandDTO --> "*" PropertyDTO
-GetAdressBase --> "1" CommandDTO
+DeleteAdressBase --> "1" CommandDTO
 @enduml

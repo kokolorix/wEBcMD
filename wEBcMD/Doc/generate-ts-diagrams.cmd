@@ -10,3 +10,6 @@ call tplant --input ..\ClientApp\src\api\SetAdressBase.ts ..\ClientApp\src\impl\
 
 echo generate typescript class diagram for SampleCommand
 call tplant --input ..\ClientApp\src\api\SampleCommandBase.ts ..\ClientApp\src\impl\SampleCommand.ts ..\ClientApp\src\impl\CommandWrapper.ts --output Types\ts\SampleCommand.puml -A
+
+echo generate typescript class diagram for DeleteAdress
+call tplant --input ..\ClientApp\src\api\DeleteAdressBase.ts ..\ClientApp\src\impl\DeleteAdress.ts ..\ClientApp\src\impl\CommandWrapper.ts --output Types\ts\DeleteAdress.puml -A
