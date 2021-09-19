@@ -40,10 +40,15 @@
       },
       {
          "label": "types",
-         "command": "../wEBcMD-Types.cmd",
+         "command": "${workspaceFolder}/tools/generate-types.cmd",
          "type": "process",
          "args": [],
-         "problemMatcher": []
+         "options": {
+            "cwd": "${workspaceFolder}/tools"
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
       },
       {
          "type": "xslt",
@@ -51,7 +56,7 @@
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${file}",
          "xmlSource": "${workspaceFolder}/Types/BaseTypes.xml",
-         "resultPath": "${workspaceFolder}/BaseTypes.xml",
+         "resultPath": "${env:tmp}/Types.xml",
          "group": {
             "kind": "build",
             "isDefault": false
@@ -66,7 +71,7 @@
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${file}",
          "xmlSource": "${workspaceFolder}/Types/CommandTypes.xml",
-         "resultPath": "${workspaceFolder}/CommandTypes.xml",
+         "resultPath": "${env:tmp}/Types.xml",
          "group": {
             "kind": "build",
             "isDefault": true
@@ -81,11 +86,23 @@
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${file}",
          "xmlSource": "${workspaceFolder}/Types/AdressTypes.xml",
-         "resultPath": "${workspaceFolder}/AdressTypes.xml",
+         "resultPath": "${env:tmp}/Types.xml",
          "group": {
             "kind": "build",
             "isDefault": false
          },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
+      {
+         "type": "shell",
+         "label": "test xslt",
+         "command": "${workspaceFolder}/tools/run-saxon",
+         "args": [
+            "${workspaceFolder}/tools/test.xslt",
+            "${workspaceFolder}\\Types\\*.xml"
+         ],
          "problemMatcher": [
             "$saxon-xslt"
          ]

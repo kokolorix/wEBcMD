@@ -1,5 +1,5 @@
 import { Guid} from "guid-typescript";
-import { SampleCommandAccess } from "../api/SampleCommandAccess";
+import { SampleCommandBase } from "../api/SampleCommandBase";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
@@ -13,8 +13,8 @@ import { CommandDTO } from "../api/CommandDTO";
  * }
  * ```
  */
-export class SampleCommand extends SampleCommandAccess {
+export class SampleCommand extends SampleCommandBase {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : SampleCommandBase.TypeId)}
 
 };

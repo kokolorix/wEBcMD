@@ -1,0 +1,54 @@
+@startuml
+class BaseDTO {
+    +Id?: Guid
+    +Type?: Guid
+    +{static} TypeId: Guid
+}
+class AdressDTO extends BaseDTO {
+    +Name1?: string
+    +Name2?: string
+    +Adress1?: string
+    +Adress2?: string
+    +Housenumber?: string
+    +City?: string
+    +Postcode?: string
+    +{static} TypeId: Guid
+}
+class CommandWrapper {
+    -_dto: any
+    -_service: any
+    +Service: any
+    +DTO: any
+    +Response: boolean
+    +Arguments: any[]
+    +Type: Guid
+    +Id: Guid
+    +getArgument(name: string): any
+    +setArgument(name: string, value: string): void
+    -{static} _factories: any
+    +{static} register(typeId: Guid, factory: CommandWrapperFactory): void
+}
+class PropertyDTO {
+    +Name?: string
+    +Value?: string
+    +{static} TypeId: Guid
+}
+class CommandDTO extends BaseDTO {
+    +Response?: boolean
+    +Arguments?: PropertyDTO[]
+    +{static} TypeId: Guid
+}
+class SetAdressBase extends CommandWrapper {
+    +Id: Guid
+    +Id: Guid
+    +Adress: AdressDTO
+    +Adress: AdressDTO
+    +Result: AdressDTO
+    +execute(id: Guid, adress: AdressDTO): Promise<AdressDTO>
+    +{static} TypeId: Guid
+    +{static} IsForMe(dto: CommandDTO): boolean
+}
+CommandDTO --> "*" PropertyDTO
+SetAdressBase --> "1" AdressDTO
+SetAdressBase --> "1" CommandDTO
+@enduml

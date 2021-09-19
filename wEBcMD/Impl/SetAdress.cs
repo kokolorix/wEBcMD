@@ -13,6 +13,7 @@ namespace wEBcMD
          this.Adress = null;
          this.Result.Id = System.Guid.NewGuid();
          this.Result.Type = AdressDTO.TypeId;
+
          return Cmd;
       }
    };

@@ -6,11 +6,16 @@
 			<xs:documentation>Comment describing your root element</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:choice maxOccurs="unbounded">
-				<xs:element name="ObjectType" type="ObjT"/>
-				<xs:element name="ObjectWrapper" type="ObjWrapT"/>
-				<xs:element name="CommandWrapper" type="CmdWrapT"/>
-			</xs:choice>
+         <xs:sequence>
+            <xs:sequence minOccurs="0">
+               <xs:element name="Summary"/>
+            </xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+               <xs:element name="ObjectType" type="ObjT"/>
+               <xs:element name="ObjectWrapper" type="ObjWrapT"/>
+               <xs:element name="CommandWrapper" type="CmdWrapT"/>
+            </xs:choice>
+         </xs:sequence>
 			<!-- <xs:sequence maxOccurs="unbounded"> -->
 			<!-- </xs:sequence> -->
 		</xs:complexType>
@@ -95,6 +100,14 @@
 					</xs:sequence>
 				</xs:sequence>
 				<xs:attribute name="id" type="UuIdT" use="required"/>
+            <xs:attribute name="http">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="get"/>
+							<xs:enumeration value="post"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
