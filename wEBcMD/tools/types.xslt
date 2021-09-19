@@ -32,7 +32,7 @@
       <xsl:apply-templates select="Types/*" mode="api.base.ts" />
       <xsl:apply-templates select="Types/*" mode="impl.wrapper.ts" />
 
-      <xsl:call-template name="controller.cs" />
+      <!-- <xsl:call-template name="controller.cs" /> -->
 
       <xsl:call-template name="generate.ts.diagrams.cmd"/>
       <xsl:call-template name="command.readme.md"/>
