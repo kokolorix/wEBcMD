@@ -1,0 +1,52 @@
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		Addresses search, with multiple tokens
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+	
+		Updates an existing address if Id is specified,
+or creates a new one if Id is null.
+The updated or newly created address is returned in Result.
+		
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	

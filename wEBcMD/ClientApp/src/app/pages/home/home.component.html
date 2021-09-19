@@ -1,0 +1,49 @@
+<h1 id="cmdLabel">Command execution</h1>
+<div>
+   <button (click)='executeCommand()'>Execute</button>
+</div>
+<div>
+   <input [value]='_adress?.Id' />
+</div>
+<div>
+   <input [value]='_adress?.Name1' />
+</div>
+<div>
+   <input [value]='_adress?.Name2' />
+</div>
+<div>
+   <input [value]='_adress?.Adress1' />
+</div>
+<div>
+   <input [value]='_adress?.Adress2' />
+</div>
+<div>
+   <input [value]='_adress.Postcode' />
+   <input [value]='_adress.City' />
+</div>
+
+
+<!-- <h1 id="tableLabel">Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!forecasts"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="forecasts">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Temp. (C)</th>
+      <th>Temp. (F)</th>
+      <th>Summary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let forecast of forecasts">
+      <td>{{ forecast.date }}</td>
+      <td>{{ forecast.temperatureC }}</td>
+      <td>{{ forecast.temperatureF }}</td>
+      <td>{{ forecast.summary }}</td>
+    </tr>
+  </tbody>
+</table> -->

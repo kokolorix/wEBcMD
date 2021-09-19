@@ -1,0 +1,94 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "build",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "build",
+            "${workspaceFolder}/wEBcMD.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      },
+      {
+         "label": "publish",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "publish",
+            "${workspaceFolder}/wEBcMD.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      },
+      {
+         "label": "watch",
+         "command": "dotnet",
+         "type": "process",
+         "args": [
+            "watch",
+            "run",
+            "${workspaceFolder}/wEBcMD.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+         ],
+         "problemMatcher": "$msCompile"
+      },
+      {
+         "label": "types",
+         "command": "../wEBcMD-Types.cmd",
+         "type": "process",
+         "args": [],
+         "problemMatcher": []
+      },
+      {
+         "type": "xslt",
+         "label": "xslt: Saxon Transform (BaseTypes)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${file}",
+         "xmlSource": "${workspaceFolder}/Types/BaseTypes.xml",
+         "resultPath": "${workspaceFolder}/BaseTypes.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": false
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
+      {
+         "type": "xslt",
+         "label": "xslt: Saxon Transform (CommandTypes)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${file}",
+         "xmlSource": "${workspaceFolder}/Types/CommandTypes.xml",
+         "resultPath": "${workspaceFolder}/CommandTypes.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": true
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
+      {
+         "type": "xslt",
+         "label": "xslt: Saxon Transform (AdressTypes)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${file}",
+         "xmlSource": "${workspaceFolder}/Types/AdressTypes.xml",
+         "resultPath": "${workspaceFolder}/AdressTypes.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": false
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
+   ]
+}

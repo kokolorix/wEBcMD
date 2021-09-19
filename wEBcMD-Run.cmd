@@ -8,4 +8,6 @@ if errorlevel 1 goto:run
 call taskkill -im wEBcMD.exe -f
 
 :run
+pushd wEBcMD
 call dotnet run
+popd

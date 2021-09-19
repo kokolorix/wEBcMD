@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+	<ObjectType name="CommandDTO" category="Types" id="c1eda1fc-cc45-4658-889f-ccd989c2848a">
+		<Summary>         Base command object. Has all arguments in generig list,          can be wrapped by concrete command wrappers         </Summary>
+		<Base name="BaseDTO" category="Base"/>
+		<PropertyType name="Response" type="Boolean" default="false" summary="Indicates if this is the answer"/>
+		<PropertyType name="Arguments" type="PropertyDTO[]" default="[]" summary="Arguments of the command"/>
+		<!-- <PropertyType name="Default" type="PropertyDTO" summary="Default Argument of the command"/> -->
+	</ObjectType>
+	<CommandWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
+		<Summary>
+This is the sample command. He has two Parameters
+and a multiline summary.
+``` typescript
+CommandDTO cmd;
+if(SampleCommand.IsForMe(dto)){
+   let sample = new SampleCommand(cmd);
+   console.log(sample.FirstOne);
+}
+```
+      </Summary>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="FirstOne" type="String">
+         <Summary>
+The FirstOne is a string parameter
+and has a multiline comment
+         </Summary>
+      </ParameterType>
+		<ParameterType name="SecondOne" type="Boolean" summary="The SecondOne is a boolean parameter"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+</Types>

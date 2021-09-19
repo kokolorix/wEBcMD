@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+	<ObjectType name="AdressDTO" category="Adresses" id="71959238-5bfd-459b-8fba-e48657d8ff2b">
+		<Summary/>
+		<Base name="BaseDTO" category="Base"/>
+		<PropertyType name="Name1" type="String" summary="First name of the person or name of the company"/>
+		<PropertyType name="Name2" type="String" summary="Surname of the person or additional name of the company"/>
+		<PropertyType name="Adress1" type="String" summary="Street name"/>
+		<PropertyType name="Adress2" type="String" summary="Address supplement"/>
+		<PropertyType name="Housenumber" type="String" summary="House no."/>
+		<PropertyType name="City" type="String" summary="Village"/>
+		<PropertyType name="Postcode" type="String" summary="Postal code"/>
+	</ObjectType>
+	<CommandWrapper name="FindAdresses" category="Adresses" id="13b2f4da-711a-451e-b435-2c2dc1fbbe4e">
+		<Summary>Addresses search, with multiple tokens</Summary>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="SearchText" type="String" modifier="in" summary="Search text, can contain several words separated by spaces"/>
+		<ParameterType name="Result" type="AdressDTO[]" modifier="out" summary="The result of the search is a list of AddressDTO objects"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+	<CommandWrapper name="GetAdress" category="Adresses" id="c6771f60-a64b-4775-a006-a2bce00b23a4">
+		<Summary/>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="Id" type="UuId" modifier="in"/>
+		<ParameterType name="Result" type="AdressDTO" summary="The address found or null if it does not exist" modifier="out"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+	<CommandWrapper name="SetAdress" category="Adresses" id="c84bb99b-2d11-4426-87fa-119dc892f4ec">
+		<Summary>Updates an existing address if Id is specified,
+or creates a new one if Id is null.
+The updated or newly created address is returned in Result.</Summary>
+		<Base name="CommandWrapper"/>
+		<ParameterType name="Id" type="UuId" modifier="in"/>
+		<ParameterType name="Adress" type="AdressDTO" summary="The address which should be saved, or null if it should be deleted." modifier="in"/>
+		<ParameterType name="Result" type="AdressDTO" summary="The address stored" modifier="out"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+</Types>
