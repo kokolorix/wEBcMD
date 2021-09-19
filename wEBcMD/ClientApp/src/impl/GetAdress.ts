@@ -1,5 +1,4 @@
 import { Guid} from "guid-typescript";
-import { AdressDTO } from "../api/AdressDTO";
 import { GetAdressBase } from "../api/GetAdressBase";
 import { CommandDTO } from "../api/CommandDTO";
 

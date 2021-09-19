@@ -1,19 +1,4 @@
 @startuml
-class BaseDTO {
-    +Id?: Guid
-    +Type?: Guid
-    +{static} TypeId: Guid
-}
-class AdressDTO extends BaseDTO {
-    +Name1?: string
-    +Name2?: string
-    +Adress1?: string
-    +Adress2?: string
-    +Housenumber?: string
-    +City?: string
-    +Postcode?: string
-    +{static} TypeId: Guid
-}
 class CommandWrapper {
     -_dto: any
     -_service: any
@@ -33,6 +18,11 @@ class PropertyDTO {
     +Value?: string
     +{static} TypeId: Guid
 }
+class BaseDTO {
+    +Id?: Guid
+    +Type?: Guid
+    +{static} TypeId: Guid
+}
 class CommandDTO extends BaseDTO {
     +Response?: boolean
     +Arguments?: PropertyDTO[]
@@ -41,12 +31,11 @@ class CommandDTO extends BaseDTO {
 class FindAdressesBase extends CommandWrapper {
     +SearchText: string
     +SearchText: string
-    +Result: AdressDTO[]
-    +execute(searchText: string): Promise<AdressDTO[]>
+    +Result: any[]
+    +execute(searchText: string): Promise<any[]>
     +{static} TypeId: Guid
     +{static} IsForMe(dto: CommandDTO): boolean
 }
 CommandDTO --> "*" PropertyDTO
-FindAdressesBase --> "*" AdressDTO
 FindAdressesBase --> "1" CommandDTO
 @enduml

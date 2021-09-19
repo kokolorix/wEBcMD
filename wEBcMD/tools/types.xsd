@@ -78,6 +78,13 @@
 		<xs:attribute name="default" type="xs:string" use="optional"/>
 		<xs:attribute name="summary" type="xs:string" use="optional"/>
 	</xs:complexType>
+   <xs:complexType name="ResT">
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="Summary"/>
+		</xs:sequence>
+      <xs:attribute name="type" type="ValT" use="required"/>
+      <xs:attribute name="summary" type="xs:string" use="optional"/>
+   </xs:complexType>
 	<xs:complexType name="ObjWrapT">
 		<xs:complexContent>
 			<xs:extension base="ObjT">
@@ -98,6 +105,9 @@
 					<xs:sequence minOccurs="0" maxOccurs="unbounded">
 						<xs:element name="ParameterType" type="ParamT"/>
 					</xs:sequence>
+					<xs:sequence minOccurs="0" maxOccurs="1">
+						<xs:element name="Result" type="ResT"/>
+					</xs:sequence>
 				</xs:sequence>
 				<xs:attribute name="id" type="UuIdT" use="required"/>
             <xs:attribute name="http">
@@ -105,6 +115,7 @@
 						<xs:restriction base="xs:string">
 							<xs:enumeration value="get"/>
 							<xs:enumeration value="post"/>
+							<xs:enumeration value="delete"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>

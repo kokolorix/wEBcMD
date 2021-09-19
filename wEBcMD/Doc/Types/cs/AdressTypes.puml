@@ -1,20 +1,26 @@
 @startuml
 class AdressDTO {
 }
-class FindAdresses <<partial>> {
-    + FindAdresses(dto:CommandDTO)
+class FindAdressesWrapper <<partial>> {
+    + FindAdressesWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
     + <<partial>> ExecuteCommand() : CommandDTO
 }
-class GetAdress <<partial>> {
-    + GetAdress(dto:CommandDTO)
+class GetAdressWrapper <<partial>> {
+    + GetAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
     + <<partial>> ExecuteCommand() : CommandDTO
 }
-class SetAdress <<partial>> {
-    + SetAdress(dto:CommandDTO)
+class SetAdressWrapper <<partial>> {
+    + SetAdressWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> ExecuteCommand() : CommandDTO
+}
+class DeleteAdressWrapper <<partial>> {
+    + DeleteAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
     + <<partial>> ExecuteCommand() : CommandDTO
@@ -33,20 +39,25 @@ AdressDTO --> "Adress2" String
 AdressDTO --> "Housenumber" String
 AdressDTO --> "City" String
 AdressDTO --> "Postcode" String
-CommandWrapper <|-- FindAdresses
-FindAdresses --> "TypeId" Guid
-FindAdresses --> "Cmd" CommandDTO
-FindAdresses --> "SearchText" String
-FindAdresses --> "Result<AdressDTO>" "List`1"
-CommandWrapper <|-- GetAdress
-GetAdress --> "TypeId" Guid
-GetAdress --> "Cmd" CommandDTO
-GetAdress --> "Id" Guid
-GetAdress --> "Result" AdressDTO
-CommandWrapper <|-- SetAdress
-SetAdress --> "TypeId" Guid
-SetAdress --> "Cmd" CommandDTO
-SetAdress --> "Id" Guid
-SetAdress --> "Adress" AdressDTO
-SetAdress --> "Result" AdressDTO
+CommandWrapper <|-- FindAdressesWrapper
+FindAdressesWrapper --> "TypeId" Guid
+FindAdressesWrapper --> "Cmd" CommandDTO
+FindAdressesWrapper --> "SearchText" String
+FindAdressesWrapper --> "Result<AdressDTO>" "List`1"
+CommandWrapper <|-- GetAdressWrapper
+GetAdressWrapper --> "TypeId" Guid
+GetAdressWrapper --> "Cmd" CommandDTO
+GetAdressWrapper --> "Id" Guid
+GetAdressWrapper --> "Result" AdressDTO
+CommandWrapper <|-- SetAdressWrapper
+SetAdressWrapper --> "TypeId" Guid
+SetAdressWrapper --> "Cmd" CommandDTO
+SetAdressWrapper --> "Id" Guid
+SetAdressWrapper --> "Adress" AdressDTO
+SetAdressWrapper --> "Result" AdressDTO
+CommandWrapper <|-- DeleteAdressWrapper
+DeleteAdressWrapper --> "TypeId" Guid
+DeleteAdressWrapper --> "Cmd" CommandDTO
+DeleteAdressWrapper --> "Id" Guid
+DeleteAdressWrapper --> "Result" AdressDTO
 @enduml

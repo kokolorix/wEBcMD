@@ -1,5 +1,4 @@
 import { Guid} from "guid-typescript";
-import { AdressDTO } from "./AdressDTO";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -25,7 +24,7 @@ export class FindAdressesBase  extends CommandWrapper {
       this.setArgument("SearchText", val);
    }
 
-   /** The result of the search is a list of AddressDTO objects */
+      /** The result of the search is a list of AddressDTO objects */
    get Result() : AdressDTO[]{
       let result : string = this.getArgument("Result");
       if (!result)

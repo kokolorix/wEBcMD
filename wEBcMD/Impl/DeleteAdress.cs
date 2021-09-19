@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace wEBcMD
 {
-   public partial class FindAdressesWrapper : CommandWrapper
+   public partial class DeleteAdressWrapper : CommandWrapper
    {
       /// <summary>Execute the command</summary>
       public partial CommandDTO ExecuteCommand()
