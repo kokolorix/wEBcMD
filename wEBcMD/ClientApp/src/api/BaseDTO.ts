@@ -7,7 +7,7 @@ export class BaseDTO {
    static get TypeId(): Guid { return Guid.parse("1a81bc99-28c2-4c03-ac5c-a1de4967cc36"); }
 
    /** Id */
-   Id?: string;
+   Id?: Guid;
    /** Type */
-   Type?: string;
+   Type?: Guid;
 };

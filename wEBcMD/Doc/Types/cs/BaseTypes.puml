@@ -1,0 +1,26 @@
+@startuml
+class BaseDTO <<partial>> {
+}
+class PropertyDTO {
+}
+class ObjectDTO {
+}
+class TypeDTO {
+}
+class BaseTypesDispatcher <<static>> {
+    + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class "List`1"<T> {
+}
+BaseDTO --> "TypeId" Guid
+BaseDTO --> "Id" Guid
+BaseDTO --> "Type" Guid
+PropertyDTO --> "TypeId" Guid
+PropertyDTO --> "Name" String
+PropertyDTO --> "Value" String
+BaseDTO <|-- ObjectDTO
+ObjectDTO --> "TypeId" Guid
+ObjectDTO --> "Properties<PropertyDTO>" "List`1"
+BaseDTO <|-- TypeDTO
+TypeDTO --> "TypeId" Guid
+@enduml

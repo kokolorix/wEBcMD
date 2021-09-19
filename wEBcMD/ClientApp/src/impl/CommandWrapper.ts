@@ -11,40 +11,19 @@ type CommandWrapperFactory = (dto: CommandDTO) => CommandWrapper;
 // @Injectable({
 //    providedIn: 'root'
 //  })
- class InjectorHelper{
-   private  _service: CommandService;
-   constructor(service: CommandService) {
-      this._service = service;
-   }
-   public get Service() : CommandService { return this._service; }
-}
 export class CommandWrapper {
    private _dto: CommandDTO;
 
    private _service: CommandService;
-   // private static initHelper() : boolean {
-      // let ih: {new(): InjectorHelper} = class extends InjectorHelper {
-      //    constructor(){
-      //       super(service: CommandService)
-      //    }
-      // };
-      //  CommandWrapper._service = ih.InjectorInstance.get<CommandService>(CommandService);
-      // CommandWrapper._service = AppInjector.get<CommandService>(CommandService);
-      // CommandWrapper._service = ih.Service;
-      //  return true;
-   // }
-   // private static InitHelper = CommandWrapper.initHelper();
-
-   // public static setCommandService(service : CommandService) : void{ CommandWrapper._service = service;}
    public get Service() { return this._service; }
 
    constructor(dto: CommandDTO, type?: Guid){
       this._service = CommandService.Service;
       this._dto = dto ? dto : new CommandDTO();
       if(!this._dto.Type)
-         this._dto.Type = type ? type.toString() : CommandDTO.TypeId.toString();
+         this._dto.Type = type ? type : CommandDTO.TypeId;
       if(!this._dto.Id)
-         this._dto.Id = Guid.create().toString();
+         this._dto.Id = Guid.create();
    }
    public get DTO(): CommandDTO { return this._dto; }
 
@@ -53,9 +32,9 @@ export class CommandWrapper {
 	/** Arguments of the command */
    get Arguments(): PropertyDTO[] { return this.DTO?.Arguments };
 	/** Type Guid of the command */
-   get Type(): Guid { return Guid.parse(this.DTO?.Type) };
+   get Type(): Guid { return this.DTO?.Type };
 	/** Id of the command */
-   get Id(): Guid { return Guid.parse(this.DTO?.Id) };
+   get Id(): Guid { return this.DTO?.Id };
 
    public getArgument(name:string){
       return this._dto.Arguments.find(a => a.Name == name)?.Value;

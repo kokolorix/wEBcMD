@@ -1,12 +1,12 @@
 import { Guid} from "guid-typescript";
 import { AdressDTO } from "../api/AdressDTO";
-import { GetAdressAccess } from "../api/GetAdressAccess";
+import { GetAdressBase } from "../api/GetAdressBase";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
  */
-export class GetAdress extends GetAdressAccess {
+export class GetAdress extends GetAdressBase {
 
-   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressAccess.TypeId)}
+   constructor(dto?: CommandDTO, type?: Guid){super(dto, type ? type : GetAdressBase.TypeId)}
 
 };
