@@ -1,8 +1,8 @@
 
 
-[wEBcMD Documentation](../README.md)
+[wEBcMD Documentation](../md.README)
 
-[wEBcMD Types](../../Types/README.md)
+[wEBcMD Types](../../Types/md.README)
 
 ## AdressTypes Documentation
 

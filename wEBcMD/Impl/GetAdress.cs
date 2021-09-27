@@ -11,6 +11,14 @@ namespace wEBcMD
          Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
          return Cmd;
       }
-   };
+      /// <summary>
+      /// </summary>
+
+	public AdressDTO GetAdress(Guid id)
+	{
+		return default;
+	}
+
+				   };
 
 }
