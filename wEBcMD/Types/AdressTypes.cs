@@ -36,10 +36,28 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == FindAdressesWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new FindAdressesWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
+
+		
+		
+		
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			FindAdressesWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.FindAdresses(
+					wrapper.SearchText
+			);
+
+			return wrapper.Cmd;
+		}
+
+		      /// <summary>
+      /// Addresses search, with multiple tokens
+      /// </summary>
+		public partial List<AdressDTO> FindAdresses(String searchText);
 
       /// <summary>Serialize / Deserialize concrete FindAdresses to generic CommandDTO</summary>
       public override CommandDTO Cmd
@@ -81,10 +99,27 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == GetAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new GetAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
+
+		
+		
+		
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			GetAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.GetAdress(
+					wrapper.Id
+			);
+
+			return wrapper.Cmd;
+		}
+
+		      /// <summary>
+      /// </summary>
+		public partial AdressDTO GetAdress(Guid id);
 
       /// <summary>Serialize / Deserialize concrete GetAdress to generic CommandDTO</summary>
       public override CommandDTO Cmd
@@ -129,10 +164,31 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == SetAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new SetAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
+
+		
+		
+		
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			SetAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.SetAdress(
+					wrapper.Id, 
+					wrapper.Adress
+			);
+
+			return wrapper.Cmd;
+		}
+
+		      /// <summary>
+      /// Updates an existing address if Id is specified,
+      /// or creates a new one if Id is null.
+      /// The updated or newly created address is returned in Result.
+      /// </summary>
+		public partial AdressDTO SetAdress(Guid id, AdressDTO adress);
 
       /// <summary>Serialize / Deserialize concrete SetAdress to generic CommandDTO</summary>
       public override CommandDTO Cmd
@@ -180,10 +236,29 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == DeleteAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new DeleteAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
+
+		
+		
+		
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			DeleteAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.DeleteAdress(
+					wrapper.Id
+			);
+
+			return wrapper.Cmd;
+		}
+
+		      /// <summary>
+      /// Delete the Adress with the given id.
+      /// Returns the Adress which was deleted.
+      /// </summary>
+		public partial AdressDTO DeleteAdress(Guid id);
 
       /// <summary>Serialize / Deserialize concrete DeleteAdress to generic CommandDTO</summary>
       public override CommandDTO Cmd
