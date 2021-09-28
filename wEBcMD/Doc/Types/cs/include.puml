@@ -5,25 +5,25 @@ class FindAdressesWrapper <<partial>> {
     + FindAdressesWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> FindAdresses(searchText:String) : List<AdressDTO>
 }
 class GetAdressWrapper <<partial>> {
     + GetAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> GetAdress(id:Guid) : AdressDTO
 }
 class SetAdressWrapper <<partial>> {
     + SetAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> SetAdress(id:Guid, adress:AdressDTO) : AdressDTO
 }
 class DeleteAdressWrapper <<partial>> {
     + DeleteAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> DeleteAdress(id:Guid) : AdressDTO
 }
 class AdressTypesDispatcher <<static>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
