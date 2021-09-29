@@ -5,10 +5,8 @@ namespace wEBcMD
 {
    public partial class SetAdressWrapper : CommandWrapper
    {
-      /// <summary>Execute the command</summary>
       // public partial CommandDTO ExecuteCommand()
       // {
-      //    Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
       //    this.Result = this.Adress;
       //    this.Adress = null;
       //    this.Result.Id = System.Guid.NewGuid();
@@ -17,14 +15,15 @@ namespace wEBcMD
       //    return Cmd;
       // }
 		/// <summary>
-		///
+		///  Execute the command
 		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="adress"></param>
 		/// <returns></returns>
 		public partial AdressDTO SetAdress(Guid id, AdressDTO adress)
 		{
-			return default;
+         Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
+         return default;
 		}
 	};
 

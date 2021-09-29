@@ -18,7 +18,7 @@ namespace wEBcMD.Controllers
    ///     <item>
    ///         <term>SampleCommand</term>
    ///         <description>Sample to show how dispatch and execute a command.
-   ///         <seealso cref="SampleCommand.ExecuteCommand()"/>
+   ///         <seealso cref="SampleCommandWrapper.ExecuteCommand()"/>
    ///         </description>
    ///     </item>
    /// </list>   /// </summary>
@@ -39,7 +39,7 @@ namespace wEBcMD.Controllers
       /// <param name="cmd"></param>
       /// <returns>the commands response</returns>
       /// <remarks>
-      /// Sample request for <see cref="SampleCommand.ExecuteCommand()"/>:
+      /// Sample request for <see cref="SampleCommandWrapper.ExecuteCommand()"/>:
       ///
       ///      {
       ///        "id": "ee72eaab-d696-46e6-ab41-56f499579be7",
