@@ -5,7 +5,7 @@ class SampleCommandWrapper <<partial>> {
     + SampleCommandWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> SampleCommand(firstOne:String, secondOne:Boolean) : void
 }
 class CommandTypesDispatcher <<static>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO

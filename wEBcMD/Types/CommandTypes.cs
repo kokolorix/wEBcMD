@@ -37,37 +37,61 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == SampleCommandWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new SampleCommandWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
 
-      /// <summary>Serialize / Deserialize concrete SampleCommand to generic CommandDTO</summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-      
-            this.Set(cmd, "FirstOne", FirstOne);
-            this.Set(cmd, "SecondOne", SecondOne);
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			SampleCommandWrapper wrapper = new(dto);
+			
+			wrapper.SampleCommand(
+					wrapper.FirstOne, 
+					wrapper.SecondOne
+			);
 
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-      
-            this.Get(cmd, "FirstOne",  (()=>this.FirstOne, x => this.FirstOne = x));
-            this.Get(cmd, "SecondOne",  (()=>this.SecondOne, x => this.SecondOne = x));
-            
+			return wrapper.Cmd;
+		}
 
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-            /// <summary>
+		      /// <summary>
+      /// 
+      /// This is the sample command. He has two Parameters
+      /// and a multiline summary.
+      /// ``` typescript
+      /// CommandDTO cmd;
+      /// if(SampleCommand.IsForMe(dto)){
+      /// let sample = new SampleCommand(cmd);
+      /// console.log(sample.FirstOne);
+      /// }
+      /// ```
+      /// 
+      /// </summary>
+		public partial void SampleCommand(String firstOne, Boolean secondOne);
+
+		/// <summary>Serialize / Deserialize concrete SampleCommand to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+				this.Set(cmd, "FirstOne", FirstOne);
+				this.Set(cmd, "SecondOne", SecondOne);
+
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				this.Get(cmd, "FirstOne",  (()=>this.FirstOne, x => this.FirstOne	= x));
+				this.Get(cmd, "SecondOne",  (()=>this.SecondOne, x => this.SecondOne	= x));
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>
       /// 
       /// The FirstOne is a string parameter
       /// and has a multiline comment
