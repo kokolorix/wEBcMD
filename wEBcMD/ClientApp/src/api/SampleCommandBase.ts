@@ -7,11 +7,9 @@ import { CommandDTO } from "./CommandDTO";
  * and a multiline summary.
  * ``` typescript
  * CommandDTO cmd;
- * if(SampleCommand.IsForMe(dto)){
- *    let sample = new SampleCommand(cmd);
- *    console.log(sample.FirstOne);
+ * if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
  * }
- * ```
+ * ```      
  */
 export class SampleCommandBase  extends CommandWrapper {
 
@@ -25,7 +23,7 @@ export class SampleCommandBase  extends CommandWrapper {
 
    /**
     * The FirstOne is a string parameter
-    * and has a multiline comment
+    * and has a multiline comment         
     */
    get FirstOne() : string{
       let firstOne : string = this.getArgument("FirstOne");

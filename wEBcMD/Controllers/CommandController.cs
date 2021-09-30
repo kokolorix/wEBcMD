@@ -39,7 +39,7 @@ namespace wEBcMD.Controllers
       /// <param name="cmd"></param>
       /// <returns>the commands response</returns>
       /// <remarks>
-      /// Sample request for <see cref="SampleCommandWrapper.ExecuteCommand()"/>:
+      /// Sample request for <see cref="SampleCommandWrapper.SampleCommand(string, bool)"/>:
       ///
       ///      {
       ///        "id": "ee72eaab-d696-46e6-ab41-56f499579be7",

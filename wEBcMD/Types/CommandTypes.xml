@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+<Types
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
 	<ObjectType name="CommandDTO" category="Types" id="c1eda1fc-cc45-4658-889f-ccd989c2848a">
 		<Summary>         Base command object. Has all arguments in generig list,          can be wrapped by concrete command wrappers         </Summary>
 		<Base name="BaseDTO" category="Base"/>
@@ -7,25 +8,43 @@
 		<PropertyType name="Arguments" type="PropertyDTO[]" default="[]" summary="Arguments of the command"/>
 		<!-- <PropertyType name="Default" type="PropertyDTO" summary="Default Argument of the command"/> -->
 	</ObjectType>
+	<!-- <ObjectType name="DatatypeDTO" id="d02743ec-83f6-4209-a940-daa07131716e">
+		<Base name="" />
+		<PropertyType name="Type" type="Enum=String,Boolean,Double,Int32,*DTO"/>
+	</ObjectType> -->
+	<ObjectType name="ParamDTO" id="95f50f9b-9e6c-4f72-8bfe-486adffda5a9">
+		<Base name="" />
+		<PropertyType name="Name" type="String"/>
+		<PropertyType name="Type" type="String"/>
+	</ObjectType>
+	<ObjectType name="CommandTypeDTO" id="7e4e81c9-9170-4f9e-bfe0-b9acd359958b">
+		<Base name="TypeDTO" />
+		<PropertyType name="Name" type="String"/>
+		<PropertyType name="Result" type="String"/>
+		<PropertyType name="Parameters" type="ParamDTO[]"/>
+	</ObjectType>
+	<CommandWrapper name="GetCommandTypes" http="get" category="Command" id="6dab2a85-0256-421c-8a7a-2337453a3e48">
+		<Summary>All Command-Typs</Summary>
+		<Base name="CommandWrapper"/>
+		<!-- <ParameterType name="SearchText" type="String" modifier="in" summary="Search text, can contain several words separated by spaces"/> -->
+		<Result type="CommandTypeDTO[]" summary="The command type object"/>
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
 	<CommandWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
 		<Summary>
 This is the sample command. He has two Parameters
 and a multiline summary.
 ``` typescript
 CommandDTO cmd;
-if(SampleCommand.IsForMe(dto)){
-   let sample = new SampleCommand(cmd);
-   console.log(sample.FirstOne);
+if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
 }
-```
-      </Summary>
+```      </Summary>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="FirstOne" type="String">
-         <Summary>
+			<Summary>
 The FirstOne is a string parameter
-and has a multiline comment
-         </Summary>
-      </ParameterType>
+and has a multiline comment         </Summary>
+		</ParameterType>
 		<ParameterType name="SecondOne" type="Boolean" summary="The SecondOne is a boolean parameter"/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>

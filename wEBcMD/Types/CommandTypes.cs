@@ -16,18 +16,95 @@ namespace wEBcMD
       public virtual List<PropertyDTO> Arguments { get; set; } = new (){};
    };
 
+   /// <summary>ParamDTO</summary>
+   public class ParamDTO
+   {
+      /// <summary>95f50f9b-9e6c-4f72-8bfe-486adffda5a9 is the Id of ParamDTO type.</summary>
+      public static Guid TypeId { get => System.Guid.Parse("95f50f9b-9e6c-4f72-8bfe-486adffda5a9"); }
+      /// <summary>Name</summary>
+      public virtual String Name { get; set; }
+      /// <summary>Type</summary>
+      public virtual String Type { get; set; }
+   };
+
+   /// <summary>CommandTypeDTO</summary>
+   public class CommandTypeDTO : TypeDTO
+   {
+      /// <summary>7e4e81c9-9170-4f9e-bfe0-b9acd359958b is the Id of CommandTypeDTO type.</summary>
+      new public static Guid TypeId { get => System.Guid.Parse("7e4e81c9-9170-4f9e-bfe0-b9acd359958b"); }
+      /// <summary>Name</summary>
+      public virtual String Name { get; set; }
+      /// <summary>Result</summary>
+      public virtual String Result { get; set; }
+      /// <summary>Parameters</summary>
+      public virtual List<ParamDTO> Parameters { get; set; }
+   };
+
+   /// <summary>
+   /// All Command-Typs
+   /// </summary>
+   public partial class GetCommandTypesWrapper : CommandWrapper
+   {
+      /// <summary>Constructor of GetCommandTypesWrapper</summary>
+      public GetCommandTypesWrapper(CommandDTO dto = null):base(dto){}
+      /// <summary>6dab2a85-0256-421c-8a7a-2337453a3e48 is the Id of GetCommandTypesWrapper type.</summary>
+      public static Guid TypeId { get => System.Guid.Parse("6dab2a85-0256-421c-8a7a-2337453a3e48"); }
+      /// <summary>Checks if the type of the DTO fits</summary>
+      public static bool IsForMe(CommandDTO dto) => dto.Type == GetCommandTypesWrapper.TypeId;
+
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			GetCommandTypesWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.GetCommandTypes(
+			);
+
+			return wrapper.Cmd;
+		}
+
+		      /// <summary>
+      /// All Command-Typs
+      /// </summary>
+		public partial List<CommandTypeDTO> GetCommandTypes();
+
+		/// <summary>Serialize / Deserialize concrete GetCommandTypes to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>The command type object</summary>
+
+		public List<CommandTypeDTO>
+		Result { get; set; }
+   };
+
    /// <summary>
    /// 
    /// This is the sample command. He has two Parameters
    /// and a multiline summary.
    /// ``` typescript
    /// CommandDTO cmd;
-   /// if(SampleCommand.IsForMe(dto)){
-   /// let sample = new SampleCommand(cmd);
-   /// console.log(sample.FirstOne);
+   /// if(SampleCommand.IsForMe(dto)){ let sample = new SampleCommand(cmd); console.log(sample.FirstOne);
    /// }
    /// ```
-   /// 
    /// </summary>
    public partial class SampleCommandWrapper : CommandWrapper
    {
@@ -58,12 +135,9 @@ namespace wEBcMD
       /// and a multiline summary.
       /// ``` typescript
       /// CommandDTO cmd;
-      /// if(SampleCommand.IsForMe(dto)){
-      /// let sample = new SampleCommand(cmd);
-      /// console.log(sample.FirstOne);
+      /// if(SampleCommand.IsForMe(dto)){ let sample = new SampleCommand(cmd); console.log(sample.FirstOne);
       /// }
       /// ```
-      /// 
       /// </summary>
 		public partial void SampleCommand(String firstOne, Boolean secondOne);
 
@@ -95,7 +169,6 @@ namespace wEBcMD
       /// 
       /// The FirstOne is a string parameter
       /// and has a multiline comment
-      /// 
       /// </summary>
       public String FirstOne { get; set; }
       /// <summary>The SecondOne is a boolean parameter</summary>
@@ -110,6 +183,9 @@ namespace wEBcMD
       {
          if (null == dto)
             return dto;
+         
+         else if(GetCommandTypesWrapper.IsForMe(dto))
+            return GetCommandTypesWrapper.ExecuteCommand(dto);
          
          else if(SampleCommandWrapper.IsForMe(dto))
             return SampleCommandWrapper.ExecuteCommand(dto);

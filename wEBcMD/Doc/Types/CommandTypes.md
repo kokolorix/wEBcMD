@@ -14,6 +14,11 @@
 
 ### Clientside Classes for CommandTypes
 
+#### Classes for GetCommandTypes
+
+![Classes for GetCommandTypes](./ts/GetCommandTypes.svg)
+         
+
 #### Classes for SampleCommand
 
 ![Classes for SampleCommand](./ts/SampleCommand.svg)
