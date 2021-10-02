@@ -279,7 +279,7 @@ namespace wEBcMD
    };
 
 
-   static class AdressTypesDispatcher
+   static partial class AdressTypes
    {
       public static CommandDTO Dispatch(CommandDTO dto)
       {
@@ -299,6 +299,72 @@ namespace wEBcMD
             return DeleteAdressWrapper.ExecuteCommand(dto);
          
          return null;
+      }
+   }
+
+	///<summary>Types from this module</summary>
+   static partial class AdressTypes
+   {
+		///<summary>List of cref="CommandTypeDTO" from this module</summary>
+      public static void GetTypes(ref List<CommandTypeDTO> commandTypes)
+      {
+			commandTypes.AddRange(new CommandTypeDTO[] {
+				new() {
+					Name = "FindAdresses",
+					Result = "AdressDTO[]",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="SearchText",
+							Type="String",
+						},
+					},
+					Id = Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "GetAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},
+					},
+					Id = Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "SetAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},new() {
+							Name="Adress",
+							Type="AdressDTO",
+						},
+					},
+					Id = Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "DeleteAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},
+					},
+					Id = Guid.Parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"),
+					Type = CommandTypeDTO.TypeId,
+				},
+			});
       }
    }
 }

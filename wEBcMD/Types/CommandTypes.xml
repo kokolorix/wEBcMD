@@ -24,13 +24,13 @@
 		<PropertyType name="Parameters" type="ParamDTO[]"/>
 	</ObjectType>
 	<CommandWrapper name="GetCommandTypes" http="get" category="Command" id="6dab2a85-0256-421c-8a7a-2337453a3e48">
-		<Summary>All Command-Typs</Summary>
+		<Summary>Get a list of all Command-Types</Summary>
 		<Base name="CommandWrapper"/>
 		<!-- <ParameterType name="SearchText" type="String" modifier="in" summary="Search text, can contain several words separated by spaces"/> -->
 		<Result type="CommandTypeDTO[]" summary="The command type object"/>
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
-	<CommandWrapper name="SampleCommand" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
+	<CommandWrapper name="SampleCommand" http="post" category="Samples" id="e3e185bd-5237-4574-977f-a040bbe12d35">
 		<Summary>
 This is the sample command. He has two Parameters
 and a multiline summary.
@@ -38,7 +38,8 @@ and a multiline summary.
 CommandDTO cmd;
 if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
 }
-```      </Summary>
+```
+		</Summary>
 		<Base name="CommandWrapper"/>
 		<ParameterType name="FirstOne" type="String">
 			<Summary>

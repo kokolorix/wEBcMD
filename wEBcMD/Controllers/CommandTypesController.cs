@@ -22,7 +22,7 @@ namespace wEBcMD.Controllers
       public CommandTypesController(ILogger<CommandTypesController> logger) => _logger = logger;
 
       /// <summary>
-      /// All Command-Typs
+      /// Get a list of all Command-Types
       /// </summary>
 
       [HttpGet]

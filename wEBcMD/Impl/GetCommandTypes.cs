@@ -7,13 +7,14 @@ namespace wEBcMD
    public partial class GetCommandTypesWrapper : CommandWrapper
    {
       /// <summary>
-      /// All Command-Typs
+      /// All Command-Types
       /// </summary>
 
 		public partial List<CommandTypeDTO> GetCommandTypes()
 		{
 			Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
-			return default;
+
+			return Controllers.CommandController.GetCommandTypes();
 		}
    };
 

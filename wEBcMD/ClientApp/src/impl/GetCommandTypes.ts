@@ -3,7 +3,7 @@ import { GetCommandTypesBase } from "../api/GetCommandTypesBase";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
- * All Command-Typs
+ * Get a list of all Command-Types
  */
 export class GetCommandTypes extends GetCommandTypesBase {
 

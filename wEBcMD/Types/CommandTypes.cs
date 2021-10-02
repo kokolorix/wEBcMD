@@ -41,7 +41,7 @@ namespace wEBcMD
    };
 
    /// <summary>
-   /// All Command-Typs
+   /// Get a list of all Command-Types
    /// </summary>
    public partial class GetCommandTypesWrapper : CommandWrapper
    {
@@ -66,7 +66,7 @@ namespace wEBcMD
 		}
 
 		      /// <summary>
-      /// All Command-Typs
+      /// Get a list of all Command-Types
       /// </summary>
 		public partial List<CommandTypeDTO> GetCommandTypes();
 
@@ -177,7 +177,7 @@ namespace wEBcMD
    };
 
 
-   static class CommandTypesDispatcher
+   static partial class CommandTypes
    {
       public static CommandDTO Dispatch(CommandDTO dto)
       {
@@ -191,6 +191,43 @@ namespace wEBcMD
             return SampleCommandWrapper.ExecuteCommand(dto);
          
          return null;
+      }
+   }
+
+	///<summary>Types from this module</summary>
+   static partial class CommandTypes
+   {
+		///<summary>List of cref="CommandTypeDTO" from this module</summary>
+      public static void GetTypes(ref List<CommandTypeDTO> commandTypes)
+      {
+			commandTypes.AddRange(new CommandTypeDTO[] {
+				new() {
+					Name = "GetCommandTypes",
+					Result = "CommandTypeDTO[]",
+					Parameters = new List<ParamDTO>()
+					{
+						
+					},
+					Id = Guid.Parse("6dab2a85-0256-421c-8a7a-2337453a3e48"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "SampleCommand",
+					Result = "Void",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="FirstOne",
+							Type="String",
+						},new() {
+							Name="SecondOne",
+							Type="Boolean",
+						},
+					},
+					Id = Guid.Parse("e3e185bd-5237-4574-977f-a040bbe12d35"),
+					Type = CommandTypeDTO.TypeId,
+				},
+			});
       }
    }
 }

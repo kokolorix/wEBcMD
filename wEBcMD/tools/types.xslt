@@ -27,6 +27,7 @@
    <xsl:template match="/">
       <xsl:call-template name="cs.command"/>
       <xsl:call-template name="cs.command.dispatcher"/>
+      <xsl:call-template name="cs.command.types"/>
       <xsl:apply-templates select="Types/*" mode="cs.wrapper.impl" />
       <xsl:apply-templates select="Types/*" mode="ts.api.dto"/>
       <xsl:apply-templates select="Types/*" mode="ts.api.base" />
@@ -131,23 +132,6 @@ namespace wEBcMD.Controllers
       }
    </xsl:template>
    <!--=======================================================================-->
-   <!-- build a csharp parameter list -->
-   <!--=======================================================================-->
-   <xsl:function name="cs:param-list">
-      <!-- wrapper node -->
-      <xsl:param name="wrapper" as="node()"/>
-      <xsl:variable name="params" select="$wrapper/ParameterType"/>
-      <xsl:variable name="result" >
-         <xsl:for-each select="$params">
-            <xsl:if test="position()>1">, </xsl:if>
-            <xsl:value-of select="cs:data-type(.)"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="wc:camelCaseWord(@name)"/>
-         </xsl:for-each>
-      </xsl:variable>
-      <xsl:value-of select="$result"/>
-   </xsl:function>
-   <!--=======================================================================-->
    <!-- Serverside classes -->
    <!--=======================================================================-->
    <xsl:template name="cs.command">
@@ -163,13 +147,14 @@ namespace wEBcMD.Controllers
          <xsl:apply-templates select="Types/CommandType" mode="cs.dto" />
          <xsl:apply-templates select="Types/CommandWrapper" mode="cs.wrapper" />
          <xsl:call-template name="cs.dispatcher"/>
+         <xsl:call-template name="cs.types"/>
          <xsl:value-of select="concat('}', $nl1)" />
       </xsl:result-document>   </xsl:template>
    <!--=======================================================================-->
    <!-- Dispatcher, to find the matching wrapper -->
    <!--=======================================================================-->
    <xsl:template name="cs.dispatcher">
-   static class <xsl:value-of select="wc:file-name(.)"/>Dispatcher
+   static partial class <xsl:value-of select="wc:file-name(.)"/>
    {
       public static CommandDTO Dispatch(CommandDTO dto)
       {
@@ -181,6 +166,46 @@ namespace wEBcMD.Controllers
             return <xsl:value-of select="$name"/>.ExecuteCommand(dto);
          </xsl:for-each>
          return null;
+      }
+   }
+<xsl:text/>
+   </xsl:template>
+   <!--=======================================================================-->
+   <!-- Types from this module -->
+   <!--=======================================================================-->
+   <xsl:template name="cs.types">
+	///&lt;summary&gt;Types from this module&lt;/summary&gt;
+   static partial class <xsl:value-of select="wc:file-name(.)"/>
+   {
+		///&lt;summary&gt;List of cref=&quot;CommandTypeDTO&quot; from this module&lt;/summary&gt;
+      public static void GetTypes(ref List&lt;CommandTypeDTO&gt; commandTypes)
+      {
+			commandTypes.AddRange(new CommandTypeDTO[] {<xsl:text/>
+				<xsl:for-each select="Types/CommandWrapper">
+				new() {
+					Name = "<xsl:value-of select="@name"/>",
+					Result = "<xsl:choose>
+						<xsl:when test="./Result">
+							<xsl:value-of select="./Result/@type"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>Void</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>",
+					Parameters = new List&lt;ParamDTO&gt;()
+					{
+						<xsl:for-each select="ParameterType">
+						<xsl:text/>new() {
+							Name="<xsl:value-of select="@name"/>",
+							Type="<xsl:value-of select="@type"/>",
+						},<xsl:text/>
+						</xsl:for-each>
+					},
+					Id = Guid.Parse("<xsl:value-of select="@id"/>"),
+					Type = CommandTypeDTO.TypeId,
+				},<xsl:text/>
+				</xsl:for-each>
+			});
       }
    }
 <xsl:text/>
@@ -465,13 +490,10 @@ namespace wEBcMD.Controllers
 	<!-- The dispatcher for alle commands -->
 	<!--=======================================================================-->
 	<xsl:template name="cs.command.dispatcher">
-		<xsl:variable name="d" select="wc:path-delimiter(.)"/>
-		<xsl:variable name="pt" select="tokenize(base-uri(.), $d)"/>
-		<xsl:variable name="fn" select="concat('Command', 'Controller.cs')" />
-		<xsl:variable name="filePath" select="string-join((subsequence($pt, 1,count($pt) - 2), 'Controllers', $fn), $d)"/>
+		<xsl:variable name="filePath" select="wc:join-path(., 2, tokenize('Controllers/CommandController.cs', '/'))"/>
 		<xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
 		<!-- <xsl:message select="concat('lines: ', count($lines))"/> -->
-		<xsl:variable name="name" select="concat(wc:file-name(.), 'Dispatcher')"/>
+		<xsl:variable name="name" select="wc:file-name(.)"/>
 		<xsl:variable name="regex" select="concat($name, '\.Dispatch')"/>
 		<xsl:if test="not($lines[matches(., $regex)])">
 			<xsl:message select="'must work :-('"/>
@@ -480,12 +502,10 @@ namespace wEBcMD.Controllers
 					<!-- <xsl:message select="concat('pos: ', position())"/> -->
 					<xsl:choose>
 						<xsl:when test="contains(.,'NEW DISPATCHERS INSERTED HERE')">
-							<xsl:value-of select="'         '"/><xsl:text/>
-							<xsl:text/>result = <xsl:value-of select="$name"/>.Dispatch(cmd);
-							if(null != result)
-							return result;
-
-							<xsl:value-of select="concat(., '&#xA;')"/>
+							<xsl:text>			</xsl:text>result = <xsl:value-of select="$name"/>.Dispatch(cmd);<xsl:value-of select="'&#xA;'"/>
+							<xsl:text/>			if(null != result)<xsl:value-of select="'&#xA;'"/>
+							<xsl:text/>				return result;<xsl:value-of select="'&#xA;'"/>
+							<xsl:value-of select="concat('&#xA;', ., '&#xA;')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="concat(., '&#xA;')"/>
@@ -495,6 +515,65 @@ namespace wEBcMD.Controllers
 			</xsl:result-document>
 		</xsl:if>
 	</xsl:template>
+	<!--=======================================================================-->
+	<!-- The types for alle commands -->
+	<!--=======================================================================-->
+	<xsl:template name="cs.command.types">
+		<xsl:variable name="filePath" select="wc:join-path(., 2, tokenize('Controllers/CommandController.cs', '/'))"/>
+		<xsl:variable name="lines" select="unparsed-text-lines($filePath)"/>
+		<!-- <xsl:message select="concat('lines: ', count($lines))"/> -->
+		<xsl:variable name="name" select="wc:file-name(.)"/>
+		<xsl:variable name="regex" select="concat($name, '\.GetTypes')"/>
+		<xsl:if test="not($lines[matches(., $regex)])">
+			<!-- <xsl:message select="'must work :-('"/> -->
+			<xsl:result-document href="{$filePath}" format="text-def">
+				<xsl:for-each select="$lines">
+					<!-- <xsl:message select="concat('pos: ', position())"/> -->
+					<xsl:choose>
+						<xsl:when test="contains(.,'NEW COMMANDTYPEGETTERS INSERTED HERE')">
+							<xsl:value-of select="'         '"/><xsl:text/>
+							<xsl:value-of select="$name"/>.GetTypes(ref commandTypes);
+							<xsl:text/>
+							<xsl:value-of select="concat('&#xA;', ., '&#xA;')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat(., '&#xA;')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:result-document>
+		</xsl:if>
+	</xsl:template>
+	<!--=======================================================================-->
+	<!-- get a path, relative from base uri -->
+	<!--=======================================================================-->
+	<xsl:function name="wc:join-path" as="xs:string">
+		<xsl:param name="node" as="node()"/>
+		<xsl:param name="backwards" as="xs:integer"/>
+		<xsl:param name="subpath" as="xs:string*"/>
+		<xsl:variable name="d" select="wc:path-delimiter($node)"/>
+		<xsl:variable name="pt" select="tokenize(base-uri($node), $d)"/>
+		<xsl:variable name="path" select="string-join((subsequence($pt, 1,count($pt) - $backwards), $subpath), $d)"/>
+		<xsl:message select="concat('join-path: ', $path)"/>
+		<xsl:value-of select="$path"/>
+	</xsl:function>
+   <!--=======================================================================-->
+   <!-- build a csharp parameter list -->
+   <!--=======================================================================-->
+   <xsl:function name="cs:param-list">
+      <!-- wrapper node -->
+      <xsl:param name="wrapper" as="node()"/>
+      <xsl:variable name="params" select="$wrapper/ParameterType"/>
+      <xsl:variable name="result" >
+         <xsl:for-each select="$params">
+            <xsl:if test="position()>1">, </xsl:if>
+            <xsl:value-of select="cs:data-type(.)"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="wc:camelCaseWord(@name)"/>
+         </xsl:for-each>
+      </xsl:variable>
+      <xsl:value-of select="$result"/>
+   </xsl:function>
 	<!--=======================================================================-->
 	<!-- get result type for csharp -->
 	<!--=======================================================================-->

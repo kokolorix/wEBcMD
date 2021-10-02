@@ -3,7 +3,7 @@ import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
 /**
- * All Command-Typs
+ * Get a list of all Command-Types
  */
 export class GetCommandTypesBase  extends CommandWrapper {
 
