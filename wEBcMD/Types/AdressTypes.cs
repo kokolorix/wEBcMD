@@ -64,7 +64,8 @@ namespace wEBcMD
 				CommandDTO cmd = base.Cmd;
 				
 				this.Set(cmd, "SearchText", SearchText);
-
+				this.Set(cmd, "Result", Result);
+				
 				cmd.Response = true;
 				return cmd;
 			}
@@ -123,7 +124,8 @@ namespace wEBcMD
 				CommandDTO cmd = base.Cmd;
 				
 				this.Set(cmd, "Id", Id);
-
+				this.Set(cmd, "Result", Result);
+				
 				cmd.Response = true;
 				return cmd;
 			}
@@ -190,7 +192,8 @@ namespace wEBcMD
 				
 				this.Set(cmd, "Id", Id);
 				this.Set(cmd, "Adress", Adress);
-
+				this.Set(cmd, "Result", Result);
+				
 				cmd.Response = true;
 				return cmd;
 			}
@@ -256,7 +259,8 @@ namespace wEBcMD
 				CommandDTO cmd = base.Cmd;
 				
 				this.Set(cmd, "Id", Id);
-
+				this.Set(cmd, "Result", Result);
+				
 				cmd.Response = true;
 				return cmd;
 			}

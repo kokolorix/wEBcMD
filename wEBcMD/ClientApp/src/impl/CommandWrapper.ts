@@ -49,6 +49,14 @@ export class CommandWrapper {
       }
    }
 
+   /// <summary>Calls the command</summary>
+   public executeCmd(): Promise<CommandDTO> {
+      console.log('call ' + JSON.stringify(this.DTO));
+      const res = this.Service.executeCommand(this.DTO);
+      console.log('return with result ' + JSON.stringify(res));
+      return res;
+   }
+
    private static _factories = new Map<Guid, CommandWrapperFactory>();
    static register(typeId: Guid, factory: CommandWrapperFactory): void {
       CommandWrapper._factories.set(typeId, factory);

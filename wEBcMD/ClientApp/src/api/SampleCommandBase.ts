@@ -9,7 +9,7 @@ import { CommandDTO } from "./CommandDTO";
  * CommandDTO cmd;
  * if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
  * }
- * ```      
+ * ```
  */
 export class SampleCommandBase  extends CommandWrapper {
 

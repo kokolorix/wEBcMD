@@ -77,7 +77,8 @@ namespace wEBcMD
 			{
 				CommandDTO cmd = base.Cmd;
 				
-
+				this.Set(cmd, "Result", Result);
+				
 				cmd.Response = true;
 				return cmd;
 			}
@@ -105,6 +106,7 @@ namespace wEBcMD
    /// if(SampleCommand.IsForMe(dto)){ let sample = new SampleCommand(cmd); console.log(sample.FirstOne);
    /// }
    /// ```
+   /// 
    /// </summary>
    public partial class SampleCommandWrapper : CommandWrapper
    {
@@ -138,6 +140,7 @@ namespace wEBcMD
       /// if(SampleCommand.IsForMe(dto)){ let sample = new SampleCommand(cmd); console.log(sample.FirstOne);
       /// }
       /// ```
+      /// 
       /// </summary>
 		public partial void SampleCommand(String firstOne, Boolean secondOne);
 
@@ -150,7 +153,6 @@ namespace wEBcMD
 				
 				this.Set(cmd, "FirstOne", FirstOne);
 				this.Set(cmd, "SecondOne", SecondOne);
-
 				cmd.Response = true;
 				return cmd;
 			}

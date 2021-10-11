@@ -32,8 +32,35 @@ namespace wEBcMD.Controllers
       {
          GetCommandTypesWrapper wrapper = new();
          
+
+         return wrapper.GetCommandTypes(
+			);
+      }
+         /// <summary>
+      /// 
+      /// This is the sample command. He has two Parameters
+      /// and a multiline summary.
+      /// ``` typescript
+      /// CommandDTO cmd;
+      /// if(SampleCommand.IsForMe(dto)){ let sample = new SampleCommand(cmd); console.log(sample.FirstOne);
+      /// }
+      /// ```
+      /// 
+      /// </summary>
+
+      [HttpPost]
+      [Route("samplecommand")]
+      
+      public void SampleCommand( String firstOne, Boolean secondOne )
+      {
+         SampleCommandWrapper wrapper = new();
          
-			return wrapper.GetCommandTypes(
+         wrapper.FirstOne = firstOne;
+         wrapper.SecondOne = secondOne;
+
+         wrapper.SampleCommand(
+					wrapper.FirstOne, 
+					wrapper.SecondOne
 			);
       }
    

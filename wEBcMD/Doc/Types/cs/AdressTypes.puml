@@ -25,8 +25,11 @@ class DeleteAdressWrapper <<partial>> {
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
     + <<partial>> DeleteAdress(id:Guid) : AdressDTO
 }
-class AdressTypesDispatcher <<static>> {
+class AdressTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class AdressTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }

@@ -103,3 +103,24 @@ call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src
 
 echo generate typescript class diagram for GetCommandTypes
 call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A
+
+echo generate typescript class diagram for GetCommandTypes
+call tplant --input ..\ClientApp\src\api\GetCommandTypests.Base ..\ClientApp\src\impl\GetCommandTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetCommandTypes.puml -A

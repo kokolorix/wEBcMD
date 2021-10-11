@@ -1,8 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Guid } from 'guid-typescript';
 import { SetAdress } from 'src/impl/SetAdress';
 import { AdressDTO } from 'src/api/AdressDTO';
+import { CommandTypeDTO } from 'src/api/CommandTypeDTO';
+import { GetCommandTypes } from 'src/impl/GetCommandTypes';
+import { MatListOption } from '@angular/material/list';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { CommandWrapper } from 'src/impl/CommandWrapper';
+import { ParamDTO } from 'src/api/ParamDTO';
+import { InputType } from 'zlib';
 
 @Component({
    selector: 'app-home',
@@ -10,19 +18,62 @@ import { AdressDTO } from 'src/api/AdressDTO';
    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-   public forecasts: WeatherForecast[];
+   public nameForm: FormGroup;
+   public commandTypes: CommandTypeDTO[];
+   public sideNavOpen: boolean = false;
    private _http : HttpClient;
    private _baseUrl: string;
 
-   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+   @ViewChild('progress') progress: MatProgressBar;
+
+   constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string ) {
       this._http = http;
       this._baseUrl = baseUrl;
-      http.get<WeatherForecast[]>(baseUrl + 'weatherforecast').subscribe(result => {
-         this.forecasts = result;
-      }, error => console.error(error));
+      const wrapper = new GetCommandTypes();
+      this.nameForm = this.formBuilder.group({ name: '' });
+
+      wrapper.execute()
+      .then((res)=> {
+         this.commandTypes = res
+         this.sideNavOpen = true;
+      })
+      .catch((error)=>
+         console.error(error)
+      );
+      // http.get<WeatherForecast[]>(baseUrl + 'weatherforecast').subscribe(result => {
+      //    this.forecasts = result;
+      // }, error => console.error(error));
    }
 
    ngOnInit(): void {
+   }
+
+   public executeCommand1(ct: CommandTypeDTO): void {
+      this.progress.mode = 'indeterminate';
+      console.trace(ct);
+
+      const cw = new CommandWrapper(null, ct.Type);
+
+      ct.Parameters.forEach(p => {
+         const v = this.nameForm.get(p.Name)?.value;
+         cw.setArgument(p.Name, v);
+      });
+
+      cw.executeCmd()
+      .then(cmd=>{
+         const resComp = this.nameForm.get('Result');
+         if(resComp){
+            const res = new CommandWrapper(cmd, ct.Type);
+            resComp.setValue(res.getArgument('Result'));
+         }
+      })
+      .catch((error)=>{
+         console.error(error);
+      })
+      .finally(()=>{
+         this.progress.mode = 'determinate'
+      })
+      ;
    }
 
    public executeCommand(): void {
@@ -62,9 +113,3 @@ export class HomeComponent implements OnInit {
 
 }
 
-interface WeatherForecast {
-   date: string;
-   temperatureC: number;
-   temperatureF: number;
-   summary: string;
-}

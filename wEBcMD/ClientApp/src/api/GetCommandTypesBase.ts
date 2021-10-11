@@ -1,6 +1,7 @@
 import { Guid} from "guid-typescript";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
+import { CommandTypeDTO } from "./CommandTypeDTO";
 
 /**
  * Get a list of all Command-Types

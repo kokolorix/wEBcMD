@@ -75,6 +75,10 @@ namespace wEBcMD.Controllers
 			if(null != result)
 				return result;
 
+			result = BaseTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
+
          //******** NEW DISPATCHERS INSERTED HERE                      ********//
          //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
 

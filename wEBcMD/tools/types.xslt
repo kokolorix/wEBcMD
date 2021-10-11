@@ -123,7 +123,8 @@ namespace wEBcMD.Controllers
          <xsl:for-each select="./ParameterType">
          wrapper.<xsl:value-of select="@name"/> = <xsl:value-of select="wc:camelCaseWord(@name)"/>;</xsl:for-each>
          <!-- wrapper.ExecuteCommand(); -->
-			return wrapper.<xsl:value-of select="@name"/>(<xsl:text/>
+			<xsl:value-of select="concat($nl2, $t3)"/>
+			<xsl:if test="cs:result-type(.) != 'void'">return </xsl:if>wrapper.<xsl:value-of select="@name"/>(<xsl:text/>
 				<xsl:for-each select="ParameterType">
 					<xsl:if test="position() > 1">, </xsl:if>
 					wrapper.<xsl:value-of select="@name"/>
@@ -352,7 +353,9 @@ namespace wEBcMD.Controllers
 				<xsl:variable name="pn" as="xs:string" select="@name"/>
 				this.Set(cmd, "<xsl:value-of select="$pn"/>", <xsl:value-of select="$pn"/>);<xsl:text/>
 				</xsl:for-each>
-
+				<xsl:if test="cs:result-type(.) != 'void'">
+				this.Set(cmd, "Result", Result);
+				</xsl:if>
 				cmd.Response = true;
 				return cmd;
 			}
