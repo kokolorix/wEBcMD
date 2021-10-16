@@ -98,6 +98,8 @@ namespace wEBcMD.Controllers
 							
          AdressTypes.GetTypes(ref commandTypes);
 							
+         BaseTypes.GetTypes(ref commandTypes);
+							
 			//******** NEW COMMANDTYPEGETTERS INSERTED HERE               ********//
 			//******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
 

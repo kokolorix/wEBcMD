@@ -10,7 +10,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommandWrapper } from 'src/impl/CommandWrapper';
 import { ParamDTO } from 'src/api/ParamDTO';
-import { InputType } from 'zlib';
+import { asGuid } from 'src/utils';
 
 @Component({
    selector: 'app-home',
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       this.progress.mode = 'indeterminate';
       console.trace(ct);
 
-      const cw = new CommandWrapper(null, ct.Type);
+      const cw = new CommandWrapper(null, asGuid(ct.Id));
 
       ct.Parameters.forEach(p => {
          const v = this.nameForm.get(p.Name)?.value;
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
       .then(cmd=>{
          const resComp = this.nameForm.get('Result');
          if(resComp){
-            const res = new CommandWrapper(cmd, ct.Type);
+            const res = new CommandWrapper(cmd, asGuid(ct.Id));
             resComp.setValue(res.getArgument('Result'));
          }
       })

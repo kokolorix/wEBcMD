@@ -1,4 +1,6 @@
-import { Guid} from "guid-typescript";
+import { Guid } from "guid-typescript";
+import { equalsGuid } from "src/utils";
+import { AdressDTO } from "./AdressDTO";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -13,7 +15,7 @@ export class FindAdressesBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === FindAdressesBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, FindAdressesBase.TypeId); }
 
    /** Search text, can contain several words separated by spaces */
    get SearchText() : string{

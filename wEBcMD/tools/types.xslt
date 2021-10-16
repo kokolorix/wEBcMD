@@ -780,13 +780,16 @@ namespace wEBcMD.Controllers
       <xsl:result-document href="{$filePath}" format="text-def">
          <!-- Collect all DTO types without [] -->
          <xsl:variable name="property-types" as="xs:string *">
-            <xsl:for-each select="ParameterType[matches(@type, '.+DTO(\[\])?')]">
+            <xsl:for-each select="ParameterType[matches(@type, '.+DTO(\[\])?')]|Result[matches(@type, '.+DTO(\[\])?')]">
                <xsl:sequence select="replace(@type, '\[\]', '')"/>
             </xsl:for-each>
          </xsl:variable>
+			<xsl:message select="$property-types"/>
          <xsl:variable name="base-type" as="xs:string" select="Base/@name"/>
-         <!-- All necessary imports, each only once -->
-         <xsl:value-of select="concat('import { Guid} from &quot;guid-typescript&quot;;', $nl1)"/>
+         <!-- <xsl:variable name="res-type" as="xs:string" select="ts:result-type(.)"/> -->
+        <!-- All necessary imports, each only once -->
+         <xsl:value-of select="concat('import { Guid } from &quot;guid-typescript&quot;;', $nl1)"/>
+         <xsl:value-of select="concat('import { equalsGuid } from &quot;src/utils&quot;;', $nl1)"/>
          <xsl:for-each select="distinct-values($property-types)" >
             <!-- <xsl:message select="."/> -->
             <xsl:variable name="type" as="xs:string" select="."/>
@@ -806,7 +809,7 @@ namespace wEBcMD.Controllers
          <xsl:value-of select="concat($t1, 'static get TypeId(): Guid { return Guid.parse(&quot;', @id, '&quot;); }', $nl2)" />
          <!--  -->
          <xsl:value-of select="concat($t1, '/** ', 'Checks if the type of the DTO fits', ' */', $nl1)" />
-         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return dto.Type === ', @name, 'Base.TypeId; }', $nl2)" />
+         <xsl:value-of select="concat($t1, 'static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, ', @name, 'Base.TypeId); }', $nl2)" />
          <!-- static isForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; } -->
          <xsl:apply-templates select="ParameterType" mode="ts.api.base"/>
          <xsl:apply-templates select="Result" mode="ts.api.base"/>
@@ -999,7 +1002,7 @@ namespace wEBcMD.Controllers
 		<xsl:choose>
 			<xsl:when test="$pt/@type='Boolean'">boolean</xsl:when>
 			<xsl:when test="$pt/@type='Int32'">number</xsl:when>
-			<xsl:when test="$pt/@type='UuId'">Guid</xsl:when>
+			<!-- <xsl:when test="$pt/@type='UuId'">Guid</xsl:when> -->
 			<xsl:when test="matches($pt/@type, 'DTO(\[\])?$')">
 				<xsl:value-of select="$pt/@type"/>
 			</xsl:when>
@@ -1106,7 +1109,7 @@ namespace wEBcMD.Controllers
                <xsl:message select="'must work :-('"/>
                <xsl:text/>
 echo generate typescript class diagram for <xsl:value-of select="@name"/>
-call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>ts.Base ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\<xsl:value-of select="@name"/>.puml -A<xsl:text/>
+call tplant --input ..\ClientApp\src\api\<xsl:value-of select="@name"/>Base.ts ..\ClientApp\src\impl\<xsl:value-of select="@name"/>.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\<xsl:value-of select="@name"/>.puml -A<xsl:text/>
             </xsl:if>
          </xsl:for-each>
       </xsl:result-document>

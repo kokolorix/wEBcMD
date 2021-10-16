@@ -37,8 +37,8 @@ namespace wEBcMD.Controllers
          FindAdressesWrapper wrapper = new();
          
          wrapper.SearchText = searchText;
-         
-			return wrapper.FindAdresses(
+
+         return wrapper.FindAdresses(
 					wrapper.SearchText
 			);
       }
@@ -53,8 +53,8 @@ namespace wEBcMD.Controllers
          GetAdressWrapper wrapper = new();
          
          wrapper.Id = id;
-         
-			return wrapper.GetAdress(
+
+         return wrapper.GetAdress(
 					wrapper.Id
 			);
       }
@@ -73,8 +73,8 @@ namespace wEBcMD.Controllers
          
          wrapper.Id = id;
          wrapper.Adress = adress;
-         
-			return wrapper.SetAdress(
+
+         return wrapper.SetAdress(
 					wrapper.Id, 
 					wrapper.Adress
 			);
@@ -92,8 +92,8 @@ namespace wEBcMD.Controllers
          DeleteAdressWrapper wrapper = new();
          
          wrapper.Id = id;
-         
-			return wrapper.DeleteAdress(
+
+         return wrapper.DeleteAdress(
 					wrapper.Id
 			);
       }

@@ -3,14 +3,16 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace wEBcMD
-{ 
+{
+
 /// <summary>
 /// Summary description for Class1
 /// </summary>
 public class JsonConverterGuid : JsonConverter<Guid>
 {
-       /// <summary>Read the appropriate structure for typescript-guid</summary>
-     public override Guid Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+
+		/// <summary>Read the appropriate structure for typescript-guid</summary>
+		public override Guid Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
       {
          reader.Read(); // read over start of object
          //string propertyName = reader.GetString();

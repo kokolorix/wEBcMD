@@ -4,7 +4,7 @@ import { CommandDTO } from "src/api/CommandDTO";
 import { PropertyDTO } from "src/api/PropertyDTO";
 // import { AppInjector } from "src/app/app.module";
 import { CommandService } from "src/app/services/command.service";
-import { __spread } from "tslib";
+// import { __spread } from "tslib";
 
 type CommandWrapperFactory = (dto: CommandDTO) => CommandWrapper;
 
@@ -21,9 +21,9 @@ export class CommandWrapper {
       this._service = CommandService.Service;
       this._dto = dto ? dto : new CommandDTO();
       if(!this._dto.Type)
-         this._dto.Type = type ? type : CommandDTO.TypeId;
+         this._dto.Type = type ? type.toString() : CommandDTO.TypeId.toString();
       if(!this._dto.Id)
-         this._dto.Id = Guid.create();
+         this._dto.Id = Guid.create().toString();
    }
    public get DTO(): CommandDTO { return this._dto; }
 
@@ -32,9 +32,9 @@ export class CommandWrapper {
 	/** Arguments of the command */
    get Arguments(): PropertyDTO[] { return this.DTO?.Arguments };
 	/** Type Guid of the command */
-   get Type(): Guid { return this.DTO?.Type };
+   get Type(): Guid { return Guid.parse(this.DTO?.Type) };
 	/** Id of the command */
-   get Id(): Guid { return this.DTO?.Id };
+   get Id(): Guid { return Guid.parse(this.DTO?.Id) };
 
    public getArgument(name:string){
       return this._dto.Arguments.find(a => a.Name == name)?.Value;

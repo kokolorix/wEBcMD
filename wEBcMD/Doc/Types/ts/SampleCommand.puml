@@ -10,6 +10,7 @@ class CommandWrapper {
     +Id: Guid
     +getArgument(name: string): any
     +setArgument(name: string, value: string): void
+    +executeCmd(): Promise<any>
     -{static} _factories: any
     +{static} register(typeId: Guid, factory: CommandWrapperFactory): void
 }
@@ -19,8 +20,8 @@ class PropertyDTO {
     +{static} TypeId: Guid
 }
 class BaseDTO {
-    +Id?: Guid
-    +Type?: Guid
+    +Id?: string
+    +Type?: string
     +{static} TypeId: Guid
 }
 class CommandDTO extends BaseDTO {
@@ -35,7 +36,7 @@ class SampleCommandBase extends CommandWrapper {
     +SecondOne: boolean
     +execute(firstOne: string, secondOne: boolean): Promise<void>
     +{static} TypeId: Guid
-    +{static} IsForMe(dto: CommandDTO): boolean
+    +{static} IsForMe(dto: CommandDTO): any
 }
 CommandDTO --> "*" PropertyDTO
 SampleCommandBase --> "1" CommandDTO
