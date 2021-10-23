@@ -5,12 +5,10 @@ import { SetAdress } from 'src/impl/SetAdress';
 import { AdressDTO } from 'src/api/AdressDTO';
 import { CommandTypeDTO } from 'src/api/CommandTypeDTO';
 import { GetCommandTypes } from 'src/impl/GetCommandTypes';
-import { MatListOption } from '@angular/material/list';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CommandWrapper } from 'src/impl/CommandWrapper';
-import { ParamDTO } from 'src/api/ParamDTO';
 import { asGuid } from 'src/utils';
+import { MatInput } from '@angular/material/input';
 
 @Component({
    selector: 'app-home',
@@ -18,19 +16,18 @@ import { asGuid } from 'src/utils';
    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-   public nameForm: FormGroup;
    public commandTypes: CommandTypeDTO[];
    public sideNavOpen: boolean = false;
    private _http : HttpClient;
    private _baseUrl: string;
 
    @ViewChild('progress') progress: MatProgressBar;
+   @ViewChild('result') result: MatInput
 
-   constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string ) {
+   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string ) {
       this._http = http;
       this._baseUrl = baseUrl;
       const wrapper = new GetCommandTypes();
-      this.nameForm = this.formBuilder.group({ name: '' });
 
       wrapper.execute()
       .then((res)=> {
@@ -55,17 +52,17 @@ export class HomeComponent implements OnInit {
       const cw = new CommandWrapper(null, asGuid(ct.Id));
 
       ct.Parameters.forEach(p => {
-         const v = this.nameForm.get(p.Name)?.value;
-         cw.setArgument(p.Name, v);
       });
 
       cw.executeCmd()
       .then(cmd=>{
-         const resComp = this.nameForm.get('Result');
-         if(resComp){
-            const res = new CommandWrapper(cmd, asGuid(ct.Id));
-            resComp.setValue(res.getArgument('Result'));
-         }
+         setTimeout(() => {
+            const resElmt = document.getElementById('Result');
+            if(resElmt){
+               const res = new CommandWrapper(cmd, asGuid(ct.Id));
+              resElmt['value'] = res.getArgument('Result');
+            }
+          });
       })
       .catch((error)=>{
          console.error(error);

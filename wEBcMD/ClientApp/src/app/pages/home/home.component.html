@@ -30,7 +30,7 @@
                   *ngFor="let p of commands.selectedOptions.selected[0]?.value?.Parameters, let i = index">
                   <mat-form-field appearance="outline" color="primary">
                      <mat-label>{{p.Name}}</mat-label>
-                     <input matInput [id]="p.Name" [formControlName]="p.Name">
+                     <input matInput id="p.Name" formControlName="p.Name">
                      <mat-hint>{{p.Type}}</mat-hint>
                   </mat-form-field>
                </div>
@@ -38,7 +38,7 @@
                <div class="result" *ngIf="commands.selectedOptions.selected[0]?.value?.Result!='Void'">
                   <mat-form-field appearance="outline" color="primary">
                      <mat-label>Result</mat-label>
-                     <input matInput disabled [id]="Result" [formControlName]="Result">
+                     <input #result matInput disabled id="Result" formControlName="Result">
                      <mat-hint>{{commands.selectedOptions.selected[0]?.value?.Result}}</mat-hint>
                   </mat-form-field>
                </div>
