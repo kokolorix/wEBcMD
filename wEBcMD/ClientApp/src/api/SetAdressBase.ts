@@ -20,8 +20,8 @@ export class SetAdressBase  extends CommandWrapper {
    static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, SetAdressBase.TypeId); }
 
    /** Id */
-   get Id() : Guid{
-      let id : string = this.getArgument("Id") as string;
+   get Id() : Guid|undefined {
+      let id = this.getArgument("Id");
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -31,10 +31,10 @@ export class SetAdressBase  extends CommandWrapper {
    }
 
    /** The address which should be saved, or null if it should be deleted. */
-   get Adress() : AdressDTO{
-      let adress : string = this.getArgument("Adress") as string;
+   get Adress() : AdressDTO|undefined {
+      let adress = this.getArgument("Adress");
       if (!adress)
-         return null;
+         return undefined;
       return JSON.parse(adress) as AdressDTO ;
    }
    set Adress( val : AdressDTO) {
@@ -42,15 +42,15 @@ export class SetAdressBase  extends CommandWrapper {
    }
 
       /** The address stored */
-   get Result() : AdressDTO{
-      let result : string = this.getArgument("Result") as string;
+   get Result() : AdressDTO|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(id: Guid, adress: AdressDTO): Promise<AdressDTO> {
+   execute(id: Guid, adress: AdressDTO): Promise<AdressDTO|undefined> {
       this.Id = id;
       this.Adress = adress;
       console.log('call ' + JSON.stringify(this.DTO));

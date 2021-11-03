@@ -18,8 +18,8 @@ export class FindAdressesBase  extends CommandWrapper {
    static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, FindAdressesBase.TypeId); }
 
    /** Search text, can contain several words separated by spaces */
-   get SearchText() : string{
-      let searchText : string = this.getArgument("SearchText") as string;
+   get SearchText() : string|undefined {
+      let searchText = this.getArgument("SearchText");
          return searchText;
    }
    set SearchText( val : string) {
@@ -27,15 +27,15 @@ export class FindAdressesBase  extends CommandWrapper {
    }
 
       /** The result of the search is a list of AddressDTO objects */
-   get Result() : AdressDTO[]{
-      let result : string = this.getArgument("Result") as string;
+   get Result() : AdressDTO[]|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO[] ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(searchText: string): Promise<AdressDTO[]> {
+   execute(searchText: string): Promise<AdressDTO[]|undefined> {
       this.SearchText = searchText;
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)

@@ -19,8 +19,8 @@ export class DeleteAdressBase  extends CommandWrapper {
    static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, DeleteAdressBase.TypeId); }
 
    /** Id */
-   get Id() : Guid{
-      let id : string = this.getArgument("Id") as string;
+   get Id() : Guid|undefined {
+      let id = this.getArgument("Id");
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -30,15 +30,15 @@ export class DeleteAdressBase  extends CommandWrapper {
    }
 
       /** The deleted address */
-   get Result() : AdressDTO{
-      let result : string = this.getArgument("Result") as string;
+   get Result() : AdressDTO|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(id: Guid): Promise<AdressDTO> {
+   execute(id: Guid): Promise<AdressDTO|undefined> {
       this.Id = id;
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)

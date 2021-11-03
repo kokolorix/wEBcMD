@@ -35,8 +35,7 @@ export class GetCommandTypesBase  extends CommandWrapper {
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));
-			const res:CommandTypeDTO[] = undefined;
-         return new Promise<CommandTypeDTO[]>(res);
+         return new Promise<CommandTypeDTO[]>(null);
       });
    }
 };
