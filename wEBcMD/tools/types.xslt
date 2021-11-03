@@ -816,7 +816,7 @@ namespace wEBcMD.Controllers
          <xsl:variable name="resultType" as="xs:string" select="ts:result-type(.)"/>
    /// &lt;summary&gt;Calls the command&lt;/summary&gt;<xsl:text/>
    execute(<xsl:value-of select="ts:param-list(.)"/>): <xsl:text/>
-      <xsl:text/>Promise&lt;<xsl:value-of select="ts:result-type(.)"/>&gt; {<xsl:text/>
+      <xsl:text/>Promise&lt;<xsl:value-of select="ts:result-type(.)"/>|undefined&gt; {<xsl:text/>
       <xsl:apply-templates select="ParameterType" mode="ts.api.access.execute"/>
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)
@@ -860,9 +860,9 @@ namespace wEBcMD.Controllers
          <xsl:call-template name="ts.api.base.paramName"/>
       </xsl:variable>
       <xsl:variable name="dataType" as="xs:string" select="ts:wrapper-data-type(.)"/>
-      <xsl:value-of select="concat($t1, 'get ', $name, '() : ', $dataType, '{', $nl1)"/>
+      <xsl:value-of select="concat($t1, 'get ', $name, '() : ', $dataType, '|undefined {', $nl1)"/>
       <xsl:variable name="paramName" as="xs:string" select="wc:camelCaseWord($name)"/>
-      <xsl:value-of select="concat($t2, 'let ', $paramName, ' : string = this.getArgument(&quot;', $name, '&quot;);', $nl1)"/>
+      <xsl:value-of select="concat($t2, 'let ', $paramName, ' = this.getArgument(&quot;', $name, '&quot;);', $nl1)"/>
       <xsl:choose>
          <xsl:when test="$dataType='boolean'">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
@@ -876,7 +876,7 @@ namespace wEBcMD.Controllers
          </xsl:when>
          <xsl:when test="matches($dataType,'.+DTO')">
             <xsl:value-of select="concat($t2, 'if (!', $paramName, ')', $nl1)"/>
-            <xsl:value-of select="concat($t3, 'return null;', $nl1)"/>
+            <xsl:value-of select="concat($t3, 'return undefined;', $nl1)"/>
             <xsl:value-of select="concat($t2, 'return JSON.parse(', $paramName, ')', ' as ', $dataType, ' ;', $nl1)"/>
          </xsl:when>
          <xsl:otherwise>

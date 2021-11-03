@@ -43,11 +43,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { FormBuilder } from '@angular/forms';
+import { CommandsComponent } from './components/commands/commands.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    CommandsComponent,
   ],
   imports: [
     BrowserModule,

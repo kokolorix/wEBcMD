@@ -21,7 +21,7 @@ export class SetAdressBase  extends CommandWrapper {
 
    /** Id */
    get Id() : Guid{
-      let id : string = this.getArgument("Id");
+      let id : string = this.getArgument("Id") as string;
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -32,7 +32,7 @@ export class SetAdressBase  extends CommandWrapper {
 
    /** The address which should be saved, or null if it should be deleted. */
    get Adress() : AdressDTO{
-      let adress : string = this.getArgument("Adress");
+      let adress : string = this.getArgument("Adress") as string;
       if (!adress)
          return null;
       return JSON.parse(adress) as AdressDTO ;
@@ -43,7 +43,7 @@ export class SetAdressBase  extends CommandWrapper {
 
       /** The address stored */
    get Result() : AdressDTO{
-      let result : string = this.getArgument("Result");
+      let result : string = this.getArgument("Result") as string;
       if (!result)
          return null;
       return JSON.parse(result) as AdressDTO ;

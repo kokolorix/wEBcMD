@@ -1,62 +1,20 @@
 <mat-drawer-container class="container" autosize>
-   <mat-drawer #drawer class="sidenav" mode="side" [(opened)]="sideNavOpen">
-      <mat-selection-list #commands [multiple]="false">
-         <div class="subheader">Available Commands</div>
-         <mat-list-option *ngFor="let ct of commandTypes, let i = index" [value]="ct" [selected]="i == 0">
-            <!-- <button mat-mini-fab color="primary" aria-label="Execute the command"> -->
-            <mat-icon mat-list-icon color="primary">play_circle</mat-icon>
-            <!-- </button> -->
-            <div mat-line>{{ct.Name}}</div>
-            <div mat-line> {{ct.Result}} </div>
-         </mat-list-option>
-         <mat-divider></mat-divider>
-      </mat-selection-list>
-   </mat-drawer>
+	<mat-drawer #drawer class="sidenav" mode="side" [(opened)]="sideNavOpen">
+		<mat-selection-list #commands [multiple]="false">
+			<div class="subheader">Available Commands</div>
+			<mat-list-option *ngFor="let ct of commandTypes, let i = index" [value]="ct" [selected]="i == 0">
+				<!-- <button mat-mini-fab color="primary" aria-label="Execute the command"> -->
+				<mat-icon mat-list-icon color="primary">play_circle</mat-icon>
+				<!-- </button> -->
+				<div mat-line>{{ct.Name}}</div>
+				<div mat-line> {{ct.Result}} </div>
+			</mat-list-option>
+			<mat-divider></mat-divider>
+		</mat-selection-list>
+	</mat-drawer>
 
-   <div class="sidenav-content">
-      <mat-card class="card" *ngIf="commands.selectedOptions.selected[0]?.value">
-         <mat-card-header>
-            <div mat-card-avatar>
-               <mat-icon mat-list-icon color="primary" class="icon"
-                  (click)="executeCommand1(commands.selectedOptions.selected[0]?.value)">play_circle_outline</mat-icon>
-            </div>
-            <mat-card-title>{{commands.selectedOptions.selected[0]?.value?.Name}}</mat-card-title>
-            <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-         </mat-card-header>
-         <mat-divider inset></mat-divider>
-         <mat-card-content class="card-content">
-            <form [formGroup]="nameForm">
-               <div class="parameter"
-                  *ngFor="let p of commands.selectedOptions.selected[0]?.value?.Parameters, let i = index">
-                  <mat-form-field appearance="outline" color="primary">
-                     <mat-label>{{p.Name}}</mat-label>
-                     <input matInput id="p.Name" formControlName="p.Name">
-                     <mat-hint>{{p.Type}}</mat-hint>
-                  </mat-form-field>
-               </div>
-               <!-- <mat-divider inset></mat-divider> -->
-               <div class="result" *ngIf="commands.selectedOptions.selected[0]?.value?.Result!='Void'">
-                  <mat-form-field appearance="outline" color="primary">
-                     <mat-label>Result</mat-label>
-                     <input #result matInput disabled id="Result" formControlName="Result">
-                     <mat-hint>{{commands.selectedOptions.selected[0]?.value?.Result}}</mat-hint>
-                  </mat-form-field>
-               </div>
-            </form>
-            <!-- <p>
-               The Commands Result, Arguments.
-            </p> -->
-         </mat-card-content>
-         <mat-divider inset></mat-divider>
-         <mat-card-actions>
-            <button mat-button (click)="executeCommand1(commands.selectedOptions.selected[0]?.value)">Execute</button>
-            <!-- <button mat-button>SHARE</button> -->
-         </mat-card-actions>
-         <mat-card-footer>
-            <mat-progress-bar #progress mode="determinate"></mat-progress-bar>
-         </mat-card-footer>
-      </mat-card>
-   </div>
+	<app-commands [commands]="commands">
+	</app-commands>
 
 </mat-drawer-container>
 

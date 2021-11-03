@@ -18,7 +18,7 @@ export class GetAdressBase  extends CommandWrapper {
 
    /** Id */
    get Id() : Guid{
-      let id : string = this.getArgument("Id");
+      let id : string = this.getArgument("Id") as string;
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -29,7 +29,7 @@ export class GetAdressBase  extends CommandWrapper {
 
       /** The address found or null if it does not exist */
    get Result() : AdressDTO{
-      let result : string = this.getArgument("Result");
+      let result : string = this.getArgument("Result") as string;
       if (!result)
          return null;
       return JSON.parse(result) as AdressDTO ;

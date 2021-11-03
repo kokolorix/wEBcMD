@@ -19,7 +19,7 @@ export class FindAdressesBase  extends CommandWrapper {
 
    /** Search text, can contain several words separated by spaces */
    get SearchText() : string{
-      let searchText : string = this.getArgument("SearchText");
+      let searchText : string = this.getArgument("SearchText") as string;
          return searchText;
    }
    set SearchText( val : string) {
@@ -28,7 +28,7 @@ export class FindAdressesBase  extends CommandWrapper {
 
       /** The result of the search is a list of AddressDTO objects */
    get Result() : AdressDTO[]{
-      let result : string = this.getArgument("Result");
+      let result : string = this.getArgument("Result") as string;
       if (!result)
          return null;
       return JSON.parse(result) as AdressDTO[] ;

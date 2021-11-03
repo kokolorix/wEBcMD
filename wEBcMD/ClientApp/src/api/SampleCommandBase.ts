@@ -1,7 +1,5 @@
 import { Guid } from "guid-typescript";
 import { equalsGuid } from "src/utils";
-import { String } from "./String";
-import { Boolean } from "./Boolean";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -28,8 +26,8 @@ export class SampleCommandBase  extends CommandWrapper {
     * The FirstOne is a string parameter
     * and has a multiline comment         
     */
-   get FirstOne() : string{
-      let firstOne : string = this.getArgument("FirstOne");
+   get FirstOne() : string|undefined {
+      let firstOne = this.getArgument("FirstOne");
          return firstOne;
    }
    set FirstOne( val : string) {
@@ -37,8 +35,8 @@ export class SampleCommandBase  extends CommandWrapper {
    }
 
    /** The SecondOne is a boolean parameter */
-   get SecondOne() : boolean{
-      let secondOne : string = this.getArgument("SecondOne");
+   get SecondOne() : boolean|undefined {
+      let secondOne = this.getArgument("SecondOne");
       if (!secondOne)
          return false;
       return Boolean(JSON.parse(secondOne));
@@ -49,7 +47,7 @@ export class SampleCommandBase  extends CommandWrapper {
 
 
    /// <summary>Calls the command</summary>
-   execute(firstOne: string, secondOne: boolean): Promise<void> {
+   execute(firstOne: string, secondOne: boolean): Promise<void|undefined> {
       this.FirstOne = firstOne;
       this.SecondOne = secondOne;
       console.log('call ' + JSON.stringify(this.DTO));

@@ -18,15 +18,15 @@ export class GetCommandTypesBase  extends CommandWrapper {
    static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, GetCommandTypesBase.TypeId); }
 
       /** The command type object */
-   get Result() : CommandTypeDTO[]{
-      let result : string = this.getArgument("Result");
+   get Result() : CommandTypeDTO[]|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as CommandTypeDTO[] ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(): Promise<CommandTypeDTO[]> {
+   execute(): Promise<CommandTypeDTO[]|undefined> {
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)
       .then((cmd) => {
@@ -35,7 +35,8 @@ export class GetCommandTypesBase  extends CommandWrapper {
       })
       .catch((e) =>{
          console.log('return with error ' + JSON.stringify(e));
-         return new Promise<CommandTypeDTO[]>(null);
+			const res:CommandTypeDTO[] = undefined;
+         return new Promise<CommandTypeDTO[]>(res);
       });
    }
 };
