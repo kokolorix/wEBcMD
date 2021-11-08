@@ -1,0 +1,48 @@
+@startuml
+class BaseDTO {
+    +Id?: string
+    +Type?: string
+    +{static} TypeId: Guid
+}
+class ExampleDTO extends BaseDTO {
+    +One?: string
+    +Two?: boolean
+    +{static} TypeId: Guid
+}
+class CommandWrapper {
+    -_dto: any
+    -_service: any
+    +Service: any
+    +DTO: any
+    +Response: boolean
+    +Arguments: any[]
+    +Type: Guid
+    +Id: Guid
+    +getArgument(name: string): any
+    +setArgument(name: string, value: string): void
+    +executeCmd(): Promise<any>
+    -{static} _factories: any
+    +{static} register(typeId: Guid, factory: CommandWrapperFactory): void
+}
+class PropertyDTO {
+    +Name?: string
+    +Value?: string
+    +{static} TypeId: Guid
+}
+class CommandDTO extends BaseDTO {
+    +Response?: boolean
+    +Arguments?: PropertyDTO[]
+    +{static} TypeId: Guid
+}
+class ExampleBase extends CommandWrapper {
+    +Id: Guid
+    +Id: Guid
+    +Result: ExampleDTO
+    +execute(id: Guid): Promise<ExampleDTO>
+    +{static} TypeId: Guid
+    +{static} IsForMe(dto: CommandDTO): any
+}
+CommandDTO --> "*" PropertyDTO
+ExampleBase --> "1" ExampleDTO
+ExampleBase --> "1" CommandDTO
+@enduml

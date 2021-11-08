@@ -52,6 +52,21 @@
       },
       {
          "type": "xslt",
+         "label": "xslt: types.xsltm (current file)",
+         "saxonJar": "${config:XSLT.tasks.saxonJar}",
+         "xsltFile": "${workspaceFolder}/tools/types.xslt",
+         "xmlSource": "${file}",
+         "resultPath": "${env:tmp}/Types.xml",
+         "group": {
+            "kind": "build",
+            "isDefault": false
+         },
+         "problemMatcher": [
+            "$saxon-xslt"
+         ]
+      },
+      {
+         "type": "xslt",
          "label": "xslt: Saxon Transform (BaseTypes)",
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${file}",
