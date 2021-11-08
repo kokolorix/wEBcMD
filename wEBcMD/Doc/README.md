@@ -47,7 +47,7 @@ While the general command objects are designed as pure data transfer objects, th
 
 2. We run the Code-Generator, to let us create the code skeletons
 
-	The result are two C# files for the serverside code, once the data structure and boilerplate code, second the partial individual implementations.
+	The result are two or three C# files for the serverside code, once the data structure and boilerplate code, second the partial individual implementations.
 
 ```
 wEBcMD
