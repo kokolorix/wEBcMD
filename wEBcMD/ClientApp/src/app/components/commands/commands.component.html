@@ -1,0 +1,44 @@
+<div class="sidenav-content">
+	<mat-card class="card" *ngIf="commands.selectedOptions.selected[0]?.value">
+		<mat-card-header>
+			<div mat-card-avatar>
+				<mat-icon mat-list-icon color="primary" class="icon"
+					(click)="executeCommand(commands.selectedOptions.selected[0]?.value)">play_circle_outline</mat-icon>
+			</div>
+			<mat-card-title>{{commands.selectedOptions.selected[0]?.value?.Name}}</mat-card-title>
+			<!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+		</mat-card-header>
+		<mat-divider inset></mat-divider>
+		<mat-card-content class="card-content">
+			<form [formGroup]="nameForm">
+				<div class="parameter"
+					*ngFor="let p of commands.selectedOptions.selected[0]?.value?.Parameters, let i = index">
+					<mat-form-field appearance="outline" color="primary">
+						<mat-label>{{p.Name}}</mat-label>
+						<input matInput id="p.Name" title="p.Name">
+						<mat-hint>{{p.Type}}</mat-hint>
+					</mat-form-field>
+				</div>
+				<!-- <mat-divider inset></mat-divider> -->
+				<div class="result" *ngIf="commands.selectedOptions.selected[0]?.value?.Result!='Void'">
+					<mat-form-field appearance="outline" color="primary">
+						<mat-label>Result</mat-label>
+						<input #result matInput disabled id="Result" title="Result">
+						<mat-hint>{{commands.selectedOptions.selected[0]?.value?.Result}}</mat-hint>
+					</mat-form-field>
+				</div>
+			</form>
+			<!-- <p>
+            The Commands Result, Arguments.
+         </p> -->
+		</mat-card-content>
+		<mat-divider inset></mat-divider>
+		<mat-card-actions>
+			<button mat-button (click)="executeCommand(commands.selectedOptions.selected[0]?.value)">Execute</button>
+			<!-- <button mat-button>SHARE</button> -->
+		</mat-card-actions>
+		<mat-card-footer>
+			<mat-progress-bar #progress mode="determinate"></mat-progress-bar>
+		</mat-card-footer>
+	</mat-card>
+</div>

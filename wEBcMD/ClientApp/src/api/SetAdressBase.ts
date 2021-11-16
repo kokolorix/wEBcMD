@@ -1,4 +1,5 @@
-import { Guid} from "guid-typescript";
+import { Guid } from "guid-typescript";
+import { equalsGuid } from "src/utils";
 import { AdressDTO } from "./AdressDTO";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
@@ -16,11 +17,11 @@ export class SetAdressBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === SetAdressBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, SetAdressBase.TypeId); }
 
    /** Id */
-   get Id() : Guid{
-      let id : string = this.getArgument("Id");
+   get Id() : Guid|undefined {
+      let id = this.getArgument("Id");
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -30,10 +31,10 @@ export class SetAdressBase  extends CommandWrapper {
    }
 
    /** The address which should be saved, or null if it should be deleted. */
-   get Adress() : AdressDTO{
-      let adress : string = this.getArgument("Adress");
+   get Adress() : AdressDTO|undefined {
+      let adress = this.getArgument("Adress");
       if (!adress)
-         return null;
+         return undefined;
       return JSON.parse(adress) as AdressDTO ;
    }
    set Adress( val : AdressDTO) {
@@ -41,15 +42,15 @@ export class SetAdressBase  extends CommandWrapper {
    }
 
       /** The address stored */
-   get Result() : AdressDTO{
-      let result : string = this.getArgument("Result");
+   get Result() : AdressDTO|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(id: Guid, adress: AdressDTO): Promise<AdressDTO> {
+   execute(id: Guid, adress: AdressDTO): Promise<AdressDTO|undefined> {
       this.Id = id;
       this.Adress = adress;
       console.log('call ' + JSON.stringify(this.DTO));

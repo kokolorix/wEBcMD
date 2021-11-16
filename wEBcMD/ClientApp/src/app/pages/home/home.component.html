@@ -1,3 +1,26 @@
+<mat-drawer-container class="container" autosize>
+	<mat-drawer #drawer class="sidenav" mode="side" [(opened)]="sideNavOpen">
+		<mat-selection-list #commands [multiple]="false">
+			<div class="subheader">Available Commands</div>
+			<mat-list-option *ngFor="let ct of commandTypes, let i = index" [value]="ct" [selected]="i == 0">
+				<!-- <button mat-mini-fab color="primary" aria-label="Execute the command"> -->
+				<mat-icon mat-list-icon color="primary">play_circle</mat-icon>
+				<!-- </button> -->
+				<div mat-line>{{ct.Name}}</div>
+				<div mat-line> {{ct.Result}} </div>
+			</mat-list-option>
+			<mat-divider></mat-divider>
+		</mat-selection-list>
+	</mat-drawer>
+
+	<app-commands [commands]="commands">
+	</app-commands>
+
+</mat-drawer-container>
+
+
+
+<!--
 <h1 id="cmdLabel">Command execution</h1>
 <div>
    <button (click)='executeCommand()'>Execute</button>
@@ -21,7 +44,7 @@
    <input [value]='_adress.Postcode' />
    <input [value]='_adress.City' />
 </div>
-
+ -->
 
 <!-- <h1 id="tableLabel">Weather forecast</h1>
 

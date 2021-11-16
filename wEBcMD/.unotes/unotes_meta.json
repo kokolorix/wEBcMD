@@ -1,0 +1,69 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "bin": {
+      "name": "bin",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "ClientApp": {
+      "name": "ClientApp",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "Controllers": {
+      "name": "Controllers",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "Doc": {
+      "name": "Doc",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "Impl": {
+      "name": "Impl",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "obj": {
+      "name": "obj",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "Properties": {
+      "name": "Properties",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "tools": {
+      "name": "tools",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "Types": {
+      "name": "Types",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "wwwroot": {
+      "name": "wwwroot",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    }
+  },
+  "files": {
+    "README": 0
+  }
+}

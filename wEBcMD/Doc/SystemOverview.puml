@@ -1,0 +1,18 @@
+@startuml SystemOverview
+header overview
+title wEBcMD system parts
+cloud Server {
+	package "Docker container"{
+		() "REST-Api" as rests
+		[Backend (dotnet)] as backend
+	}
+}
+node Browser {
+	() "REST-Api" as restc
+	[Frontend (typescript)] as frontend
+}
+https ..> rests
+backend - rests
+restc ..> https
+restc - frontend
+@enduml

@@ -18,7 +18,7 @@ namespace wEBcMD.Controllers
    ///     <item>
    ///         <term>SampleCommand</term>
    ///         <description>Sample to show how dispatch and execute a command.
-   ///         <seealso cref="SampleCommand.ExecuteCommand()"/>
+   ///         <seealso cref="SampleCommandWrapper.SampleCommand"/>
    ///         </description>
    ///     </item>
    /// </list>   /// </summary>
@@ -39,7 +39,7 @@ namespace wEBcMD.Controllers
       /// <param name="cmd"></param>
       /// <returns>the commands response</returns>
       /// <remarks>
-      /// Sample request for <see cref="SampleCommand.ExecuteCommand()"/>:
+      /// Sample request for <see cref="SampleCommandWrapper.SampleCommand(string, bool)"/>:
       ///
       ///      {
       ///        "id": "ee72eaab-d696-46e6-ab41-56f499579be7",
@@ -67,22 +67,50 @@ namespace wEBcMD.Controllers
 
          //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
 
-         result = AdressTypesDispatcher.Dispatch(cmd);
-         if(null != result)
-            return result;
+			result = CommandTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
 
-         result = BaseTypesDispatcher.Dispatch(cmd);
-         if(null != result)
-            return result;
+			result = AdressTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
 
-         result = CommandTypesDispatcher.Dispatch(cmd);
-         if(null != result)
-            return result;
+			result = BaseTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
+
+			result = ExampleTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
 
          //******** NEW DISPATCHERS INSERTED HERE                      ********//
          //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
 
          throw new NotImplementedException();
       }
-   }
+
+		/// <summary>
+		/// returns all command types in the system
+		/// </summary>
+		public static List<CommandTypeDTO> GetCommandTypes()
+		{
+			List<CommandTypeDTO> commandTypes = new();
+
+			//******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
+
+         CommandTypes.GetTypes(ref commandTypes);
+							
+         AdressTypes.GetTypes(ref commandTypes);
+							
+         BaseTypes.GetTypes(ref commandTypes);
+							
+         ExampleTypes.GetTypes(ref commandTypes);
+							
+			//******** NEW COMMANDTYPEGETTERS INSERTED HERE               ********//
+			//******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
+
+
+			return commandTypes;
+		}
+	}
 }

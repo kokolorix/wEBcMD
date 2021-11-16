@@ -1,14 +1,27 @@
 @startuml
 class CommandDTO {
 }
+class ParamDTO {
+}
+class CommandTypeDTO {
+}
+class GetCommandTypesWrapper <<partial>> {
+    + GetCommandTypesWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> GetCommandTypes() : List<CommandTypeDTO>
+}
 class SampleCommandWrapper <<partial>> {
     + SampleCommandWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> SampleCommand(firstOne:String, secondOne:Boolean) : void
 }
-class CommandTypesDispatcher <<static>> {
+class CommandTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class CommandTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }
@@ -16,6 +29,18 @@ BaseDTO <|-- CommandDTO
 CommandDTO --> "TypeId" Guid
 CommandDTO o-> "Response" Boolean
 CommandDTO o-> "Arguments<PropertyDTO>" "List`1"
+ParamDTO --> "TypeId" Guid
+ParamDTO --> "Name" String
+ParamDTO --> "Type" String
+TypeDTO <|-- CommandTypeDTO
+CommandTypeDTO --> "TypeId" Guid
+CommandTypeDTO --> "Name" String
+CommandTypeDTO --> "Result" String
+CommandTypeDTO --> "Parameters<ParamDTO>" "List`1"
+CommandWrapper <|-- GetCommandTypesWrapper
+GetCommandTypesWrapper --> "TypeId" Guid
+GetCommandTypesWrapper --> "Cmd" CommandDTO
+GetCommandTypesWrapper --> "Result<CommandTypeDTO>" "List`1"
 CommandWrapper <|-- SampleCommandWrapper
 SampleCommandWrapper --> "TypeId" Guid
 SampleCommandWrapper --> "Cmd" CommandDTO

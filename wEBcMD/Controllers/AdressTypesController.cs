@@ -38,9 +38,9 @@ namespace wEBcMD.Controllers
          
          wrapper.SearchText = searchText;
 
-         wrapper.ExecuteCommand();
-
-         return wrapper.Result;
+         return wrapper.FindAdresses(
+					wrapper.SearchText
+			);
       }
          /// <summary>
       /// </summary>
@@ -54,9 +54,9 @@ namespace wEBcMD.Controllers
          
          wrapper.Id = id;
 
-         wrapper.ExecuteCommand();
-
-         return wrapper.Result;
+         return wrapper.GetAdress(
+					wrapper.Id
+			);
       }
          /// <summary>
       /// Updates an existing address if Id is specified,
@@ -74,9 +74,10 @@ namespace wEBcMD.Controllers
          wrapper.Id = id;
          wrapper.Adress = adress;
 
-         wrapper.ExecuteCommand();
-
-         return wrapper.Result;
+         return wrapper.SetAdress(
+					wrapper.Id, 
+					wrapper.Adress
+			);
       }
          /// <summary>
       /// Delete the Adress with the given id.
@@ -92,9 +93,9 @@ namespace wEBcMD.Controllers
          
          wrapper.Id = id;
 
-         wrapper.ExecuteCommand();
-
-         return wrapper.Result;
+         return wrapper.DeleteAdress(
+					wrapper.Id
+			);
       }
    
    }

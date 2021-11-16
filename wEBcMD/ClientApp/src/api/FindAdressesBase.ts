@@ -1,4 +1,6 @@
-import { Guid} from "guid-typescript";
+import { Guid } from "guid-typescript";
+import { equalsGuid } from "src/utils";
+import { AdressDTO } from "./AdressDTO";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -13,11 +15,11 @@ export class FindAdressesBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === FindAdressesBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, FindAdressesBase.TypeId); }
 
    /** Search text, can contain several words separated by spaces */
-   get SearchText() : string{
-      let searchText : string = this.getArgument("SearchText");
+   get SearchText() : string|undefined {
+      let searchText = this.getArgument("SearchText");
          return searchText;
    }
    set SearchText( val : string) {
@@ -25,15 +27,15 @@ export class FindAdressesBase  extends CommandWrapper {
    }
 
       /** The result of the search is a list of AddressDTO objects */
-   get Result() : AdressDTO[]{
-      let result : string = this.getArgument("Result");
+   get Result() : AdressDTO[]|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO[] ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(searchText: string): Promise<AdressDTO[]> {
+   execute(searchText: string): Promise<AdressDTO[]|undefined> {
       this.SearchText = searchText;
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)
