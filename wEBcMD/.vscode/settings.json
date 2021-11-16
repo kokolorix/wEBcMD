@@ -1,3 +1,5 @@
 {
-   "angular.enable-strict-mode-prompt": false
+   "angular.enable-strict-mode-prompt": false,
+   "XSLT.tasks.saxonJar": "${workspaceFolder}\\tools\\saxon-he-10.5.jar",
+   "xsl.processor": "${workspaceFolder}\\tools\\saxon-he-10.5.jar"
 }

@@ -1,0 +1,64 @@
+@startuml CommandPrinciple
+class Caller
+
+class Command {
+	+ Id : Guid
+	+ Type: Guid
+	+ execute() : Command
+}
+class Receiver{
+	+ Type: Guid
+	+ action(cmd: Comand) : Command
+}
+
+Caller *->  Command : execute()
+Command -> Receiver : action()
+
+@enduml
+
+@startuml CommandDetail
+
+package Common {
+	class Command
+	class Argument
+}
+
+package Client {
+	class ExecuteWrapper{
+		Cmd: Command
+	}
+	ExecuteWrapper "1" <-> "1" Command
+
+	class ConcreteExecuteWrapper{
+		ConcreteArguments
+	}
+	ExecuteWrapper --> ConcreteExecuteWrapper
+}
+
+class Command {
+	+ Id : Guid
+	+ Type: Guid
+	+ Result: Argument
+	+ Arguments: Argument[]
+	+ execute() : Command
+}
+class Argument{
+	+ Name: string
+	+ Type: Guid
+}
+Command "1" *-> "*" Argument : Arguments
+Command "1" *-> "1" Argument : Result
+
+package Server {
+	class ActionWrapper{
+		Cmd: Command
+	}
+	ActionWrapper "1" <-> "1" Command
+
+	class ConcreteActionWrapper{
+		ConcreteArguments
+	}
+	ActionWrapper --> ConcreteActionWrapper
+}
+
+@enduml

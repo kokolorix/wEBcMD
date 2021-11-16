@@ -7,8 +7,11 @@ class ObjectDTO {
 }
 class TypeDTO {
 }
-class BaseTypesDispatcher <<static>> {
+class BaseTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class BaseTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }

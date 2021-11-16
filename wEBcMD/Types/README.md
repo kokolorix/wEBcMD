@@ -21,5 +21,7 @@
 
 - [CommandTypes](../Doc/Types/CommandTypes.md)
 
+- [ExampleTypes](../Doc/Types/ExampleTypes.md)
+
 <!--- HERE INSERT DOCUMENT LINK --->
 <!-- THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION  -->

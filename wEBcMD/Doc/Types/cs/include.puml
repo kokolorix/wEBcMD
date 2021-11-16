@@ -5,28 +5,31 @@ class FindAdressesWrapper <<partial>> {
     + FindAdressesWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> FindAdresses(searchText:String) : List<AdressDTO>
 }
 class GetAdressWrapper <<partial>> {
     + GetAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> GetAdress(id:Guid) : AdressDTO
 }
 class SetAdressWrapper <<partial>> {
     + SetAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> SetAdress(id:Guid, adress:AdressDTO) : AdressDTO
 }
 class DeleteAdressWrapper <<partial>> {
     + DeleteAdressWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> DeleteAdress(id:Guid) : AdressDTO
 }
-class AdressTypesDispatcher <<static>> {
+class AdressTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class AdressTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }
@@ -74,8 +77,11 @@ class ObjectDTO {
 }
 class TypeDTO {
 }
-class BaseTypesDispatcher <<static>> {
+class BaseTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class BaseTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }
@@ -103,14 +109,27 @@ ObjectWrapper --> "_dto" ObjectDTO
 CommandWrapper --> "Cmd" CommandDTO
 class CommandDTO {
 }
+class ParamDTO {
+}
+class CommandTypeDTO {
+}
+class GetCommandTypesWrapper <<partial>> {
+    + GetCommandTypesWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> GetCommandTypes() : List<CommandTypeDTO>
+}
 class SampleCommandWrapper <<partial>> {
     + SampleCommandWrapper(dto:CommandDTO)
     + {static} IsForMe(dto:CommandDTO) : bool
     + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
-    + <<partial>> ExecuteCommand() : CommandDTO
+    + <<partial>> SampleCommand(firstOne:String, secondOne:Boolean) : void
 }
-class CommandTypesDispatcher <<static>> {
+class CommandTypes <<static>> <<partial>> {
     + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class CommandTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
 }
 class "List`1"<T> {
 }
@@ -118,11 +137,46 @@ BaseDTO <|-- CommandDTO
 CommandDTO --> "TypeId" Guid
 CommandDTO o-> "Response" Boolean
 CommandDTO o-> "Arguments<PropertyDTO>" "List`1"
+ParamDTO --> "TypeId" Guid
+ParamDTO --> "Name" String
+ParamDTO --> "Type" String
+TypeDTO <|-- CommandTypeDTO
+CommandTypeDTO --> "TypeId" Guid
+CommandTypeDTO --> "Name" String
+CommandTypeDTO --> "Result" String
+CommandTypeDTO --> "Parameters<ParamDTO>" "List`1"
+CommandWrapper <|-- GetCommandTypesWrapper
+GetCommandTypesWrapper --> "TypeId" Guid
+GetCommandTypesWrapper --> "Cmd" CommandDTO
+GetCommandTypesWrapper --> "Result<CommandTypeDTO>" "List`1"
 CommandWrapper <|-- SampleCommandWrapper
 SampleCommandWrapper --> "TypeId" Guid
 SampleCommandWrapper --> "Cmd" CommandDTO
 SampleCommandWrapper --> "FirstOne" String
 SampleCommandWrapper --> "SecondOne" Boolean
+class ExampleDTO {
+}
+class ExampleWrapper <<partial>> {
+    + ExampleWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> Example(id:Guid) : ExampleDTO
+}
+class ExampleTypes <<static>> <<partial>> {
+    + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class ExampleTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
+}
+BaseDTO <|-- ExampleDTO
+ExampleDTO --> "TypeId" Guid
+ExampleDTO --> "One" String
+ExampleDTO --> "Two" Boolean
+CommandWrapper <|-- ExampleWrapper
+ExampleWrapper --> "TypeId" Guid
+ExampleWrapper --> "Cmd" CommandDTO
+ExampleWrapper --> "Id" Guid
+ExampleWrapper --> "Result" ExampleDTO
 class WeatherForecast {
     + TemperatureC : int <<get>> <<set>>
     + TemperatureF : int <<get>>

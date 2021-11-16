@@ -1,0 +1,25 @@
+@startuml
+class ExampleDTO {
+}
+class ExampleWrapper <<partial>> {
+    + ExampleWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> Example(id:Guid) : ExampleDTO
+}
+class ExampleTypes <<static>> <<partial>> {
+    + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class ExampleTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
+}
+BaseDTO <|-- ExampleDTO
+ExampleDTO --> "TypeId" Guid
+ExampleDTO --> "One" String
+ExampleDTO --> "Two" Boolean
+CommandWrapper <|-- ExampleWrapper
+ExampleWrapper --> "TypeId" Guid
+ExampleWrapper --> "Cmd" CommandDTO
+ExampleWrapper --> "Id" Guid
+ExampleWrapper --> "Result" ExampleDTO
+@enduml

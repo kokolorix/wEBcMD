@@ -42,7 +42,7 @@ namespace wEBcMD
    };
 
 
-   static class BaseTypesDispatcher
+   static partial class BaseTypes
    {
       public static CommandDTO Dispatch(CommandDTO dto)
       {
@@ -50,6 +50,17 @@ namespace wEBcMD
             return dto;
          
          return null;
+      }
+   }
+
+	///<summary>Types from this module</summary>
+   static partial class BaseTypes
+   {
+		///<summary>List of cref="CommandTypeDTO" from this module</summary>
+      public static void GetTypes(ref List<CommandTypeDTO> commandTypes)
+      {
+			commandTypes.AddRange(new CommandTypeDTO[] {
+			});
       }
    }
 }

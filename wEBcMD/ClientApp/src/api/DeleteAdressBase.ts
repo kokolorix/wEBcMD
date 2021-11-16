@@ -1,4 +1,6 @@
-import { Guid} from "guid-typescript";
+import { Guid } from "guid-typescript";
+import { equalsGuid } from "src/utils";
+import { AdressDTO } from "./AdressDTO";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -14,11 +16,11 @@ export class DeleteAdressBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === DeleteAdressBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, DeleteAdressBase.TypeId); }
 
    /** Id */
-   get Id() : Guid{
-      let id : string = this.getArgument("Id");
+   get Id() : Guid|undefined {
+      let id = this.getArgument("Id");
       if (!id)
          return Guid.parse(Guid.EMPTY);
       return Guid.parse(id);
@@ -28,15 +30,15 @@ export class DeleteAdressBase  extends CommandWrapper {
    }
 
       /** The deleted address */
-   get Result() : AdressDTO{
-      let result : string = this.getArgument("Result");
+   get Result() : AdressDTO|undefined {
+      let result = this.getArgument("Result");
       if (!result)
-         return null;
+         return undefined;
       return JSON.parse(result) as AdressDTO ;
    }
 
    /// <summary>Calls the command</summary>
-   execute(id: Guid): Promise<AdressDTO> {
+   execute(id: Guid): Promise<AdressDTO|undefined> {
       this.Id = id;
       console.log('call ' + JSON.stringify(this.DTO));
       return this.Service.executeCommand(this.DTO)

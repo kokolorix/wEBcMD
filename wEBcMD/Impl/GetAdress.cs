@@ -1,16 +1,19 @@
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace wEBcMD
 {
    public partial class GetAdressWrapper : CommandWrapper
    {
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand()
-      {
-         Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
-         return Cmd;
-      }
+      /// <summary>
+      /// </summary>
+
+		public partial AdressDTO GetAdress(Guid id)
+		{
+			Log.Trace($"Implementation in {MethodBase.GetCurrentMethod()}");
+			return default;
+		}
    };
 
 }

@@ -36,39 +36,55 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == FindAdressesWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new FindAdressesWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
 
-      /// <summary>Serialize / Deserialize concrete FindAdresses to generic CommandDTO</summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-      
-            this.Set(cmd, "SearchText", SearchText);
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			FindAdressesWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.FindAdresses(
+					wrapper.SearchText
+			);
 
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-      
-            this.Get(cmd, "SearchText",  (()=>this.SearchText, x => this.SearchText = x));
-            
+			return wrapper.Cmd;
+		}
 
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-            /// <summary>Search text, can contain several words separated by spaces</summary>
+		      /// <summary>
+      /// Addresses search, with multiple tokens
+      /// </summary>
+		public partial List<AdressDTO> FindAdresses(String searchText);
+
+		/// <summary>Serialize / Deserialize concrete FindAdresses to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+				this.Set(cmd, "SearchText", SearchText);
+				this.Set(cmd, "Result", Result);
+				
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				this.Get(cmd, "SearchText",  (()=>this.SearchText, x => this.SearchText	= x));
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>Search text, can contain several words separated by spaces</summary>
       public String SearchText { get; set; }
       /// <summary>The result of the search is a list of AddressDTO objects</summary>
 
-      public List<AdressDTO> Result { get; set; }
+		public List<AdressDTO>
+		Result { get; set; }
    };
 
    /// <summary>
@@ -81,39 +97,54 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == GetAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new GetAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
 
-      /// <summary>Serialize / Deserialize concrete GetAdress to generic CommandDTO</summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-      
-            this.Set(cmd, "Id", Id);
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			GetAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.GetAdress(
+					wrapper.Id
+			);
 
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-      
-            this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x));
-            
+			return wrapper.Cmd;
+		}
 
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-            /// <summary>Id</summary>
+		      /// <summary>
+      /// </summary>
+		public partial AdressDTO GetAdress(Guid id);
+
+		/// <summary>Serialize / Deserialize concrete GetAdress to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+				this.Set(cmd, "Id", Id);
+				this.Set(cmd, "Result", Result);
+				
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				this.Get(cmd, "Id",  (()=>this.Id, x => this.Id	= x));
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>Id</summary>
       public Guid Id { get; set; }
       /// <summary>The address found or null if it does not exist</summary>
 
-      public AdressDTO Result { get; set; }
+		public AdressDTO
+		Result { get; set; }
    };
 
    /// <summary>
@@ -129,43 +160,62 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == SetAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new SetAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
 
-      /// <summary>Serialize / Deserialize concrete SetAdress to generic CommandDTO</summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-      
-            this.Set(cmd, "Id", Id);
-            this.Set(cmd, "Adress", Adress);
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			SetAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.SetAdress(
+					wrapper.Id, 
+					wrapper.Adress
+			);
 
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-      
-            this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x));
-            this.Get(cmd, "Adress",  (()=>this.Adress, x => this.Adress = x));
-            
+			return wrapper.Cmd;
+		}
 
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-            /// <summary>Id</summary>
+		      /// <summary>
+      /// Updates an existing address if Id is specified,
+      /// or creates a new one if Id is null.
+      /// The updated or newly created address is returned in Result.
+      /// </summary>
+		public partial AdressDTO SetAdress(Guid id, AdressDTO adress);
+
+		/// <summary>Serialize / Deserialize concrete SetAdress to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+				this.Set(cmd, "Id", Id);
+				this.Set(cmd, "Adress", Adress);
+				this.Set(cmd, "Result", Result);
+				
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				this.Get(cmd, "Id",  (()=>this.Id, x => this.Id	= x));
+				this.Get(cmd, "Adress",  (()=>this.Adress, x => this.Adress	= x));
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>Id</summary>
       public Guid Id { get; set; }
       /// <summary>The address which should be saved, or null if it should be deleted.</summary>
       public AdressDTO Adress { get; set; }
       /// <summary>The address stored</summary>
 
-      public AdressDTO Result { get; set; }
+		public AdressDTO
+		Result { get; set; }
    };
 
    /// <summary>
@@ -180,43 +230,60 @@ namespace wEBcMD
       public static Guid TypeId { get => System.Guid.Parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"); }
       /// <summary>Checks if the type of the DTO fits</summary>
       public static bool IsForMe(CommandDTO dto) => dto.Type == DeleteAdressWrapper.TypeId;
-      /// <summary>Create the wrapper and execute the command</summary>
-      public static CommandDTO ExecuteCommand(CommandDTO dto) => new DeleteAdressWrapper(dto).ExecuteCommand();
-      /// <summary>Execute the command</summary>
-      public partial CommandDTO ExecuteCommand();
 
-      /// <summary>Serialize / Deserialize concrete DeleteAdress to generic CommandDTO</summary>
-      public override CommandDTO Cmd
-      {
-         get
-         {
-            CommandDTO cmd = base.Cmd;
-      
-            this.Set(cmd, "Id", Id);
+		
+		/// <summary>Create the wrapper and execute the command</summary>
+		public static CommandDTO ExecuteCommand( CommandDTO dto )
+		{
+			DeleteAdressWrapper wrapper = new(dto);
+			
+			wrapper.Result = 
+			wrapper.DeleteAdress(
+					wrapper.Id
+			);
 
-            cmd.Response = true;
-            return cmd;
-         }
-         set
-         {
-            CommandDTO cmd = value;
-      
-            this.Get(cmd, "Id",  (()=>this.Id, x => this.Id = x));
-            
+			return wrapper.Cmd;
+		}
 
-            base.Cmd = cmd;
-            cmd.Response = false;
-         }
-      }
-            /// <summary>Id</summary>
+		      /// <summary>
+      /// Delete the Adress with the given id.
+      /// Returns the Adress which was deleted.
+      /// </summary>
+		public partial AdressDTO DeleteAdress(Guid id);
+
+		/// <summary>Serialize / Deserialize concrete DeleteAdress to generic CommandDTO </summary>
+		public override CommandDTO Cmd
+		{
+			get
+			{
+				CommandDTO cmd = base.Cmd;
+				
+				this.Set(cmd, "Id", Id);
+				this.Set(cmd, "Result", Result);
+				
+				cmd.Response = true;
+				return cmd;
+			}
+			set
+			{
+				CommandDTO cmd = value;
+				
+				this.Get(cmd, "Id",  (()=>this.Id, x => this.Id	= x));
+				
+				base.Cmd = cmd;
+				cmd.Response = false;
+			}
+		}
+      /// <summary>Id</summary>
       public Guid Id { get; set; }
       /// <summary>The deleted address</summary>
 
-      public AdressDTO Result { get; set; }
+		public AdressDTO
+		Result { get; set; }
    };
 
 
-   static class AdressTypesDispatcher
+   static partial class AdressTypes
    {
       public static CommandDTO Dispatch(CommandDTO dto)
       {
@@ -236,6 +303,72 @@ namespace wEBcMD
             return DeleteAdressWrapper.ExecuteCommand(dto);
          
          return null;
+      }
+   }
+
+	///<summary>Types from this module</summary>
+   static partial class AdressTypes
+   {
+		///<summary>List of cref="CommandTypeDTO" from this module</summary>
+      public static void GetTypes(ref List<CommandTypeDTO> commandTypes)
+      {
+			commandTypes.AddRange(new CommandTypeDTO[] {
+				new() {
+					Name = "FindAdresses",
+					Result = "AdressDTO[]",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="SearchText",
+							Type="String",
+						},
+					},
+					Id = Guid.Parse("13b2f4da-711a-451e-b435-2c2dc1fbbe4e"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "GetAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},
+					},
+					Id = Guid.Parse("c6771f60-a64b-4775-a006-a2bce00b23a4"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "SetAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},new() {
+							Name="Adress",
+							Type="AdressDTO",
+						},
+					},
+					Id = Guid.Parse("c84bb99b-2d11-4426-87fa-119dc892f4ec"),
+					Type = CommandTypeDTO.TypeId,
+				},
+				new() {
+					Name = "DeleteAdress",
+					Result = "AdressDTO",
+					Parameters = new List<ParamDTO>()
+					{
+						new() {
+							Name="Id",
+							Type="UuId",
+						},
+					},
+					Id = Guid.Parse("c60a9e66-b60a-4228-a7e5-ca61285ce5de"),
+					Type = CommandTypeDTO.TypeId,
+				},
+			});
       }
    }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+	<Summary>		Detailed Description of the Command-Module.		Meaning and purpose, intentions and limitations.	</Summary>
+	<ObjectType name="ExampleDTO" category="Samples" id="5c7fc88a-b15a-4a4b-b687-e320c44743de">
+		<Summary>Description of the Data-Strucure.</Summary>
+		<Base name="BaseDTO" category="Base"/>
+		<PropertyType name="One" type="String" summary="First property, a string" />
+		<PropertyType name="Two" type="Boolean" summary="Second one, a boolean"/>
+	</ObjectType>
+	<CommandWrapper name="Example" http="get" category="Samples" id="a84ca129-1d08-4864-a97d-50639b8055d5">
+		<Summary>The very first command we designed</Summary>
+		<Base name="CommandWrapper" category="Base"/>
+		<ParameterType name="Id" type="UuId" modifier="in" summary="The Id of the Data-Object"/>
+		<Result type="ExampleDTO" summary="The Data-Object" />
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+</Types>

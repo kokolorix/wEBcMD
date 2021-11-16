@@ -1,4 +1,5 @@
-import { Guid} from "guid-typescript";
+import { Guid } from "guid-typescript";
+import { equalsGuid } from "src/utils";
 import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
@@ -7,9 +8,7 @@ import { CommandDTO } from "./CommandDTO";
  * and a multiline summary.
  * ``` typescript
  * CommandDTO cmd;
- * if(SampleCommand.IsForMe(dto)){
- *    let sample = new SampleCommand(cmd);
- *    console.log(sample.FirstOne);
+ * if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
  * }
  * ```
  */
@@ -21,14 +20,14 @@ export class SampleCommandBase  extends CommandWrapper {
    static get TypeId(): Guid { return Guid.parse("e3e185bd-5237-4574-977f-a040bbe12d35"); }
 
    /** Checks if the type of the DTO fits */
-   static IsForMe(dto: CommandDTO) { return dto.Type === SampleCommandBase.TypeId; }
+   static IsForMe(dto: CommandDTO) { return equalsGuid(dto.Type, SampleCommandBase.TypeId); }
 
    /**
     * The FirstOne is a string parameter
-    * and has a multiline comment
+    * and has a multiline comment         
     */
-   get FirstOne() : string{
-      let firstOne : string = this.getArgument("FirstOne");
+   get FirstOne() : string|undefined {
+      let firstOne = this.getArgument("FirstOne");
          return firstOne;
    }
    set FirstOne( val : string) {
@@ -36,8 +35,8 @@ export class SampleCommandBase  extends CommandWrapper {
    }
 
    /** The SecondOne is a boolean parameter */
-   get SecondOne() : boolean{
-      let secondOne : string = this.getArgument("SecondOne");
+   get SecondOne() : boolean|undefined {
+      let secondOne = this.getArgument("SecondOne");
       if (!secondOne)
          return false;
       return Boolean(JSON.parse(secondOne));
@@ -48,7 +47,7 @@ export class SampleCommandBase  extends CommandWrapper {
 
 
    /// <summary>Calls the command</summary>
-   execute(firstOne: string, secondOne: boolean): Promise<void> {
+   execute(firstOne: string, secondOne: boolean): Promise<void|undefined> {
       this.FirstOne = firstOne;
       this.SecondOne = secondOne;
       console.log('call ' + JSON.stringify(this.DTO));

@@ -31,9 +31,8 @@
 			<xs:pattern value="Double(\s*\[\s*\])?"/>
 			<xs:pattern value="String(\s*\[\s*\])?"/>
 			<xs:pattern value="UuId(\s*\[\s*\])?"/>
-			<xs:pattern value="PropertyDTO(\s*\[\s*\])?"/>
-			<xs:pattern value="PropertyTypeDTO(\s*\[\s*\])?"/>
-			<xs:pattern value="AdressDTO(\s*\[\s*\])?"/>
+			<xs:pattern value="\w+DTO(\s*\[\s*\])?"/>
+			<xs:pattern value="Enum\s*=(\s*\w+\s*,\s*)*(\s*(\w|\*|\?)+),?"/>
 			<xs:pattern value=""/>
 		</xs:restriction>
 	</xs:simpleType>

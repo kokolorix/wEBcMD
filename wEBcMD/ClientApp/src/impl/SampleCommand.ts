@@ -7,9 +7,7 @@ import { CommandDTO } from "../api/CommandDTO";
  * and a multiline summary.
  * ``` typescript
  * CommandDTO cmd;
- * if(SampleCommand.IsForMe(dto)){
- *    let sample = new SampleCommand(cmd);
- *    console.log(sample.FirstOne);
+ * if(SampleCommand.IsForMe(dto)){   let sample = new SampleCommand(cmd);   console.log(sample.FirstOne);
  * }
  * ```
  */

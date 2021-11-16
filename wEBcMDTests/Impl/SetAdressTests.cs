@@ -14,7 +14,7 @@ namespace wEBcMD.Tests
 		[TestMethod()]
 		public void ExecuteCommandTest()
 		{
-			CommandDTO cmd1, cmd2;
+			CommandDTO cmd2;
 			//{
 			SetAdressWrapper setAdress = new();
 			cmd2 = setAdress.Cmd;
@@ -28,11 +28,14 @@ namespace wEBcMD.Tests
 				City = "City"
 			};
 			setAdress.Adress = adress;
-			cmd1 = setAdress.ExecuteCommand();
+
+			SetAdressWrapper check1 = new(), check2 = new(cmd2);
+
+			check1.Result = setAdress.SetAdress(Guid.Empty, adress);
+
 			if (setAdress.Result.Id == Guid.Empty)
 				Assert.Fail();
 			//}
-			SetAdressWrapper check1 = new(cmd1), check2 = new(cmd2);
 			Assert.AreNotEqual(check1.Result, check2.Result);
 		}
 	}
