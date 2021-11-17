@@ -52,7 +52,7 @@
       },
       {
          "type": "xslt",
-         "label": "xslt: types.xsltm (current file)",
+         "label": "xslt: types.xslt (current file)",
          "saxonJar": "${config:XSLT.tasks.saxonJar}",
          "xsltFile": "${workspaceFolder}/tools/types.xslt",
          "xmlSource": "${file}",
