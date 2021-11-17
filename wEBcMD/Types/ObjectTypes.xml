@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
+	<Summary></Summary>
+	<ObjectType name="ObjectTypeDTO" category="Object" id="9b286c28-4baf-44dd-9328-9729854f4882">
+		<Summary></Summary>
+		<Base name="TypeDTO" category="Base"/>
+	</ObjectType>
+	<CommandWrapper name="GetObjectTypes" http="get" category="Object" id="058aa634-956c-4167-b5e0-2c2171ae55c0">
+		<Summary></Summary>
+		<Base name="CommandWrapper" category="Base"/>
+		<Result type="ObjectTypeDTO[]" summary="" />
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+</Types>

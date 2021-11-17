@@ -23,5 +23,7 @@
 
 - [ExampleTypes](../Doc/Types/ExampleTypes.md)
 
+- [ObjectTypes](../Doc/ObjectTypes.md)
+
 <!--- HERE INSERT DOCUMENT LINK --->
 <!-- THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION  -->

@@ -19,3 +19,6 @@ call tplant --input ..\ClientApp\src\api\GetCommandTypesBase.ts ..\ClientApp\src
 
 echo generate typescript class diagram for Example
 call tplant --input ..\ClientApp\src\api\ExampleBase.ts ..\ClientApp\src\impl\Example.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\Example.puml -A
+
+echo generate typescript class diagram for GetObjectTypes
+call tplant --input ..\ClientApp\src\api\GetObjectTypesBase.ts ..\ClientApp\src\impl\GetObjectTypes.ts ..\ClientApp\src\impl\ts.CommandWrapper --output Types\ts\GetObjectTypes.puml -A

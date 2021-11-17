@@ -83,6 +83,10 @@ namespace wEBcMD.Controllers
 			if(null != result)
 				return result;
 
+			result = ObjectTypes.Dispatch(cmd);
+			if(null != result)
+				return result;
+
          //******** NEW DISPATCHERS INSERTED HERE                      ********//
          //******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
 
@@ -105,6 +109,8 @@ namespace wEBcMD.Controllers
          BaseTypes.GetTypes(ref commandTypes);
 							
          ExampleTypes.GetTypes(ref commandTypes);
+							
+         ObjectTypes.GetTypes(ref commandTypes);
 							
 			//******** NEW COMMANDTYPEGETTERS INSERTED HERE               ********//
 			//******** THIS IS GENERATED CODE. DO NOT CHANGE THIS SECTION ********//
