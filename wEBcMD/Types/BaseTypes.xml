@@ -16,5 +16,10 @@
 	</ObjectType>
 	<ObjectType name="TypeDTO" category="Base" id="2c8c1feb-0d04-45d2-bbe7-fe137450412e">
 		<Base name="BaseDTO" category="Base"/>
+		<PropertyType name="Name" type="String"/>
 	</ObjectType>
+	<!-- <ObjectType name="DatatypeDTO" id="91d670c8-dedd-41c9-8407-7532b1fad45a">
+		<Base name="" />
+		<PropertyType name="Type" type="Enum=String,Boolean,Double,Int32,*DTO"/>
+	</ObjectType> -->
 </Types>

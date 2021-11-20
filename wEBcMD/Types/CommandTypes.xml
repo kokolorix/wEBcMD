@@ -8,10 +8,6 @@
 		<PropertyType name="Arguments" type="PropertyDTO[]" default="[]" summary="Arguments of the command"/>
 		<!-- <PropertyType name="Default" type="PropertyDTO" summary="Default Argument of the command"/> -->
 	</ObjectType>
-	<!-- <ObjectType name="DatatypeDTO" id="d02743ec-83f6-4209-a940-daa07131716e">
-		<Base name="" />
-		<PropertyType name="Type" type="Enum=String,Boolean,Double,Int32,*DTO"/>
-	</ObjectType> -->
 	<ObjectType name="ParamDTO" id="95f50f9b-9e6c-4f72-8bfe-486adffda5a9">
 		<Base name="" />
 		<PropertyType name="Name" type="String"/>
@@ -19,7 +15,6 @@
 	</ObjectType>
 	<ObjectType name="CommandTypeDTO" id="7e4e81c9-9170-4f9e-bfe0-b9acd359958b">
 		<Base name="TypeDTO" />
-		<PropertyType name="Name" type="String"/>
 		<PropertyType name="Result" type="String"/>
 		<PropertyType name="Parameters" type="ParamDTO[]"/>
 	</ObjectType>

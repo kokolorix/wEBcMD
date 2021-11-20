@@ -32,8 +32,6 @@ namespace wEBcMD
    {
       /// <summary>7e4e81c9-9170-4f9e-bfe0-b9acd359958b is the Id of CommandTypeDTO type.</summary>
       new public static Guid TypeId { get => System.Guid.Parse("7e4e81c9-9170-4f9e-bfe0-b9acd359958b"); }
-      /// <summary>Name</summary>
-      public virtual String Name { get; set; }
       /// <summary>Result</summary>
       public virtual String Result { get; set; }
       /// <summary>Parameters</summary>

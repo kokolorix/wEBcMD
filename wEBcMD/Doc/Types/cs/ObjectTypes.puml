@@ -1,0 +1,30 @@
+@startuml
+class PropertyTypeDTO {
+}
+class ObjectTypeDTO {
+}
+class GetObjectTypesWrapper <<partial>> {
+    + GetObjectTypesWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> GetObjectTypes() : List<ObjectTypeDTO>
+}
+class ObjectTypes <<static>> <<partial>> {
+    + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class ObjectTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
+}
+class "List`1"<T> {
+}
+PropertyTypeDTO --> "TypeId" Guid
+PropertyTypeDTO --> "Name" String
+PropertyTypeDTO --> "Type" String
+TypeDTO <|-- ObjectTypeDTO
+ObjectTypeDTO --> "TypeId" Guid
+ObjectTypeDTO --> "PropertyTypes<PropertyTypeDTO>" "List`1"
+CommandWrapper <|-- GetObjectTypesWrapper
+GetObjectTypesWrapper --> "TypeId" Guid
+GetObjectTypesWrapper --> "Cmd" CommandDTO
+GetObjectTypesWrapper --> "Result<ObjectTypeDTO>" "List`1"
+@enduml

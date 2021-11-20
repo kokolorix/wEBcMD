@@ -1,5 +1,5 @@
 @startuml
-class ParamDTO {
+class PropertyTypeDTO {
     +Name?: string
     +Type?: string
     +{static} TypeId: Guid
@@ -13,9 +13,8 @@ class TypeDTO extends BaseDTO {
     +Name?: string
     +{static} TypeId: Guid
 }
-class CommandTypeDTO extends TypeDTO {
-    +Result?: string
-    +Parameters?: ParamDTO[]
+class ObjectTypeDTO extends TypeDTO {
+    +PropertyTypes?: PropertyTypeDTO[]
     +{static} TypeId: Guid
 }
 class CommandWrapper {
@@ -43,14 +42,14 @@ class CommandDTO extends BaseDTO {
     +Arguments?: PropertyDTO[]
     +{static} TypeId: Guid
 }
-class GetCommandTypesBase extends CommandWrapper {
-    +Result: CommandTypeDTO[]
-    +execute(): Promise<CommandTypeDTO[]>
+class GetObjectTypesBase extends CommandWrapper {
+    +Result: ObjectTypeDTO[]
+    +execute(): Promise<ObjectTypeDTO[]>
     +{static} TypeId: Guid
     +{static} IsForMe(dto: CommandDTO): any
 }
-CommandTypeDTO --> "*" ParamDTO
+ObjectTypeDTO --> "*" PropertyTypeDTO
 CommandDTO --> "*" PropertyDTO
-GetCommandTypesBase --> "*" CommandTypeDTO
-GetCommandTypesBase --> "1" CommandDTO
+GetObjectTypesBase --> "*" ObjectTypeDTO
+GetObjectTypesBase --> "1" CommandDTO
 @enduml

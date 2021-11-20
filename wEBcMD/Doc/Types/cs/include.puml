@@ -96,6 +96,7 @@ ObjectDTO --> "TypeId" Guid
 ObjectDTO --> "Properties<PropertyDTO>" "List`1"
 BaseDTO <|-- TypeDTO
 TypeDTO --> "TypeId" Guid
+TypeDTO --> "Name" String
 class ObjectWrapper {
     + ObjectWrapper(dto:ObjectDTO)
 }
@@ -142,7 +143,6 @@ ParamDTO --> "Name" String
 ParamDTO --> "Type" String
 TypeDTO <|-- CommandTypeDTO
 CommandTypeDTO --> "TypeId" Guid
-CommandTypeDTO --> "Name" String
 CommandTypeDTO --> "Result" String
 CommandTypeDTO --> "Parameters<ParamDTO>" "List`1"
 CommandWrapper <|-- GetCommandTypesWrapper
@@ -177,6 +177,34 @@ ExampleWrapper --> "TypeId" Guid
 ExampleWrapper --> "Cmd" CommandDTO
 ExampleWrapper --> "Id" Guid
 ExampleWrapper --> "Result" ExampleDTO
+class PropertyTypeDTO {
+}
+class ObjectTypeDTO {
+}
+class GetObjectTypesWrapper <<partial>> {
+    + GetObjectTypesWrapper(dto:CommandDTO)
+    + {static} IsForMe(dto:CommandDTO) : bool
+    + {static} ExecuteCommand(dto:CommandDTO) : CommandDTO
+    + <<partial>> GetObjectTypes() : List<ObjectTypeDTO>
+}
+class ObjectTypes <<static>> <<partial>> {
+    + {static} Dispatch(dto:CommandDTO) : CommandDTO
+}
+class ObjectTypes <<static>> <<partial>> {
+    + {static} GetTypes(commandTypes:List<CommandTypeDTO>) : void
+}
+class "List`1"<T> {
+}
+PropertyTypeDTO --> "TypeId" Guid
+PropertyTypeDTO --> "Name" String
+PropertyTypeDTO --> "Type" String
+TypeDTO <|-- ObjectTypeDTO
+ObjectTypeDTO --> "TypeId" Guid
+ObjectTypeDTO --> "PropertyTypes<PropertyTypeDTO>" "List`1"
+CommandWrapper <|-- GetObjectTypesWrapper
+GetObjectTypesWrapper --> "TypeId" Guid
+GetObjectTypesWrapper --> "Cmd" CommandDTO
+GetObjectTypesWrapper --> "Result<ObjectTypeDTO>" "List`1"
 class WeatherForecast {
     + TemperatureC : int <<get>> <<set>>
     + TemperatureF : int <<get>>

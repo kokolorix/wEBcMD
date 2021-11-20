@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Types
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\tools\types.xsd">
-	<Summary></Summary>
+	<Summary>
+		Types and commands needed for an object service.
+		On the client side a caching and repository can be built,
+		so that the object instances cannot occur more than once.
+	</Summary>
+	<ObjectType name="PropertyTypeDTO" id="380571d4-21dd-4e78-a6de-950504198eb3">
+		<Summary>Definition of an object property</Summary>
+		<Base name="" />
+		<PropertyType name="Name" type="String"/>
+		<PropertyType name="Type" type="String"/>
+	</ObjectType>
 	<ObjectType name="ObjectTypeDTO" category="Object" id="9b286c28-4baf-44dd-9328-9729854f4882">
-		<Summary></Summary>
+		<Summary>Definition of an object type</Summary>
 		<Base name="TypeDTO" category="Base"/>
+		<PropertyType name="PropertyTypes" type="PropertyTypeDTO[]"/>
 	</ObjectType>
 	<CommandWrapper name="GetObjectTypes" http="get" category="Object" id="058aa634-956c-4167-b5e0-2c2171ae55c0">
-		<Summary></Summary>
+		<Summary>Retrieval of all object types known in the system</Summary>
 		<Base name="CommandWrapper" category="Base"/>
 		<Result type="ObjectTypeDTO[]" summary="" />
 		<DTO name="CommandDTO"/>

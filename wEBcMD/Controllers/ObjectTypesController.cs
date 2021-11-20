@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 namespace wEBcMD.Controllers
 {
                /// <summary>
+   /// 
+   /// Types and commands needed for an object service.
+   /// On the client side a caching and repository can be built,
+   /// so that the object instances cannot occur more than once.
+   /// 
    /// </summary>
 
    [ApiController]
@@ -23,6 +28,7 @@ namespace wEBcMD.Controllers
       public ObjectTypesController(ILogger<ObjectTypesController> logger) => _logger = logger;
 
       /// <summary>
+      /// Retrieval of all object types known in the system
       /// </summary>
 
       [HttpGet]

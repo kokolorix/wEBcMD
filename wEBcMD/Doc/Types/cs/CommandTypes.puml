@@ -34,7 +34,6 @@ ParamDTO --> "Name" String
 ParamDTO --> "Type" String
 TypeDTO <|-- CommandTypeDTO
 CommandTypeDTO --> "TypeId" Guid
-CommandTypeDTO --> "Name" String
 CommandTypeDTO --> "Result" String
 CommandTypeDTO --> "Parameters<ParamDTO>" "List`1"
 CommandWrapper <|-- GetCommandTypesWrapper

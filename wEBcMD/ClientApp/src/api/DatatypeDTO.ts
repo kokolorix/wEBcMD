@@ -4,8 +4,8 @@ import { Enum=String,Boolean,Double,Int32,*DTO } from "./Enum=String,Boolean,Dou
 /** DatatypeDTO */
 export class DatatypeDTO {
 
-   /** d02743ec-83f6-4209-a940-daa07131716e is the Id of DatatypeDTO type. */
-   static get TypeId(): Guid { return Guid.parse("d02743ec-83f6-4209-a940-daa07131716e"); }
+   /** 91d670c8-dedd-41c9-8407-7532b1fad45a is the Id of DatatypeDTO type. */
+   static get TypeId(): Guid { return Guid.parse("91d670c8-dedd-41c9-8407-7532b1fad45a"); }
 
    /** Type */
    Type?: Enum=String,Boolean,Double,Int32,*DTO;

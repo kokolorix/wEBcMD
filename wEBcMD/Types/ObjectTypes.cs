@@ -4,14 +4,31 @@ using System.Collections.Generic;
 namespace wEBcMD
 {
    /// <summary>
+   /// Definition of an object property
+   /// </summary>
+   public class PropertyTypeDTO
+   {
+      /// <summary>380571d4-21dd-4e78-a6de-950504198eb3 is the Id of PropertyTypeDTO type.</summary>
+      public static Guid TypeId { get => System.Guid.Parse("380571d4-21dd-4e78-a6de-950504198eb3"); }
+      /// <summary>Name</summary>
+      public virtual String Name { get; set; }
+      /// <summary>Type</summary>
+      public virtual String Type { get; set; }
+   };
+
+   /// <summary>
+   /// Definition of an object type
    /// </summary>
    public class ObjectTypeDTO : TypeDTO
    {
       /// <summary>9b286c28-4baf-44dd-9328-9729854f4882 is the Id of ObjectTypeDTO type.</summary>
       new public static Guid TypeId { get => System.Guid.Parse("9b286c28-4baf-44dd-9328-9729854f4882"); }
+      /// <summary>PropertyTypes</summary>
+      public virtual List<PropertyTypeDTO> PropertyTypes { get; set; }
    };
 
    /// <summary>
+   /// Retrieval of all object types known in the system
    /// </summary>
    public partial class GetObjectTypesWrapper : CommandWrapper
    {
@@ -36,6 +53,7 @@ namespace wEBcMD
 		}
 
 		      /// <summary>
+      /// Retrieval of all object types known in the system
       /// </summary>
 		public partial List<ObjectTypeDTO> GetObjectTypes();
 

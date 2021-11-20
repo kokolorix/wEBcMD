@@ -39,6 +39,8 @@ namespace wEBcMD
    {
       /// <summary>2c8c1feb-0d04-45d2-bbe7-fe137450412e is the Id of TypeDTO type.</summary>
       new public static Guid TypeId { get => System.Guid.Parse("2c8c1feb-0d04-45d2-bbe7-fe137450412e"); }
+      /// <summary>Name</summary>
+      public virtual String Name { get; set; }
    };
 
 

@@ -3,6 +3,7 @@ import { GetObjectTypesBase } from "../api/GetObjectTypesBase";
 import { CommandDTO } from "../api/CommandDTO";
 
 /**
+ * Retrieval of all object types known in the system
  */
 export class GetObjectTypes extends GetObjectTypesBase {
 

@@ -1,0 +1,24 @@
+[
+   {
+      "Id": "f8771455-b9a8-42b5-ac4a-b6ffc7e9b431",
+      "Type": "9289446a-6599-4394-b83b-a5f4c462cc83",
+      "Name": "TypeC",
+      "PropertyTypes": [
+         {
+            "Name": "PropertyA",
+            "Type": "String"
+         }
+      ]
+      },
+   {
+      "Id": "e8e7c02a-98b4-4588-90fd-6e6d0a6eae1f",
+      "Type": "fcfc50a9-66f0-4007-acf2-c1013da5496a",
+      "Name": "TypeD",
+      "PropertyTypes": [
+         {
+            "Name": "PropertyA",
+            "Type": "String"
+         }
+      ]
+      }
+]

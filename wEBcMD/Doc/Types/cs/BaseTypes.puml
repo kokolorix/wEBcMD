@@ -26,4 +26,5 @@ ObjectDTO --> "TypeId" Guid
 ObjectDTO --> "Properties<PropertyDTO>" "List`1"
 BaseDTO <|-- TypeDTO
 TypeDTO --> "TypeId" Guid
+TypeDTO --> "Name" String
 @enduml

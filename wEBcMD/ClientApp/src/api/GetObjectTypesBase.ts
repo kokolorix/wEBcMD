@@ -5,6 +5,7 @@ import { CommandWrapper } from "../impl/CommandWrapper";
 import { CommandDTO } from "./CommandDTO";
 
 /**
+ * Retrieval of all object types known in the system
  */
 export class GetObjectTypesBase  extends CommandWrapper {
 
