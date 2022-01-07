@@ -87,3 +87,5 @@ npm install --global tplant
 ``````````
 
 [Documentation of PlantUml](https://plantuml.com/de/)
+
+[PlantUml Command Line](https://plantuml.com/de/command-line)
