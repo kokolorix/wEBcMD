@@ -9,39 +9,51 @@ using System.Threading.Tasks;
 
 namespace wEBcMD.Controllers
 {
-               /// <summary>
-   /// Detailed Description of the Command-Module. Meaning and purpose, intentions and limitations.
-   /// </summary>
+	/// <summary>
+	/// Detailed Description of the Command-Module. Meaning and purpose, intentions and limitations.
+	/// </summary>
 
-   [ApiController]
-   [Route("[controller]")]
-   public class ExampleTypesController : ControllerBase
-   {
-      private readonly ILogger<ExampleTypesController> _logger;
-      /// <summary>
-      /// Initialize the logger
-      /// </summary>
-      public ExampleTypesController(ILogger<ExampleTypesController> logger) => _logger = logger;
+	[ApiController]
+	[Route("[controller]")]
+	public class ExampleTypesController : ControllerBase
+	{
+		private readonly ILogger<ExampleTypesController> _logger;
+		/// <summary>
+		/// Initialize the logger
+		/// </summary>
+		public ExampleTypesController(ILogger<ExampleTypesController> logger) => _logger = logger;
 
-      /// <summary>
-      /// The very first command we designed
-      /// </summary>
+		/// <summary>
+		/// The very first command we designed
+		/// </summary>
 
-      [HttpGet]
-      [Route("example")]
-      
-      public ExampleDTO Example( Guid id )
-      {
-         ExampleWrapper wrapper = new();
-         
-         wrapper.Id = id;
+		[HttpGet]
+		[Route("example")]
 
-         return wrapper.Example(
+		public ExampleDTO Example(Guid id)
+		{
+			ExampleWrapper wrapper = new();
+
+			wrapper.Id = id;
+
+			return wrapper.Example(
 					wrapper.Id
 			);
-      }
-   
-   }
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dto"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[Route("example")]
+		public BaseDTO WriteExample(BaseDTO dto)
+		{
+			ExampleDTO res = new() { Id = Guid.NewGuid(), One = "Juhui", Two = true, Type = ExampleDTO.TypeId };
+			return dto;
+		}
+
+	}
 
 }
-         
