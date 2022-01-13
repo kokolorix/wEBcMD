@@ -26,18 +26,15 @@ namespace wEBcMD
 			string res;					//					//string propertyName = reader.GetString();
 			reader.Read();
 			example.Id = reader.GetGuid();
-			reader.Read(); // read over property's name
-			res = reader.GetString(); // read over property's name
-			reader.Read(); // read over property's name
+			reader.Read();
+			res = reader.GetString(); 
+			reader.Read(); 
 			example.One = reader.GetString();
 			reader.Read();
-			res = reader.GetString(); // read over property's name
+			res = reader.GetString(); 
 			reader.Read();
 			example.Two = reader.GetBoolean();
-			//Guid guid = reader.GetGuid();
 			reader.Read(); // read over end of object
-			//example.Type = reader.GetGuid();
-			//return guid;
 			return example;
 		}
 
