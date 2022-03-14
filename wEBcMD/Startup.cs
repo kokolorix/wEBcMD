@@ -56,11 +56,18 @@ namespace wEBcMD
 
          services.AddSwaggerGen(c =>
            {
-              c.SwaggerDoc("v1", new OpenApiInfo
+				  string description = @"
+Simple project to play around with commands and specialized DTOs.<br><br>
+<p><a href=""https://localhost:5001"">Test the GUI!</a></p>
+<p><a href=""https://localhost:5001/info.html"">About the page</a></p>
+";
+
+
+				  c.SwaggerDoc("v1", new OpenApiInfo
               {
                  Title = "wEBcMD",
                  Version = "v1",
-                 Description = "Simple project to play around with commands and specialized DTOs"
+                 Description = description
               });
                // Set the comments path for the Swagger JSON and UI.
                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

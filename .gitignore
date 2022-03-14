@@ -5,3 +5,4 @@ wEBcMDTests/bin/
 .vs
 
 wEBcMDTests/obj/Debug/.netcoreapp,version=v5.0/
+/wEBcMD/wwwroot/info.html

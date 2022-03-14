@@ -59,8 +59,4 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="pwsh -f $(ProjectDir)/generateAbout.ps1" />
-  </Target>
-
 </Project>
