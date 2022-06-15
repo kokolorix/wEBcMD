@@ -37,9 +37,9 @@ namespace wEBcMD
       }
       protected void Get(CommandDTO cmd, string name, (Func<Guid> get, Action<Guid> set) target)
       {
-         string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
-         if (!string.IsNullOrEmpty(jsonString))
-            target.set(Guid.Parse(jsonString));
+         String jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+         if (!String.IsNullOrEmpty(jsonString))
+            target.set(Guid.Parse(jsonString.Replace("\"", "")));
          else
             target.set(default);
       }
