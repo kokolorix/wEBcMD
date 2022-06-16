@@ -10,14 +10,36 @@ namespace wEBcMD.Tests
 {
     record ValueDTO
     {
+		public static ValueDTO Create(Int32 v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
+		public static ValueDTO Create(Int64 v) => new ValueDTO.NumberValueDTO.Int64ValueDTO(v);
+        public static ValueDTO Create(Double v) => new ValueDTO.NumberValueDTO.FloatValueDTO(v);
+        public static ValueDTO Create(String v) => new ValueDTO.NumberValueDTO.StringValueDTO(v);
+        public static ValueDTO Create(Boolean v) => new ValueDTO.NumberValueDTO.BooleanValueDTO(v);
+        public static ValueDTO Create(BaseDTO v) => new ValueDTO.NumberValueDTO.ObjectValueDTO(v);
+
         public String Str
         {
             get
             {
                 switch (this)
                 {
-                    case NumberValueDTO.IntValueDTO:
-                        return ((NumberValueDTO.IntValueDTO)this).i.ToString();
+                    case NumberValueDTO.Int32ValueDTO:
+                        return ((NumberValueDTO.Int32ValueDTO)this).value.ToString();
+
+                    case NumberValueDTO.Int64ValueDTO:
+                        return ((NumberValueDTO.Int64ValueDTO)this).value.ToString();
+
+                    case NumberValueDTO.FloatValueDTO:
+                        return ((NumberValueDTO.FloatValueDTO)this).value.ToString();
+
+                    case NumberValueDTO.BooleanValueDTO:
+                        return ((NumberValueDTO.BooleanValueDTO)this).value.ToString();
+
+                    case NumberValueDTO.StringValueDTO:
+                        return ((NumberValueDTO.StringValueDTO)this).value.ToString();
+
+                    case NumberValueDTO.ObjectValueDTO:
+                        return ((NumberValueDTO.ObjectValueDTO)this).value.ToString();
 
                     default:
                         return String.Empty;
@@ -30,12 +52,13 @@ namespace wEBcMD.Tests
 			public NumberValueDTO() { }
 			public NumberValueDTO(Int64 i): this(){ }
 
-            public record IntValueDTO(Int64 i) : NumberValueDTO;
-			public record FloatValueDTO(Double i) : NumberValueDTO;
+            public record Int32ValueDTO(Int32 value) : NumberValueDTO;
+             public record Int64ValueDTO(Int64 value) : NumberValueDTO;
+           public record FloatValueDTO(Double value) : NumberValueDTO;
         };
-		public record BooleanValueDTO(Boolean b) : ValueDTO();
-		public record StringValueDTO(String s) : ValueDTO();
-		public record ObjectValueDTO(BaseDTO o) : ValueDTO();
+		public record BooleanValueDTO(Boolean value) : ValueDTO();
+		public record StringValueDTO(String value) : ValueDTO();
+		public record ObjectValueDTO(BaseDTO value) : ValueDTO();
 
     }
     //class NumberValueDTO : ValueDTO { }
@@ -57,10 +80,21 @@ namespace wEBcMD.Tests
 		[TestMethod()]
 		public void ExecuteCommandTest()
 		{
-			var v = new ValueDTO.NumberValueDTO.IntValueDTO(2);
+			var v = ValueDTO.Create(2);
 			ArgDTO a = new() { Name = "Arg1" , Value = v };
 
 			String s = a.Value.Str;
+
+            List<ArgDTO> args = new()
+            {
+                new (){ Name= "Arg1", Value = ValueDTO.Create(7) },
+                new (){ Name= "Arg2", Value = ValueDTO.Create(3.14) },
+                new (){ Name= "Arg3", Value = ValueDTO.Create(true) },
+                new (){ Name= "Arg4", Value = ValueDTO.Create("Holdrio") },
+                new (){ Name= "Arg1", Value = ValueDTO.Create(
+                    new AdressDTO(){ Adress1 = "Street1", Name1= "Name1"}
+                    ) },
+            };
 
 			CommandDTO cmd2;
 			//{
