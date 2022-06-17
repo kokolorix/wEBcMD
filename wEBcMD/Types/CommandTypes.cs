@@ -9,9 +9,11 @@ namespace wEBcMD
    public class CommandDTO : BaseDTO
    {
       /// <summary>c1eda1fc-cc45-4658-889f-ccd989c2848a is the Id of CommandDTO type.</summary>
-      new public static Guid TypeId { get => System.Guid.Parse("c1eda1fc-cc45-4658-889f-ccd989c2848a"); }
-      /// <summary>Indicates if this is the answer</summary>
-      public virtual Boolean Response { get; set; } = false;
+      public new static Guid TypeId { get => System.Guid.Parse("c1eda1fc-cc45-4658-889f-ccd989c2848a"); }
+		/// <summary>Indicates if this is the answer</summary>
+		/// <inheritdoc/>
+		public override Guid Type { get => TypeId; }
+		public virtual Boolean Response { get; set; } = false;
       /// <summary>Arguments of the command</summary>
       public virtual List<PropertyDTO> Arguments { get; set; } = new (){};
    };
@@ -31,7 +33,7 @@ namespace wEBcMD
    public class CommandTypeDTO : TypeDTO
    {
       /// <summary>7e4e81c9-9170-4f9e-bfe0-b9acd359958b is the Id of CommandTypeDTO type.</summary>
-      new public static Guid TypeId { get => System.Guid.Parse("7e4e81c9-9170-4f9e-bfe0-b9acd359958b"); }
+      public new static Guid TypeId { get => System.Guid.Parse("7e4e81c9-9170-4f9e-bfe0-b9acd359958b"); }
       /// <summary>Name</summary>
       public virtual String Name { get; set; }
       /// <summary>Result</summary>

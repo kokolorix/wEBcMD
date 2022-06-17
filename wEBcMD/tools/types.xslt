@@ -238,7 +238,7 @@ namespace wEBcMD.Controllers
 				<xsl:value-of select="concat($t2, 'public static ')" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat($t2, 'new public static ')" />
+				<xsl:value-of select="concat($t2, 'public new static ')" />
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:value-of select="concat('Guid TypeId { get =&gt; System.Guid.Parse(&quot;', $id, '&quot;); }', $nl1)" />

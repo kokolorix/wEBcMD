@@ -88,7 +88,7 @@ This is the boilerplate part. It is always regenerated.
 public class ExampleDTO : BaseDTO
 {
 	/// <summary>5c7fc88a-b15a-4a4b-b687-e320c44743de is the Id of ExampleDTO type.</summary>
-	new public static Guid TypeId { get => System.Guid.Parse("5c7fc88a-b15a-4a4b-b687-e320c44743de"); }
+	public new static Guid TypeId { get => System.Guid.Parse("5c7fc88a-b15a-4a4b-b687-e320c44743de"); }
 	/// <summary>First property, a string</summary>
 	public virtual String One { get; set; }
 	/// <summary>Second one, a boolean</summary>
