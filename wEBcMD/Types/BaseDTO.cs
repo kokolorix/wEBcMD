@@ -48,9 +48,27 @@ namespace wEBcMD
 
 	public record ValueDTO
 	{
-		public static ValueDTO Create(Int32 v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
+		public static ValueDTO Create(int v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
+		//public static ValueDTO Create(Int32 v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
 		public static ValueDTO Create(Int64 v) => new ValueDTO.NumberValueDTO.Int64ValueDTO(v);
-		public static ValueDTO Create(Double v) => new ValueDTO.NumberValueDTO.FloatValueDTO(v);
+		public static ValueDTO Create(double v) => new ValueDTO.NumberValueDTO.FloatValueDTO(v);
+
+		public static ValueDTO Create1<T>(T v)
+		{
+			switch (v)
+			{
+				case Int32:
+					return Create(v);
+					//return new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
+				//case Int64:
+				//	return new ValueDTO.NumberValueDTO.Int64ValueDTO(Value: v);
+				//case Double:
+				//	return new ValueDTO.NumberValueDTO.FloatValueDTO(Value: v);
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
 		public static ValueDTO Create(String v) => new ValueDTO.NumberValueDTO.StringValueDTO(v);
 		public static ValueDTO Create(Boolean v) => new ValueDTO.NumberValueDTO.BooleanValueDTO(v);
 		public static ValueDTO Create(BaseDTO v) => new ValueDTO.NumberValueDTO.ObjectValueDTO(v);
@@ -149,9 +167,9 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.ObjectValueDTO:
+					case ObjectValueDTO:
 						{
-							BaseDTO val = ((NumberValueDTO.ObjectValueDTO)this).Value;
+							BaseDTO val = ((ObjectValueDTO)this).Value;
 							switch (val)
 							{
 								case AdressDTO:
@@ -201,6 +219,7 @@ namespace wEBcMD
 			public NumberValueDTO(Int64 i) : this() { }
 
 			public record Int32ValueDTO(Int32 Value) : NumberValueDTO;
+
 			public record Int64ValueDTO(Int64 Value) : NumberValueDTO;
 			public record FloatValueDTO(Double Value) : NumberValueDTO;
 		};
