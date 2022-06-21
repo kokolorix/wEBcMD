@@ -46,32 +46,18 @@ namespace wEBcMD
    }
 
 
-	public record ValueDTO
+	public class ValueDTO
 	{
-		public static ValueDTO Create(int v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
-		//public static ValueDTO Create(Int32 v) => new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
-		public static ValueDTO Create(Int64 v) => new ValueDTO.NumberValueDTO.Int64ValueDTO(v);
-		public static ValueDTO Create(double v) => new ValueDTO.NumberValueDTO.FloatValueDTO(v);
-
-		public static ValueDTO Create1<T>(T v)
+		public class ValueImplDTO<T> : ValueDTO
 		{
-			switch (v)
-			{
-				case Int32:
-					return Create(v);
-					//return new ValueDTO.NumberValueDTO.Int32ValueDTO(v);
-				//case Int64:
-				//	return new ValueDTO.NumberValueDTO.Int64ValueDTO(Value: v);
-				//case Double:
-				//	return new ValueDTO.NumberValueDTO.FloatValueDTO(Value: v);
-				default:
-					throw new NotImplementedException();
-			}
+			public ValueImplDTO(T v) { Value = v; }
+			[JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+			public T Value { get; set; }
+		};
+		public static ValueImplDTO<T> Create<T>(T v)
+		{
+			return new ValueDTO.ValueImplDTO<T>(v);
 		}
-
-		public static ValueDTO Create(String v) => new ValueDTO.NumberValueDTO.StringValueDTO(v);
-		public static ValueDTO Create(Boolean v) => new ValueDTO.NumberValueDTO.BooleanValueDTO(v);
-		public static ValueDTO Create(BaseDTO v) => new ValueDTO.NumberValueDTO.ObjectValueDTO(v);
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 		public Int32? Int32Value
@@ -80,8 +66,8 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.Int32ValueDTO:
-						return ((NumberValueDTO.Int32ValueDTO)this).Value;
+					case ValueImplDTO<Int32>:
+						return ((ValueImplDTO<Int32>)this).Value;
 					default:
 						return null;
 				}
@@ -94,22 +80,22 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.Int64ValueDTO:
-						return ((NumberValueDTO.Int64ValueDTO)this).Value;
+					case ValueImplDTO<Int64>:
+						return ((ValueImplDTO<Int64>)this).Value;
 					default:
 						return null;
 				}
 			}
 		}
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public Double? FloatValue
+		public Double? DoubleValue
 		{
 			get
 			{
 				switch (this)
 				{
-					case NumberValueDTO.FloatValueDTO:
-						return ((NumberValueDTO.FloatValueDTO)this).Value;
+					case ValueImplDTO<Double>:
+						return ((ValueImplDTO<Double>)this).Value;
 					default:
 						return null;
 				}
@@ -122,8 +108,8 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.BooleanValueDTO:
-						return ((NumberValueDTO.BooleanValueDTO)this).Value;
+					case ValueImplDTO<Boolean>:
+						return ((ValueImplDTO<Boolean>)this).Value;
 					default:
 						return null;
 				}
@@ -136,8 +122,8 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.StringValueDTO:
-						return ((NumberValueDTO.StringValueDTO)this).Value;
+					case ValueImplDTO<String>:
+						return ((ValueImplDTO<String>)this).Value;
 					default:
 						return null;
 				}
@@ -151,8 +137,8 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case NumberValueDTO.ObjectValueDTO:
-						return ((NumberValueDTO.ObjectValueDTO)this).Value.GetType().Name;
+					case ValueImplDTO<BaseDTO>:
+						return ((ValueImplDTO<BaseDTO>)this).Value.GetType().Name;
 					default:
 						return null;
 				}
@@ -167,9 +153,9 @@ namespace wEBcMD
 			{
 				switch (this)
 				{
-					case ObjectValueDTO:
+					case ValueImplDTO<BaseDTO>:
 						{
-							BaseDTO val = ((ObjectValueDTO)this).Value;
+							BaseDTO val = ((ValueImplDTO<BaseDTO>)this).Value;
 							switch (val)
 							{
 								case AdressDTO:
@@ -185,47 +171,32 @@ namespace wEBcMD
 			}
 		}
 
-
 		public override string ToString()
 		{
 			switch (this)
 			{
-				case NumberValueDTO.Int32ValueDTO:
-					return ((NumberValueDTO.Int32ValueDTO)this).Value.ToString();
+				case ValueImplDTO<Int32>:
+					return ((ValueImplDTO<Int32>)this).Value.ToString();
 
-				case NumberValueDTO.Int64ValueDTO:
-					return ((NumberValueDTO.Int64ValueDTO)this).Value.ToString();
+				case ValueImplDTO<Int64>:
+					return ((ValueImplDTO<Int64>)this).Value.ToString();
 
-				case NumberValueDTO.FloatValueDTO:
-					return ((NumberValueDTO.FloatValueDTO)this).Value.ToString();
+				case ValueImplDTO<Double>:
+					return ((ValueImplDTO<Double>)this).Value.ToString();
 
-				case NumberValueDTO.BooleanValueDTO:
-					return ((NumberValueDTO.BooleanValueDTO)this).Value.ToString();
+				case ValueImplDTO<Boolean>:
+					return ((ValueImplDTO<Boolean>)this).Value.ToString();
 
-				case NumberValueDTO.StringValueDTO:
-					return ((NumberValueDTO.StringValueDTO)this).Value.ToString();
+				case ValueImplDTO<String>:
+					return ((ValueImplDTO<String>)this).Value.ToString();
 
-				case NumberValueDTO.ObjectValueDTO:
-					return ((NumberValueDTO.ObjectValueDTO)this).Value.ToString();
+				case ValueImplDTO<BaseDTO>:
+					return ((ValueImplDTO<BaseDTO>)this).Value.ToString();
 
 				default:
 					return String.Empty;
 			}
 		}
-
-		public record NumberValueDTO : ValueDTO
-		{
-			public NumberValueDTO() { }
-			public NumberValueDTO(Int64 i) : this() { }
-
-			public record Int32ValueDTO(Int32 Value) : NumberValueDTO;
-
-			public record Int64ValueDTO(Int64 Value) : NumberValueDTO;
-			public record FloatValueDTO(Double Value) : NumberValueDTO;
-		};
-		public record BooleanValueDTO(Boolean Value) : ValueDTO();
-		public record StringValueDTO(String Value) : ValueDTO();
-		public record ObjectValueDTO(BaseDTO Value) : ValueDTO();
 	}
 
 	public class ArgDTO

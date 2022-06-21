@@ -8,6 +8,12 @@ indent_size = 3
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = silent
+
+# CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+dotnet_diagnostic.CS8632.severity = none
+
 [*.ts]
 quote_type = single
 

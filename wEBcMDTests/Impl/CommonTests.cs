@@ -20,16 +20,34 @@ namespace wEBcMD.Tests
 
 			switch (value)
 			{
-				case NumberValueDTO.Int32ValueDTO:
+				case ValueImplDTO<Int32>:
 					{
 						writer.WritePropertyName("Int32Value");
-						writer.WriteNumberValue((decimal)value.Int32Value);
+						writer.WriteNumberValue((Int32)value.Int32Value);
 						break;
 					}
-				case NumberValueDTO.Int64ValueDTO:
+				case ValueImplDTO<Int64>:
 					{
 						writer.WritePropertyName("Int64Value");
-						writer.WriteNumberValue((decimal)value.Int64Value);
+						writer.WriteNumberValue((Int64)value.Int64Value);
+						break;
+					}
+				case ValueImplDTO<Double>:
+					{
+						writer.WritePropertyName(nameof(value.DoubleValue));
+						writer.WriteNumberValue((Double)value.DoubleValue);
+						break;
+					}
+				case ValueImplDTO<Boolean>:
+					{
+						writer.WritePropertyName(nameof(value.BooleanValue));
+						writer.WriteBooleanValue((Boolean)value.BooleanValue);
+						break;
+					}
+				case ValueImplDTO<String>:
+					{
+						writer.WritePropertyName(nameof(value.StringValue));
+						writer.WriteStringValue((String)value.StringValue);
 						break;
 					}
 			}
@@ -47,14 +65,29 @@ namespace wEBcMD.Tests
 
 			switch (propertyName)
 			{
-				case "Int32Value":
+				case nameof(value.Int32Value):
 					{
 						value = ValueDTO.Create(reader.GetInt32());
 						break;
 					}
-				case "Int64Value":
+				case nameof(value.Int64Value):
 					{
 						value = ValueDTO.Create(reader.GetInt64());
+						break;
+					}
+				case nameof(value.DoubleValue):
+					{
+						value = ValueDTO.Create(reader.GetDouble());
+						break;
+					}
+				case nameof(value.BooleanValue):
+					{
+						value = ValueDTO.Create(reader.GetBoolean());
+						break;
+					}
+				case nameof(value.StringValue):
+					{
+						value = ValueDTO.Create(reader.GetString());
 						break;
 					}
 
@@ -77,7 +110,7 @@ namespace wEBcMD.Tests
 	{
 		void Test<T>(T v, JsonSerializerOptions options)
 		{
-			ValueDTO val1 = Create1(v);
+			ValueDTO val1 = ValueDTO.Create(v);
 			String json = JsonSerializer.Serialize(val1, options);
 			Console.WriteLine("Serialize: {0}", json);
 
@@ -85,7 +118,7 @@ namespace wEBcMD.Tests
 			json = JsonSerializer.Serialize(val2, options);
 			Console.WriteLine("Deserialized: {0}", json);
 
-			Assert.AreEqual(val1, val2);
+			Assert.AreEqual(((ValueImplDTO<T>)val1).Value, ((ValueImplDTO<T>)val2).Value);
 		}
 
 		[TestMethod]
@@ -96,8 +129,10 @@ namespace wEBcMD.Tests
 			options.Converters.Add(new JsonConverterValueDTO());
 			 
 			Test<Int32>(42, options);
-			//Test<Int64>(Int64.MaxValue, options);
-			//Test<Double>(3.14, options);
+			Test<Int64>(Int64.MaxValue, options);
+			Test<Double>(3.14, options);
+			Test<Boolean>(true, options);
+			Test<String>("Hallihllo", options);
 
 
 			// https://github.com/dahomey-technologies/Dahomey.Json/blob/master/src/Dahomey.Json.Tests/DiscriminatorTests.cs
