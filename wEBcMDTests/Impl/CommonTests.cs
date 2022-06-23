@@ -50,6 +50,20 @@ namespace wEBcMD.Tests
 						writer.WriteStringValue((String)value.StringValue);
 						break;
 					}
+				default:
+					{
+						if(value.ObjectType is not null)
+						{
+							writer.WritePropertyName(nameof(value.ObjectType));
+							writer.WriteStringValue((String)value.ObjectType);
+						}
+						if(value.ObjectValue is not null)
+						{
+							writer.WritePropertyName(nameof(value.ObjectValue));
+							value.ObjectValue.WriteTo(writer);
+						}
+						break;
+					}
 			}
 
 			writer.WriteEndObject();
@@ -91,9 +105,18 @@ namespace wEBcMD.Tests
 						break;
 					}
 
+				case nameof(value.ObjectType):
+					{
+						String typeName = reader.GetString();
+						reader.Read();
+						Type type = Type.GetType(typeName);
+						value = ValueDTO.Create((BaseDTO)JsonSerializer.Deserialize(ref reader, type));
+						break;
+					}
+
 				default:
 					{
-						break;
+						throw new NotImplementedException();
 					}
 			}
 
@@ -132,7 +155,15 @@ namespace wEBcMD.Tests
 			Test<Int64>(Int64.MaxValue, options);
 			Test<Double>(3.14, options);
 			Test<Boolean>(true, options);
-			Test<String>("Hallihllo", options);
+			Test<String>("Hallihallo", options);
+			Test<AdressDTO>(new()
+			{
+				Id = Guid.NewGuid(),
+				Name1 = "Name1", Name2= "Name2",
+				Adress1="Adress1",
+				City="City", Postcode="0000",
+				Housenumber="1a"
+			}, options);
 
 
 			// https://github.com/dahomey-technologies/Dahomey.Json/blob/master/src/Dahomey.Json.Tests/DiscriminatorTests.cs

@@ -53,7 +53,27 @@ namespace wEBcMD
 			public ValueImplDTO(T v) { Value = v; }
 			[JsonIgnore(Condition = JsonIgnoreCondition.Always)]
 			public T Value { get; set; }
-		};
+
+			public override string ObjectType
+			{
+				get
+				{
+					if(Value is BaseDTO)
+						return Value.GetType().Name;
+					return null;
+				}
+			}
+
+			public override JsonDocument ObjectValue
+			{
+				get
+				{
+					if (Value is BaseDTO)
+						return JsonSerializer.SerializeToDocument(Value);
+					return null;
+				}
+			}
+		}
 		public static ValueImplDTO<T> Create<T>(T v)
 		{
 			return new ValueDTO.ValueImplDTO<T>(v);
@@ -131,14 +151,14 @@ namespace wEBcMD
 		}
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public String ObjectType
+		public virtual String ObjectType
 		{
 			get
 			{
 				switch (this)
 				{
 					case ValueImplDTO<BaseDTO>:
-						return ((ValueImplDTO<BaseDTO>)this).Value.GetType().Name;
+						return ((ValueImplDTO<BaseDTO>)this).Value.GetType().FullName;
 					default:
 						return null;
 				}
@@ -147,7 +167,7 @@ namespace wEBcMD
 
 
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-		public JsonDocument ObjectValue
+		public virtual JsonDocument ObjectValue
 		{
 			get
 			{
