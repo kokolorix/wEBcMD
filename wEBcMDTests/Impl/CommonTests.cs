@@ -110,7 +110,8 @@ namespace wEBcMD.Tests
 						String typeName = reader.GetString();
 						reader.Read();
 						Type type = Type.GetType(typeName);
-						value = ValueDTO.Create((BaseDTO)JsonSerializer.Deserialize(ref reader, type));
+						dynamic objValue = Convert.ChangeType(JsonSerializer.Deserialize(ref reader, type), type);
+						value = ValueDTO.Create(objValue);
 						break;
 					}
 
@@ -134,14 +135,19 @@ namespace wEBcMD.Tests
 		void Test<T>(T v, JsonSerializerOptions options)
 		{
 			ValueDTO val1 = ValueDTO.Create(v);
-			String json = JsonSerializer.Serialize(val1, options);
-			Console.WriteLine("Serialize: {0}", json);
+			String json1 = JsonSerializer.Serialize(val1, options);
+			Console.WriteLine("Serialize: {0}", json1);
 
-			ValueDTO val2 = JsonSerializer.Deserialize<ValueDTO>(json, options);	
-			json = JsonSerializer.Serialize(val2, options);
-			Console.WriteLine("Deserialized: {0}", json);
+			ValueDTO val2 = JsonSerializer.Deserialize<ValueDTO>(json1, options);	
+			String json2 = JsonSerializer.Serialize(val2, options);
+			Console.WriteLine("Deserialized: {0}", json2);
 
-			Assert.AreEqual(((ValueImplDTO<T>)val1).Value, ((ValueImplDTO<T>)val2).Value);
+			var v1 = ((ValueImplDTO<T>)val1).Value;
+			var v2 = ((ValueImplDTO<T>)val2).Value;
+
+			//var cmp = new System.Collections.Comparer();
+			Assert.AreEqual(json1, json2);
+			//Assert.AreEqual(((ValueImplDTO<T>)val1).Value, ((ValueImplDTO<T>)val2).Value);
 		}
 
 		[TestMethod]

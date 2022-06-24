@@ -59,7 +59,7 @@ namespace wEBcMD
 				get
 				{
 					if(Value is BaseDTO)
-						return Value.GetType().Name;
+						return Value.GetType().AssemblyQualifiedName;
 					return null;
 				}
 			}
