@@ -82,7 +82,11 @@ namespace wEBcMD.Controllers
 		[Route("echo")]
 		public ValueDTO Echo(ValueDTO value)
 		{
-			return value;
+			String json1 = JsonSerializer.Serialize<ValueDTO>(value);
+			Console.WriteLine("Serialize: {0}", json1);
+
+			ValueDTO val2 = JsonSerializer.Deserialize<ValueDTO>(json1);
+			return val2;
 		}
 	}
 

@@ -45,8 +45,10 @@ namespace wEBcMD
             {
                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-               // options.JsonSerializerOptions.Converters.Add(new JsonConverterGuid());
-            });
+					//options.JsonSerializerOptions.Converters.Add(new JsonConverterGuid());
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueDTO());
+
+				});
          services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory
          services.AddSpaStaticFiles(configuration =>
