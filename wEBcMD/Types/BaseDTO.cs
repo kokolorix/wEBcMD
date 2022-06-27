@@ -121,7 +121,10 @@ namespace wEBcMD
 				}
 			}
 		}
+
+
 		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+		//[JsonConverter(typeof(JsonConverterValueDTO))]
 		public Boolean? BooleanValue
 		{
 			get
@@ -223,6 +226,7 @@ namespace wEBcMD
 	{
 		public String Name { get; set; }
 
+		//[JsonConverter(typeof(JsonConverterValueDTO))]
 		public ValueDTO Value { get; set; }
 
 	}

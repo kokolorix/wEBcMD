@@ -42,12 +42,17 @@ namespace wEBcMD
       {
          services.AddControllersWithViews().
             AddJsonOptions(options =>
-            {
+				{
                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-					//options.JsonSerializerOptions.Converters.Add(new JsonConverterGuid());
-					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueDTO());
+					options.JsonSerializerOptions.Converters.Add(JsonConverterValueDTO.Instance);
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueImplDTO<Int32>());
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueImplDTO<Int64>());
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueImplDTO<Double>());
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueImplDTO<Boolean>());
+					options.JsonSerializerOptions.Converters.Add(new JsonConverterValueImplDTO<BaseDTO>());
 
+					//options.JsonSerializerOptions.Converters.Add(new JsonConverterGuid());
 				});
          services.AddControllersWithViews();
          // In production, the Angular files will be served from this directory

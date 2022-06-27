@@ -7,10 +7,9 @@ namespace wEBcMD
 {
 	public class JsonConverterValueDTO : JsonConverter<ValueDTO>
 	{
+		private readonly static JsonConverterValueDTO _converter = new();
+		public static JsonConverterValueDTO Instance => _converter;
 		/// <summary>Write the appropriate structure for ValueDTO</summary>
-		public void Write(Utf8JsonWriter writer, ValueImplDTO<Boolean> value, JsonSerializerOptions options)
-		{
-		}
 		public override void Write(Utf8JsonWriter writer, ValueDTO value, JsonSerializerOptions options)
 		{
 			writer.WriteStartObject();
@@ -105,7 +104,7 @@ namespace wEBcMD
 				case nameof(value.ObjectType):
 					{
 						String typeName = reader.GetString();
-						reader.Read();
+						//reader.Read();
 						Type type = Type.GetType(typeName);
 						dynamic objValue = Convert.ChangeType(JsonSerializer.Deserialize(ref reader, type), type);
 						value = ValueDTO.Create(objValue);
@@ -118,10 +117,28 @@ namespace wEBcMD
 					}
 			}
 
-			reader.Read(); // read over property's value
+			//reader.Read(); // read over property's value
 
 			reader.Read(); // read over end of object
 			return value;
 		}
 	}
-}
+
+	public class JsonConverterValueImplDTO<T> : JsonConverter<ValueDTO.ValueImplDTO<T>>
+	{
+		public override ValueImplDTO<T> Read(ref Utf8JsonReader reader,
+			Type typeToConvert,
+			JsonSerializerOptions options)
+		{
+			return (ValueImplDTO<T>)JsonConverterValueDTO.Instance.Read(
+				ref reader, typeToConvert, options);
+		}
+
+		public override void Write(Utf8JsonWriter writer,
+			ValueDTO.ValueImplDTO<T> value,
+			JsonSerializerOptions options)
+		{
+			JsonConverterValueDTO.Instance.Write(writer, value, options);
+		}
+	}
+};

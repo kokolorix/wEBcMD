@@ -80,14 +80,18 @@ namespace wEBcMD.Controllers
 
 		[HttpPost]
 		[Route("echo")]
-		public ValueDTO Echo(ValueDTO value)
+		public IList<ArgDTO> Echo(IList<ArgDTO> args)
 		{
-			String json1 = JsonSerializer.Serialize<ValueDTO>(value);
-			Console.WriteLine("Serialize: {0}", json1);
+			return args;
+		}
 
-			ValueDTO val2 = JsonSerializer.Deserialize<ValueDTO>(json1);
-			return val2;
+
+		[HttpPost]
+		[Route("echo-value")]
+		public
+		ValueDTO Echo(ValueDTO val)
+		{
+			return val;
 		}
 	}
-
 }
