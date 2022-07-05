@@ -58,9 +58,7 @@ namespace wEBcMD
 			{
 				get
 				{
-					if(Value is BaseDTO)
-						return Value.GetType().AssemblyQualifiedName;
-					return null;
+					return Value.GetType().FullName;
 				}
 			}
 
@@ -68,9 +66,7 @@ namespace wEBcMD
 			{
 				get
 				{
-					if (Value is BaseDTO)
-						return JsonSerializer.SerializeToDocument(Value);
-					return null;
+					return JsonSerializer.SerializeToDocument(Value);
 				}
 			}
 		}
@@ -226,7 +222,7 @@ namespace wEBcMD
 	{
 		public String Name { get; set; }
 
-		//[JsonConverter(typeof(JsonConverterValueDTO))]
+		[JsonConverter(typeof(JsonConverterValueDTO))]
 		public ValueDTO Value { get; set; }
 
 	}

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static wEBcMD.ValueDTO;
@@ -104,8 +105,11 @@ namespace wEBcMD
 				case nameof(value.ObjectType):
 					{
 						String typeName = reader.GetString();
-						//reader.Read();
+						reader.Read();
 						Type type = Type.GetType(typeName);
+						if(type is null)
+							type = GetType(typeName);
+
 						dynamic objValue = Convert.ChangeType(JsonSerializer.Deserialize(ref reader, type), type);
 						value = ValueDTO.Create(objValue);
 						break;
@@ -121,6 +125,25 @@ namespace wEBcMD
 
 			reader.Read(); // read over end of object
 			return value;
+		}
+		static Type GetType(string className)
+		{
+			//return (Type)(new CSharpCodeProvider().CompileAssemblyFromSource(new CompilerParameters(AppDomain.CurrentDomain.GetAssemblies().SelectMany<Assembly, string>(a => a.GetModules().Select<Module, string>(m => m.FullyQualifiedName)).ToArray(), null, false) { GenerateExecutable = false, GenerateInMemory = true, TreatWarningsAsErrors = false, CompilerOptions = "/optimize" }, "public static class C{public static System.Type M(){return typeof(" + friendlyName + ");}}").CompiledAssembly.GetExportedTypes()[0].GetMethod("M").Invoke(null, System.Reflection.BindingFlags.Static, null, null, null));
+			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Reverse())
+			{
+				var t = assembly.GetType(className);
+				if(t is not null)
+					return t;
+				if(assembly.IsDynamic)
+					continue;
+
+				foreach (var tt in assembly.GetExportedTypes())
+				{
+					if (tt is not null && tt.Name == className)
+						return tt;
+				}
+			}
+			return null;
 		}
 	}
 
