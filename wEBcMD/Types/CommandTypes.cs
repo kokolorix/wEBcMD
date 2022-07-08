@@ -10,10 +10,10 @@ namespace wEBcMD
    {
       /// <summary>c1eda1fc-cc45-4658-889f-ccd989c2848a is the Id of CommandDTO type.</summary>
       public new static Guid TypeId { get => System.Guid.Parse("c1eda1fc-cc45-4658-889f-ccd989c2848a"); }
-		/// <summary>Indicates if this is the answer</summary>
+      /// <summary>Indicates if this is the answer</summary>
 		/// <inheritdoc/>
 		public override Guid Type { get => TypeId; }
-		public virtual Boolean Response { get; set; } = false;
+      public virtual Boolean Response { get; set; } = false;
       /// <summary>Arguments of the command</summary>
       public virtual List<PropertyDTO> Arguments { get; set; } = new (){};
    };

@@ -5,4 +5,27 @@ class BaseDTO <<partial>> {
     # BooleanFromPropertyList(list:List<PropertyDTO>, name:string) : Boolean
     # BooleanToPropertyList(list:List<PropertyDTO>, name:string, newValue:Boolean) : void
 }
+class ValueDTO {
+    + {static} Create(v:T) : ValueImplDTO<T>
+    + Int32Value : Int32? <<get>>
+    + Int64Value : Int64? <<get>>
+    + DoubleValue : Double? <<get>>
+    + BooleanValue : Boolean? <<get>>
+    + <<override>> ToString() : string
+}
+class ArgDTO {
+}
+class "ValueImplDTO`1"<T> {
+    + ValueImplDTO(v:T)
+    + Value : T <<get>> <<set>>
+    + <<override>> ObjectType : string <<get>>
+}
+ValueDTO --> "StringValue" String
+ValueDTO --> "ObjectType" String
+ValueDTO --> "ObjectValue" JsonDocument
+ArgDTO --> "Name" String
+ArgDTO --> "Value" ValueDTO
+ValueDTO +-- "ValueImplDTO`1"
+ValueDTO <|-- "ValueImplDTO`1"
+"ValueImplDTO`1" --> "ObjectValue" JsonDocument
 @enduml

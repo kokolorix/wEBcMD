@@ -1,4 +1,5 @@
 import { Guid} from "guid-typescript";
+import { ValueDTO } from "./ValueDTO";
 
 /** PropertyDTO */
 export class PropertyDTO {
@@ -9,5 +10,5 @@ export class PropertyDTO {
    /** Name */
    Name?: string;
    /** Value */
-   Value?: string;
+   Value?: ValueDTO;
 };

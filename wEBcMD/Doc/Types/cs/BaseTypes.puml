@@ -20,7 +20,7 @@ BaseDTO --> "Id" Guid
 BaseDTO --> "Type" Guid
 PropertyDTO --> "TypeId" Guid
 PropertyDTO --> "Name" String
-PropertyDTO --> "Value" String
+PropertyDTO --> "Value" ValueDTO
 BaseDTO <|-- ObjectDTO
 ObjectDTO --> "TypeId" Guid
 ObjectDTO --> "Properties<PropertyDTO>" "List`1"

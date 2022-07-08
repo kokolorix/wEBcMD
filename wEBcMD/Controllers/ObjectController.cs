@@ -71,7 +71,7 @@ namespace wEBcMD.Controllers
             Properties = Enumerable.Range(1, 5).Select(index => new PropertyDTO
             {
                Name = Names[rng.Next(Names.Length)],
-               Value = rng.Next().ToString()
+               Value = ValueDTO.Create(rng.Next())
             }).ToList()
          })
          .ToArray();

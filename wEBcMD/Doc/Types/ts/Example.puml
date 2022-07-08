@@ -26,7 +26,7 @@ class CommandWrapper {
 }
 class PropertyDTO {
     +Name?: string
-    +Value?: string
+    +Value?: any
     +{static} TypeId: Guid
 }
 class CommandDTO extends BaseDTO {

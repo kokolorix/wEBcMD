@@ -15,4 +15,10 @@
 		<Result type="ExampleDTO" summary="The Data-Object" />
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
+	<CommandWrapper name="Example" http="get" category="Samples" id="1de8430f-bd11-4747-8455-698952b8ce49">
+		<Summary>The very first command we designed</Summary>
+		<Base name="CommandWrapper" category="Base"/>
+		<Result type="ArgDTO[]" summary="The list of arguments" />
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
 </Types>

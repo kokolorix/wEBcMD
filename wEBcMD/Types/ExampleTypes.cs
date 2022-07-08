@@ -12,8 +12,8 @@ namespace wEBcMD
       public new static Guid TypeId { get => System.Guid.Parse("5c7fc88a-b15a-4a4b-b687-e320c44743de"); }
 		/// <inheritdoc/>
 		public override Guid Type { get => TypeId; }
-		/// <summary>First property, a string</summary>
-		public virtual String One { get; set; }
+      /// <summary>First property, a string</summary>
+      public virtual String One { get; set; }
       /// <summary>Second one, a boolean</summary>
       public virtual Boolean Two { get; set; }
    };

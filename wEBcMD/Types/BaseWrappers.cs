@@ -29,7 +29,7 @@ namespace wEBcMD
 
       protected void Get<T>(CommandDTO cmd, string name, (Func<T> get, Action<T> set) target)
       {
-         string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+         string jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value.StringValue;
          if (!string.IsNullOrEmpty(jsonString))
             target.set(JsonSerializer.Deserialize<T>(jsonString));
          else
@@ -37,7 +37,7 @@ namespace wEBcMD
       }
       protected void Get(CommandDTO cmd, string name, (Func<Guid> get, Action<Guid> set) target)
       {
-         String jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value;
+         String jsonString = cmd.Arguments.Find(p => p.Name == name)?.Value.StringValue;
          if (!String.IsNullOrEmpty(jsonString))
             target.set(Guid.Parse(jsonString.Replace("\"", "")));
          else
@@ -49,9 +49,9 @@ namespace wEBcMD
          string jsonString = JsonSerializer.Serialize(value);
          var p = cmd.Arguments.Find(i => i.Name == name);
          if (null == p)
-            cmd.Arguments.Add(new PropertyDTO() { Name = name, Value = jsonString });
+            cmd.Arguments.Add(new PropertyDTO() { Name = name, Value = ValueDTO.Create(jsonString) });
          else
-            p.Value = jsonString;
+            p.Value = ValueDTO.Create(jsonString);
       }
    }
 }
