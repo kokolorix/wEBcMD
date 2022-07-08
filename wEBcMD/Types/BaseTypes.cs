@@ -12,8 +12,6 @@ namespace wEBcMD
       public virtual Guid Id { get; set; }
       /// <summary>Type</summary>
       public virtual Guid Type { get; set; }
-		///// <summary>Name of the class</summary>
-		//public virtual String ClassName { get => this.GetType().Name; }
    };
 
    /// <summary>PropertyDTO</summary>

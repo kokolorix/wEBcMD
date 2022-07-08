@@ -43,7 +43,7 @@ export class CommandWrapper {
       if(!p){
          p = new PropertyDTO();
          p.Name = name;
-         p.Value = value;
+         p.Value = JSON.parse(value);
          this._dto.Arguments?.push(p);
       }
    }

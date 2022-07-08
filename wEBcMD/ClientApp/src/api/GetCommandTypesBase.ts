@@ -19,7 +19,7 @@ export class GetCommandTypesBase  extends CommandWrapper {
 
       /** The command type object */
    get Result() : CommandTypeDTO[]|undefined {
-      let result = this.getArgument("Result");
+      let result = this.getArgument("Result").StringValue;
       if (!result)
          return undefined;
       return JSON.parse(result) as CommandTypeDTO[] ;

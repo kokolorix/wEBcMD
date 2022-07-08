@@ -18,3 +18,13 @@
 
 ![Classes for Example](./ts/Example.svg)
          
+
+#### Classes for EchoValue
+
+![Classes for EchoValue](./ts/EchoValue.svg)
+         
+
+#### Classes for EchoArguments
+
+![Classes for EchoArguments](./ts/EchoArguments.svg)
+         

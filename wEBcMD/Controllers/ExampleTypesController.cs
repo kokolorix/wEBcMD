@@ -40,57 +40,42 @@ namespace wEBcMD.Controllers
 					wrapper.Id
 			);
       }
+         /// <summary>
+      /// A command, that returns the given value
+      /// </summary>
+
+      [HttpPost]
+      [Route("echovalue")]
+      
+      public ValueDTO EchoValue( ValueDTO value )
+      {
+         EchoValueWrapper wrapper = new();
+         
+         wrapper.value = value;
+
+         return wrapper.EchoValue(
+					wrapper.value
+			);
+      }
+         /// <summary>
+      /// A command that returns the given arguments
+      /// </summary>
+
+      [HttpPost]
+      [Route("echoarguments")]
+      
+      public List<ArgumentDTO> EchoArguments( List<ArgumentDTO> arguments )
+      {
+         EchoArgumentsWrapper wrapper = new();
+         
+         wrapper.arguments = arguments;
+
+         return wrapper.EchoArguments(
+					wrapper.arguments
+			);
+      }
    
-		/// <summary>
-		/// Test for the inherited ValueDTO
-		/// </summary>
-		/// <returns></returns>
-		/// 
-		[HttpGet]
-		[Route("test")]
+   }
 
-		public List<ArgDTO> Test()
-		{
-			List<ArgDTO> args = new()
-			{
-				new (){ Name= "Arg1", Value = ValueDTO.Create(7) },
-				new (){ Name= "Arg2", Value = ValueDTO.Create(3.14) },
-				new (){ Name= "Arg3", Value = ValueDTO.Create(true) },
-				new (){ Name= "Arg4", Value = ValueDTO.Create("Holdrio") },
-				new (){ Name= "Arg5", Value = ValueDTO.Create(
-					new ExampleDTO()
-					{
-						Id = Guid.NewGuid(),
-						One = "1",
-						Two= true,
-					}
-				) },
-				new (){ Name= "Arg6", Value = ValueDTO.Create(
-					new AdressDTO(){
-						Id = Guid.NewGuid(),
-						Adress1 = "Street1",
-						Name1= "Name1",
-					}
-				) },
-			};
-			return args;
-		}
-
-		[HttpPost]
-		[Route("echo")]
-		public IList<ArgDTO> Echo(IList<ArgDTO> args)
-		{
-			return args;
-		}
-
-
-		[HttpPost]
-		[Route("echo-value")]
-		public
-		ValueDTO Echo(ValueDTO val)
-		{
-			return val;
-		}
-	}
 }
          

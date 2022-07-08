@@ -15,10 +15,18 @@
 		<Result type="ExampleDTO" summary="The Data-Object" />
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
-	<CommandWrapper name="Example" http="get" category="Samples" id="1de8430f-bd11-4747-8455-698952b8ce49">
-		<Summary>The very first command we designed</Summary>
+	<CommandWrapper name="EchoValue" http="post" category="Samples" id="69c8864e-dc43-48ac-9865-99cac19aa5c0">
+		<Summary>A command, that returns the given value</Summary>
 		<Base name="CommandWrapper" category="Base"/>
-		<Result type="ArgDTO[]" summary="The list of arguments" />
+		<ParameterType name="value" type="ValueDTO" modifier="in" summary="The value to deserialize"/>
+		<Result type="ValueDTO" summary="The serialized value" />
+		<DTO name="CommandDTO"/>
+	</CommandWrapper>
+	<CommandWrapper name="EchoArguments" http="post" category="Samples" id="1de8430f-bd11-4747-8455-698952b8ce49">
+		<Summary>A  command that returns the given arguments</Summary>
+		<Base name="CommandWrapper" category="Base"/>
+		<ParameterType name="arguments" type="ArgumentDTO[]" modifier="in" summary="The argument list to deserializ"/>
+		<Result type="ArgumentDTO[]" summary="The serialized list of arguments" />
 		<DTO name="CommandDTO"/>
 	</CommandWrapper>
 </Types>

@@ -9,8 +9,6 @@ namespace wEBcMD
    {
       /// <summary>71959238-5bfd-459b-8fba-e48657d8ff2b is the Id of AdressDTO type.</summary>
       public new static Guid TypeId { get => System.Guid.Parse("71959238-5bfd-459b-8fba-e48657d8ff2b"); }
-		/// <inheritdoc/>
-		public override Guid Type { get => TypeId; }
       /// <summary>First name of the person or name of the company</summary>
       public virtual String Name1 { get; set; }
       /// <summary>Surname of the person or additional name of the company</summary>

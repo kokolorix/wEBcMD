@@ -10,6 +10,7 @@ export class ValueDTO {
 	Int64Value?: number;
 	DoubleValue?: number;
 	BooleanValue?: boolean;
+	StringValue?: string;
 	ObjectType?: string;
 	ObjectValue?: object;
 };

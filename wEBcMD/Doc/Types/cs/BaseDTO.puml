@@ -13,7 +13,7 @@ class ValueDTO {
     + BooleanValue : Boolean? <<get>>
     + <<override>> ToString() : string
 }
-class ArgDTO {
+class ArgumentDTO {
 }
 class "ValueImplDTO`1"<T> {
     + ValueImplDTO(v:T)
@@ -23,8 +23,8 @@ class "ValueImplDTO`1"<T> {
 ValueDTO --> "StringValue" String
 ValueDTO --> "ObjectType" String
 ValueDTO --> "ObjectValue" JsonDocument
-ArgDTO --> "Name" String
-ArgDTO --> "Value" ValueDTO
+ArgumentDTO --> "Name" String
+ArgumentDTO --> "Value" ValueDTO
 ValueDTO +-- "ValueImplDTO`1"
 ValueDTO <|-- "ValueImplDTO`1"
 "ValueImplDTO`1" --> "ObjectValue" JsonDocument

@@ -45,7 +45,7 @@ namespace wEBcMD
 		}
    }
 
-	public class ArgDTO
+	public class ArgumentDTO
 	{
 		public String Name { get; set; }
 
